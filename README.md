@@ -1,3 +1,3 @@
-** Image Filtering App
+## Image Filtering App 
 
 with backend

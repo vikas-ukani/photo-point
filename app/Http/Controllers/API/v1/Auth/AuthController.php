@@ -136,13 +136,13 @@ class AuthController extends Controller
     // }
 
     /**
-     * resetPasswordFn => to send mail
+     * forgotPassword => to send mail
      *
      * @param  mixed $request
      *
      * @return void
      */
-    public function resetPasswordFn(Request $request)
+    public function forgotPassword(Request $request)
     {
         $input = $request->all();
         /** check email or password */
@@ -180,7 +180,7 @@ class AuthController extends Controller
         $token = JWTAuth::fromUser($user);
         /** get current url */
         // $url = request()->root();
-        $url = url();
+        $url = url('/');
         $url .= '/auth/change-password?email=' . $user->email;
         $url .= '&token=' . $token;
 
@@ -236,5 +236,25 @@ class AuthController extends Controller
             \Log::error($exception->getMessage());
             return $this->sendBadRequest(null, __('validation.common.token_required_in_header'));
         }
+    }
+
+    public function updatePasswordFn(Request $request)
+    {
+        # code...
+        $input = $request->all();
+
+        dd('Check user', $input, auth()->user());
+
+        /** required validation */
+        $validation = $this->requiredValidation(['password', 'confirm_password'], $input);
+        if (isset($validation) && $validation['flag'] == false) {
+            return $this->sendBadRequest(null, $validation['message']);
+        }
+
+        /** comapre password */
+        if ($input['password'] != $input['confirm_password']) {
+            return $this->sendBadRequest(null, __('validation.confirmed', ['attribute' => 'password']));
+        }
+
     }
 }

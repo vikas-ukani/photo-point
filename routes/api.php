@@ -25,7 +25,7 @@ Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
     Route::post('/login', "AuthController@login");
     Route::post('/register', "AuthController@register");
 
-    Route::post('/reset-password', "AuthController@resetPasswordFn");
+    Route::post('/forgot-password', "AuthController@forgotPassword");
     Route::post('/change-password', "AuthController@changePasswordFn");
     /** FIXME  Remain To Set Change Password From App */
 });
@@ -35,4 +35,9 @@ Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
  */
 Route::group(['middleware' => ["auth:api"]], function () {
     // pass
+
+    Route::group(['prefix' => 'account', function () {
+
+        Route::post('/update-password', "AuthController@updatePasswordFn");
+    }]);
 });

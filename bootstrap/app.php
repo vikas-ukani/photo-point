@@ -1,34 +1,56 @@
 <?php
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
+(new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
+    dirname(__DIR__)
+))->bootstrap();
+
 /*
 |--------------------------------------------------------------------------
 | Create The Application
 |--------------------------------------------------------------------------
 |
-| The first thing we will do is create a new Laravel application instance
-| which serves as the "glue" for all the components of Laravel, and is
-| the IoC container for the system binding all of the various parts.
+| Here we will load the environment and create the application instance
+| that serves as the central piece of this framework. We'll use this
+| application as an "IoC" container and router for this framework.
 |
 */
 
-$app = new Illuminate\Foundation\Application(
-    $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
+$app = new Laravel\Lumen\Application(
+    dirname(__DIR__)
 );
+
+/** main sending configurations */
+// $app->configure('mail');
+$app->configure('api-debugger');
+// $app->configure('cors');
+
+
+$app->alias('mailer', Illuminate\Contracts\Mail\Mailer::class);
+
+$app->withFacades(true, [
+    Tymon\JWTAuth\Facades\JWTAuth::class => 'JWTAuth',
+    Tymon\JWTAuth\Facades\JWTFactory::class => 'JWTFactory',
+    'Illuminate\Support\Facades\Notification' => 'Notification',
+]);
+
+$app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
-| Bind Important Interfaces
+| Register Container Bindings
 |--------------------------------------------------------------------------
 |
-| Next, we need to bind some important interfaces into the container so
-| we will be able to resolve them when needed. The kernels serve the
-| incoming requests to this application from both the web and CLI.
+| Now we will register a few bindings in the service container. We will
+| register the exception handler and the console kernel. You may add
+| your own bindings here if you like or you can make another file.
 |
 */
 
 $app->singleton(
-    Illuminate\Contracts\Http\Kernel::class,
-    App\Http\Kernel::class
+    Illuminate\Contracts\Debug\ExceptionHandler::class,
+    App\Exceptions\Handler::class
 );
 
 $app->singleton(
@@ -36,20 +58,83 @@ $app->singleton(
     App\Console\Kernel::class
 );
 
-$app->singleton(
-    Illuminate\Contracts\Debug\ExceptionHandler::class,
-    App\Exceptions\Handler::class
-);
-
 /*
 |--------------------------------------------------------------------------
-| Return The Application
+| Register Middleware
 |--------------------------------------------------------------------------
 |
-| This script returns the application instance. The instance is given to
-| the calling script so we can separate the building of the instances
-| from the actual running of the application and sending responses.
+| Next, we will register the middleware with the application. These can
+| be global middleware that run before and after each request into a
+| route or middleware that'll be assigned to some specific routes.
 |
 */
 
+$app->middleware([
+    // App\Http\Middleware\ExampleMiddleware::class
+    App\Http\Middleware\CorsMiddleware::class,
+]);
+
+$app->routeMiddleware([
+    'auth' => App\Http\Middleware\Authenticate::class,
+    'check_account' => App\Http\Middleware\CheckUserAccount::class,
+    'cors' => App\Http\Middleware\CorsMiddleware::class,
+]);
+
+/*
+|--------------------------------------------------------------------------
+| Register Service Providers
+|--------------------------------------------------------------------------
+|
+| Here we will register all of the application's service providers which
+| are used to bind services into the container. Service providers are
+| totally optional, so you are not required to uncomment this line.
+|
+*/
+$app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
+$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
+// $app->register(Prettus\Repository\Providers\LumenRepositoryServiceProvider::class);
+/** Mail */
+// $app->register(Illuminate\Mail\MailServiceProvider::class);
+/** Notification Register */
+$app->register(\Illuminate\Notifications\NotificationServiceProvider::class); // Send Notifications
+$app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class); // File Generator
+$app->register(Sayeed\CustomMigrate\CustomMigrateServiceProvider::class); // Custom Migration
+// $app->register(Barryvdh\Cors\ServiceProvider::class); //CORS
+
+/*
+|--------------------------------------------------------------------------
+| The Application Routes
+|--------------------------------------------------------------------------
+|
+| Next we will include the routes file so that they can all be added to
+| the application. This will provide all of the URLs the application
+| can respond to, as well as the controllers that may handle them.
+|
+*/
+
+/** route file for web panel */
+$app->router->group([
+    'namespace' => 'App\Http\Controllers',
+], function ($router) {
+    require __DIR__ . '/../routes/web.php';
+});
+
+
+/** connect api file for device apis */
+$app->router->group([
+    'namespace' => 'App\Http\Controllers\API\v1',
+], function ($router) {
+    require __DIR__ . '/../routes/api.php';
+});
+
+/**
+ * Admin Route Register
+ */
+// $app->router->group([
+//     'namespace' => 'App\Http\Controllers\Admin',
+//     'prefix' => 'admin',
+// ], function ($router) {
+//     require __DIR__ . '/../routes/admin.php';
+// });
 return $app;

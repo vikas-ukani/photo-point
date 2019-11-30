@@ -2,14 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Supports\DateConvertor;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Laravel\Lumen\Auth\Authorizable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
-    use Notifiable;
+    use Authenticatable, Authorizable, Notifiable, DateConvertor;
 
     protected $table = "users";
 
@@ -25,30 +31,15 @@ class User extends Authenticatable implements JWTSubject
         'password', // user password
         'mobile', // user mobile
         'photo', // user profile pic
-        'is_active', // active deactivate user  default true
-        'email_verified_at', // date when user verify that email  // default null
-        'last_login_at', // set last login date time in utc date
-        'country_id', // country id
-        'state_id', // state id
-        'city_id', // city id
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
+     * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
+        'password',
     ];
 
     /**
@@ -63,11 +54,11 @@ class User extends Authenticatable implements JWTSubject
         $once = isset($id) ? 'sometimes|' : '';
 
         $rules = [
-            'name' => $once . 'required|max:100',
+            'first_name' => $once . 'required|max:100',
+            'last_name' => $once . 'required|max:100',
             'email' => $once . "required|email|unique:users,email,{$id}",
             'password' => $once . 'required',
             'mobile' => 'required',
-            // 'phone' => $once . 'required|digits_between:10,11',
         ];
 
         return $rules;
@@ -101,6 +92,15 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    /**
      * setNameAttribute => tittle case
      *
      * @param  mixed $value
@@ -112,13 +112,6 @@ class User extends Authenticatable implements JWTSubject
         $this->attributes['name'] = ucwords(strtolower($value));
     }
 
-    /**
-     * setPasswordAttribute => tittle case
-     *
-     * @param  mixed $value
-     *
-     * @return void
-     */
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = Hash::make($value);
@@ -151,22 +144,6 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * getEmailVerifiedAtAttribute => for verifying email
-     *
-     * @param  mixed $value
-     *
-     * @return void
-     */
-    // public function getEmailVerifiedAtAttribute($value)
-    // {
-    //     return $this->attributes[ 'email_verified_at'] = $value ?? NULL;
-    // }
-    // public function getMobileVerifiedAtAttribute($value)
-    // {
-    //     return $this->attributes[ 'mobile_verified_at'] = $value ?? NULL;
-    // }
-
-    /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed
@@ -196,6 +173,16 @@ class User extends Authenticatable implements JWTSubject
     public function scopeOrdered($query)
     {
         return $query->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * country_detail => relation with user country
+     *
+     * @return void
+     */
+    public function country_detail()
+    {
+        return $this->hasOne(Countries::class, 'id', 'country_id');
     }
 
 }

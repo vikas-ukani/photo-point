@@ -1,43 +1,30 @@
 <?php
+$router->group(['prefix' => 'api'], function () use ($router) {
 
-use Illuminate\Http\Request;
+    /**
+     * Authentication related routes
+     */
+    $router->group(['prefix' => 'auth', 'namespace' => 'Auth'], function () use ($router) {
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
- */
+        $router->post('/login', "AuthController@login");
+        $router->post('/register', "AuthController@register");
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+        $router->post('/forgot-password', "AuthController@resetPasswordFn");
+        $router->post('/change-password', "AuthController@changePasswordFn");
+        /** FIXME  Remain To Set Change Password From App */
+    });
 
-/**
- * Authentication related routes
- */
-Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
+    /**
+     * after login routes access
+     */
+    $router->group(['middleware' => ["auth:api"]], function () use ($router) {
 
-    Route::post('/login', "AuthController@login");
-    Route::post('/register', "AuthController@register");
+        $router->group(['prefix' => 'account'], function () use ($router) {
+            $router->post('add-address', 'User\UserController@storeAddress');
+            $router->get('set-active-address/{id}', 'User\UserController@setToActiveAddress');
+        });
 
-    Route::post('/forgot-password', "AuthController@forgotPassword");
-    Route::post('/change-password', "AuthController@changePasswordFn");
-    /** FIXME  Remain To Set Change Password From App */
-});
+        // $router->post('update-latitude-longitude', "AllInOneController@updateLatLongAPI");
 
-/**
- * after login routes access
- */
-Route::group(['middleware' => ["auth:api"]], function () {
-    // pass
-
-    Route::group(['prefix' => 'account', function () {
-
-        Route::post('/update-password', "AuthController@updatePasswordFn");
-    }]);
+    });
 });

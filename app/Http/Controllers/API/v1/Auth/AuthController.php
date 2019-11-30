@@ -8,6 +8,7 @@ use App\Libraries\Repositories\UsersRepositoryEloquent;
 use App\Notifications\ChangePasswordNotification;
 use App\Supports\DateConvertor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -16,6 +17,7 @@ class AuthController extends Controller
     use DateConvertor;
     protected $usersRepository;
     protected $imageController;
+    protected $usersSnoozeRepository;
 
     public function __construct(
         UsersRepositoryEloquent $usersRepository,
@@ -45,6 +47,89 @@ class AuthController extends Controller
     }
 
     /**
+     * register => Register New User
+     *
+     * @param  mixed $request
+     *
+     * @return void
+     */
+    public function register(Request $request)
+    {
+        $input = $request->all();
+        /** make require validation from input */
+        $validation = $this->requiredValidation(['first_name', 'last_name', 'email', 'password', 'confirm_password', 'mobile'], $input);
+        if (isset($validation) && $validation['flag'] == false) {
+            return $this->sendBadRequest(null, $validation['message']);
+        }
+
+        /**check email manual validation */
+        $emailIsExist = $this->usersRepository->getDetailsByInput(
+            [
+                'email' => $input['email'],
+                'first' => true,
+            ]
+        );
+        if (isset($emailIsExist) && $emailIsExist->count() > 0) {
+            return $this->makeError(null, __('validation.unique', ['attribute' => 'email']));
+        }
+
+        /** password confirmations */
+        if ($input['password'] != $input['confirm_password']) {
+            return $this->makeError(null, __('validation.confirmed', ['attribute' => 'password']));
+        }
+
+        $user = $this->usersRepository->create($input);
+
+        return $this->sendSuccessResponse($user, __('validation.common.register_success'));
+
+    }
+
+    /**
+     * updateUserProfileFn => Update Profile When user signup and step 2
+     *
+     * @param  mixed $input
+     *
+     * @return void
+     */
+    public function updateUserProfileFn($input = null)
+    {
+        /** check profile required validation */
+        $validation = $this->requiredValidation(['id', 'name', 'date_of_birth', 'gender', 'height', 'weight', 'photo'], $input);
+        if (isset($validation) && $validation['flag'] == false) {
+            return $this->makeError(null, $validation['message']);
+        }
+
+        // FIXME Image uploading not working in live server
+        try {
+            /** file upload */
+            $data = $this->imageController->moveFile($input['photo'], 'users');
+            if (isset($data) && $data['flag'] == false) {
+                return $this->makeError(null, $data['message']);
+            }
+            $input['photo'] = $data['data']['image'];
+        } catch (\Exception $exception) {
+            \Log::error($exception->getMessage());
+            return $this->makeError(null, $exception->getMessage());
+        }
+
+        /** convert date iso to utc format */
+        // $input['date_of_birth'] = $this->isoToUTCFormat($input['date_of_birth']); // NOTE No need to convert to UTC format
+
+        /** set to profile complete flag */
+        $input['is_profile_complete'] = true;
+
+        /** update some info of users */
+        $user = $this->usersRepository->updateRich($input, $input['id']);
+        if (!!!$user) {
+            return $this->makeError(null, __('validation.common.invalid_user'));
+        }
+        $token = Auth::tokenById($user->id);
+
+        $returnResponse = $this->makeAuthTokenResponse($user, $token);
+        return $this->makeResponse($returnResponse, __('validation.common.created', ['module' => "User"]));
+    }
+
+    /**
      * login for device
      *
      * @param  mixed $request
@@ -63,43 +148,9 @@ class AuthController extends Controller
         }
         if ($token = JWTAuth::attempt($credentials)) {
             $returnDetails = $this->respondWithToken($token);
-            /** set last login date to current date */
-            // $this->setLastLoginDatetime();
             return $this->sendSuccessResponse($returnDetails, __('validation.common.login_success'));
         }
         return $this->sendBadRequest(null, __('validation.common.email_password_not_match'), RESPONSE_UNAUTHORIZED_REQUEST);
-    }
-
-    public function register(Request $request)
-    {
-        $input = $request->all();
-        $responseError = $this->requiredValidation([
-            'first_name', 'last_name', 'email', 'password', 'confirm_password', 'mobile'], $input);
-        if (isset($responseError) && $responseError['flag'] == false) {
-            return $this->sendBadRequest(null, $responseError['message']);
-        }
-
-        /** check user already register or not */
-        $user = $this->usersRepository->getDetailsByInput([
-            'email' => $input['email'],
-            'password' => Hash::make($input['password']),
-            'first' => true,
-        ]);
-        if (isset($user)) {
-            return $this->sendBadRequest(null, __('validation.common.email_already_exist', ['key' => 'email']));
-
-        }
-        /** check password match */
-        if ($input['password'] != $input['confirm_password']) {
-            return $this->sendBadRequest(null, __('validation.confirmed', ['attribute' => 'password']));
-        }
-        $user = $this->usersRepository->create($input);
-        if ($token = JWTAuth::attempt(['email' => $input['email'], 'password' => $input['password']])) {
-            $response = $this->respondWithToken($token);
-            return $this->sendSuccessResponse($response, __('validation.message.successfully_register'));
-        }
-        return $this->sendBadRequest(null, __('validation.common.failed_to_register'));
-
     }
 
     /**
@@ -124,25 +175,25 @@ class AuthController extends Controller
      *
      * @return void
      */
-    // public function setLastLoginDatetime()
-    // {
-    //     try {
-    //         $user = \Auth::user();
-    //         $user->last_login_at = $this->getCurrentDateUTC();
-    //         $user->save();
-    //     } catch (\Exception $exception) {
-    //         \Log::error($exception->getMessage());
-    //     }
-    // }
+    public function setLastLoginDatetime()
+    {
+        try {
+            $user = \Auth::user();
+            $user->last_login_at = $this->getCurrentDateUTC();
+            $user->save();
+        } catch (\Exception $exception) {
+            \Log::error($exception->getMessage());
+        }
+    }
 
     /**
-     * forgotPassword => to send mail
+     * resetPasswordFn => to send mail
      *
      * @param  mixed $request
      *
      * @return void
      */
-    public function forgotPassword(Request $request)
+    public function resetPasswordFn(Request $request)
     {
         $input = $request->all();
         /** check email or password */
@@ -180,7 +231,7 @@ class AuthController extends Controller
         $token = JWTAuth::fromUser($user);
         /** get current url */
         // $url = request()->root();
-        $url = url('/');
+        $url = url();
         $url .= '/auth/change-password?email=' . $user->email;
         $url .= '&token=' . $token;
 
@@ -236,25 +287,5 @@ class AuthController extends Controller
             \Log::error($exception->getMessage());
             return $this->sendBadRequest(null, __('validation.common.token_required_in_header'));
         }
-    }
-
-    public function updatePasswordFn(Request $request)
-    {
-        # code...
-        $input = $request->all();
-
-        dd('Check user', $input, auth()->user());
-
-        /** required validation */
-        $validation = $this->requiredValidation(['password', 'confirm_password'], $input);
-        if (isset($validation) && $validation['flag'] == false) {
-            return $this->sendBadRequest(null, $validation['message']);
-        }
-
-        /** comapre password */
-        if ($input['password'] != $input['confirm_password']) {
-            return $this->sendBadRequest(null, __('validation.confirmed', ['attribute' => 'password']));
-        }
-
     }
 }

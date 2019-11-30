@@ -158,8 +158,8 @@ return [
         'select_any_value' => "Please, Select any :module",
 
         'email_not_exist' => ':key dose not exist in our records',
-        'email_already_exist' => ':key already exist in our records',
-        'key_already_exist' => ':key already exist in our records',
+        'email_already_exist' => ':key already exist in out records',
+        'key_already_exist' => ':key already exist in out records',
 
         'must_be_unique' => ":key must be unique record.",
         'email_password_not_match' => "Email or password are not match in out system.",
@@ -171,9 +171,8 @@ return [
         'token_required_in_header' => "The token is required in header.",
         'new_refresh_token' => "New token generated.",
         'not_register_user' => "Sorry, You are not register user.",
+        'register_success' => 'Registration successfully done.',
         'login_success' => 'Successfully logged in.',
-        'successfully_register' => 'Successfully Register.',
-        'failed_to_register' => 'Failed to Register.',
         'failed_to_login' => 'Failed to login, please try again.',
 
         'logout_success' => 'User successfully logged out.',

@@ -1,0 +1,485 @@
+{
+	"info": {
+		"_postman_id": "26aa4c2e-6dd1-42f4-a2c8-658a3e207eb6",
+		"name": "Anil WORK",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "API",
+			"item": [
+				{
+					"name": "Auth Collection",
+					"item": [
+						{
+							"name": "Login In API",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\" : \"vikas123@mailinator.com\",\n\t\"password\" : \"vikas123\"\n}"
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/auth/login",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Forgot Password",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"vikas123@mailinator.com\"\n}"
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/auth/forgot-password",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"auth",
+										"forgot-password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register User",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"first_name\" : \"test\",\n\t\"last_name\" : \"123\", \n\t\"email\" : \"test123@gmail.com\",\n\t\"password\" : \"test123\",\n\t\"confirm_password\" : \"test123\",\n\t\"mobile\" : 9090909090\n}"
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/auth/register",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Accounts  APIS",
+					"item": [
+						{
+							"name": "Update Password",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"old_password\" : \"vikas123\",\n\t\"password\" : \"vikas123\",\n\t\"confirm_password\" : \"vikas123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/account/update-password",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"account",
+										"update-password"
+									]
+								},
+								"description": "User can update their passwprd"
+							},
+							"response": []
+						},
+						{
+							"name": "Add Address",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user_id\": 4,\n    \"name\": \"Anil u Address\", \n    \"mobile\" : \"9876543210\",\n    \"alternate_mobile\": 12456789987,\n    \"pincode\": 395010,\n    \"line1\" : \"Santiniketan soc\",\n    \"line2\" : \"Near Dangigev Soc\",\n    \"country_id\" : 1,\n    \"state_id\" : 1,\n    \"city_id\" : 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/account/add-address",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"account",
+										"add-address"
+									]
+								},
+								"description": "User can add Multiple Delevery Addresses"
+							},
+							"response": []
+						},
+						{
+							"name": "Update Address By Id",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user_id\": 4,\n    \"name\": \"Vikas Updated Address\",\n    \"mobile\": \"9876543210\",\n    \"alternate_mobile\": \"12456789987\",\n    \"pincode\": 395010,\n    \"line1\": \"Updated Line 1\",\n    \"line2\": \"Upted Line 2\",\n    \"country_id\": 2,\n    \"state_id\": 2,\n    \"city_id\": 2,\n    \"is_default\": 0\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/account/update-address/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"account",
+										"update-address",
+										"1"
+									]
+								},
+								"description": "User can add Multiple Delevery Addresses"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Address List By Users",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"user_id\" : 4,\n    \"relation\": [\n        \"country\",\n        \"state\",\n        \"city\"\n    ],\n    \"country_list\": [\n        \"id\",\n        \"name\",\n        \"is_active\"\n    ],\n    \"state_list\": [\n        \"id\",\n        \"name\",\n        \"is_active\"\n    ],\n    \"city_list\": [\n        \"id\",\n        \"name\",\n        \"is_active\"\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/account/get-address-list",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"account",
+										"get-address-list"
+									]
+								},
+								"description": "Get Address List With Country State City"
+							},
+							"response": []
+						},
+						{
+							"name": "Set Active Address",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user_id\": 4,\n    \"name\": \"Vikas\",\n    \"mobile\": \"9876543210\",\n    \"alternate_mobile\": 12456789987,\n    \"pincode\": 395010\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/account/set-active-address/3",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"account",
+										"set-active-address",
+										"3"
+									]
+								},
+								"description": "User can add Multiple Delevery Addresses\n\n\t* id -> address id you want to update"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Address Details By Address ID",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/account/get-address/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"account",
+										"get-address",
+										"1"
+									]
+								},
+								"description": "User can add Multiple Delevery Addresses\n\n\t* id -> address id you want to update"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Address Details By Address ID Copy",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/account/delete-address/5",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"account",
+										"delete-address",
+										"5"
+									]
+								},
+								"description": "User can add Multiple Delevery Addresses\n\n\t* id -> address id you want to update"
+							},
+							"response": []
+						}
+					],
+					"description": "User Account related apis after login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4403fb7c-979e-461e-90b9-b863ac20b179",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "754d46c6-3fb7-4f43-b77a-d76d8d41d9c7",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"description": "All Device Side APIs Collection\n",
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

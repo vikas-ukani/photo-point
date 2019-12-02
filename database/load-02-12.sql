@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 30, 2019 at 07:16 PM
+-- Generation Time: Dec 02, 2019 at 06:46 PM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 7.2.8
 
@@ -87,6 +87,33 @@ CREATE TABLE `failed_jobs` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `main_categories`
+--
+
+CREATE TABLE `main_categories` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'category name',
+  `code` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'for unique validation',
+  `image` text COLLATE utf8mb4_unicode_ci COMMENT 'Image for category',
+  `description` text COLLATE utf8mb4_unicode_ci COMMENT 'about category',
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `main_categories`
+--
+
+INSERT INTO `main_categories` (`id`, `name`, `code`, `image`, `description`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 'T-Shirt', 'T_SHIRT', NULL, NULL, 1, '2019-12-01 18:30:00', '2019-12-01 18:30:00'),
+(2, 'Mug', 'MUG', NULL, NULL, 1, '2019-12-01 18:30:00', '2019-12-01 18:30:00'),
+(3, 'Water bottle', 'WATER_BOTTLE', NULL, NULL, 1, '2019-12-01 18:30:00', '2019-12-01 18:30:00'),
+(4, 'Test Category', 'TEST', 'This is the test categry', NULL, 0, '2019-12-01 18:30:00', '2019-12-01 18:30:00');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `migrations`
 --
 
@@ -112,7 +139,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (10, '2019_11_27_160353_create_user_delevery_addresses_table', 2),
 (11, '2019_11_30_173452_create_countries_table', 3),
 (12, '2019_11_30_173526_create_states_table', 4),
-(13, '2019_11_30_173558_create_cities_table', 5);
+(13, '2019_11_30_173558_create_cities_table', 5),
+(14, '2019_12_02_160909_create_main_categories_table', 6);
 
 -- --------------------------------------------------------
 
@@ -312,6 +340,13 @@ ALTER TABLE `failed_jobs`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `main_categories`
+--
+ALTER TABLE `main_categories`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `main_categories_code_unique` (`code`);
+
+--
 -- Indexes for table `migrations`
 --
 ALTER TABLE `migrations`
@@ -399,10 +434,16 @@ ALTER TABLE `failed_jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `main_categories`
+--
+ALTER TABLE `main_categories`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `oauth_clients`
@@ -432,7 +473,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_delevery_addresses`
 --
 ALTER TABLE `user_delevery_addresses`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

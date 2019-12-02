@@ -9,6 +9,43 @@
 			"name": "API",
 			"item": [
 				{
+					"name": "Common APIs ",
+					"item": [
+						{
+							"name": "Get All Cmmon Details",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/get-all-data",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"get-all-data"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": " API for use in any modules.",
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
 					"name": "Auth Collection",
 					"item": [
 						{

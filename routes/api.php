@@ -19,6 +19,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
      */
     $router->group(['middleware' => ["auth:api"]], function () use ($router) {
 
+        $router->get('get-all-data', "CommonController@getAllCommonData");
+
         $router->group(['prefix' => 'account'], function () use ($router) {
             $router->post('get-address-list', 'User\UserController@getAddressList');
             $router->post('add-address', 'User\UserController@storeAddress');

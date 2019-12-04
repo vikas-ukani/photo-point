@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 02, 2019 at 06:46 PM
+-- Generation Time: Dec 04, 2019 at 06:02 PM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 7.2.8
 
@@ -23,6 +23,29 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `laravel_anil_work` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `laravel_anil_work`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `carts`
+--
+
+CREATE TABLE `carts` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL COMMENT 'which user cart',
+  `product_id` bigint(20) UNSIGNED NOT NULL COMMENT 'which product on cart',
+  `quantity` bigint(20) NOT NULL DEFAULT '1' COMMENT 'How many product added in to cart',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `carts`
+--
+
+INSERT INTO `carts` (`id`, `user_id`, `product_id`, `quantity`, `created_at`, `updated_at`) VALUES
+(1, 4, 1, 4, '2019-12-04 16:27:11', '2019-12-04 16:52:20'),
+(2, 5, 2, 5, '2019-12-04 16:30:31', '2019-12-04 16:52:00');
 
 -- --------------------------------------------------------
 
@@ -140,7 +163,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (11, '2019_11_30_173452_create_countries_table', 3),
 (12, '2019_11_30_173526_create_states_table', 4),
 (13, '2019_11_30_173558_create_cities_table', 5),
-(14, '2019_12_02_160909_create_main_categories_table', 6);
+(14, '2019_12_02_160909_create_main_categories_table', 6),
+(15, '2019_12_02_165508_create_products_table', 7),
+(16, '2019_12_04_151403_create_carts_table', 8);
 
 -- --------------------------------------------------------
 
@@ -235,6 +260,33 @@ CREATE TABLE `password_resets` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `category_id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Product Name',
+  `image` text COLLATE utf8mb4_unicode_ci,
+  `price` double(8,2) NOT NULL,
+  `size` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Multiple Sizes.',
+  `size_number` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'numeric size number.',
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `is_active` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'product is active or not.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `category_id`, `name`, `image`, `price`, `size`, `size_number`, `description`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 1, 'First TShirt', 'This is image', 2000.00, 'L', '1900*2000', 'This is the first product ', 1, '2019-12-03 18:30:00', '2019-12-03 18:30:00');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `states`
 --
 
@@ -322,6 +374,12 @@ INSERT INTO `user_delevery_addresses` (`id`, `user_id`, `name`, `mobile`, `alter
 --
 
 --
+-- Indexes for table `carts`
+--
+ALTER TABLE `carts`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `cities`
 --
 ALTER TABLE `cities`
@@ -393,6 +451,13 @@ ALTER TABLE `password_resets`
   ADD KEY `password_resets_email_index` (`email`);
 
 --
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `products_category_id_foreign` (`category_id`);
+
+--
 -- Indexes for table `states`
 --
 ALTER TABLE `states`
@@ -414,6 +479,12 @@ ALTER TABLE `user_delevery_addresses`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `carts`
+--
+ALTER TABLE `carts`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `cities`
@@ -443,7 +514,7 @@ ALTER TABLE `main_categories`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `oauth_clients`
@@ -456,6 +527,12 @@ ALTER TABLE `oauth_clients`
 --
 ALTER TABLE `oauth_personal_access_clients`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `states`
@@ -474,6 +551,16 @@ ALTER TABLE `users`
 --
 ALTER TABLE `user_delevery_addresses`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `products`
+--
+ALTER TABLE `products`
+  ADD CONSTRAINT `products_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `main_categories` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

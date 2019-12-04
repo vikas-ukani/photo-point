@@ -3,12 +3,12 @@
 namespace App\Libraries\Repositories;
 
 use App\Libraries\RepositoriesInterfaces\UsersRepository;
-use App\Models\Products;
+use App\Models\Cart;
 use App\Supports\BaseMainRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
 
-class ProductRepositoryEloquent extends BaseRepository implements UsersRepository
+class CartRepositoryEloquent extends BaseRepository implements UsersRepository
 {
     use BaseMainRepository;
 
@@ -19,7 +19,7 @@ class ProductRepositoryEloquent extends BaseRepository implements UsersRepositor
      */
     public function model()
     {
-        return Products::class;
+        return Cart::class;
     }
 
     /**
@@ -44,7 +44,7 @@ class ProductRepositoryEloquent extends BaseRepository implements UsersRepositor
     {
         /** searching */
         if (isset($input['search'])) {
-            $value = $this->customSearch($value, $input, ['name', 'price', 'description', 'size']);
+            $value = $this->customSearch($value, $input, ['user_id', 'product_id', 'quantity']);
         }
 
         /** filter by id  */
@@ -56,99 +56,30 @@ class ProductRepositoryEloquent extends BaseRepository implements UsersRepositor
         }
 
         /** filter by id  */
-        if (isset($input['category_id'])) {
-            $value = $value->where('category_id', $input['category_id']);
+        if (isset($input['user_id'])) {
+            $value = $value->where('user_id', $input['user_id']);
         }
-        if (isset($input['category_ids']) && is_array($input['category_ids']) && count($input['category_ids'])) {
-            $value = $value->whereIn('category_id', $input['category_ids']);
-        }
-
-        if (isset($input['name'])) {
-            $value = $value->whereName($input['name']);
+        if (isset($input['user_ids']) && is_array($input['user_ids']) && count($input['user_ids'])) {
+            $value = $value->whereIn('user_id', $input['user_ids']);
         }
 
-        if (isset($input['code'])) {
-            $value = $value->where('code', $input['code']);
+        /** filter by id  */
+        if (isset($input['product_id'])) {
+            $value = $value->where('product_id', $input['product_id']);
+        }
+        if (isset($input['product_id']) && is_array($input['product_id']) && count($input['product_id'])) {
+            $value = $value->whereIn('product_id', $input['product_id']);
         }
 
-        if (isset($input['is_active'])) {
-            $value = $value->where('is_active', $input['is_active']);
+        if (isset($input['quantity'])) {
+            $value = $value->where('quantity', $input['quantity']);
         }
 
         $this->customRelation($value, $input, []); //'account_detail'
 
-        /** gender and genders wise filter */
-        if (isset($input['gender'])) {
-            $value = $value->where('gender', $input['gender']);
-        }
-        if (isset($input['genders']) && is_array($input['genders']) && count($input['genders'])) {
-            $value = $value->whereIn('gender', $input['genders']);
-        }
-
         if (isset($input['size'])) {
             $value = $value->where('size', $input['size']);
             // $value = $value->whereRaw("FIND_IN_SET(" . $input['size'] . ",Tags)");
-        }
-
-        /** check user type */
-        if (isset($input['user_type'])) {
-            $value = $value->where('user_type', $input['user_type']);
-        }
-        if (isset($input['user_types']) && is_array($input['user_types']) && count($input['user_types'])) {
-            $value = $value->whereIn('user_type', $input['user_types']);
-        }
-
-        /** check last login where user login */
-        if (isset($input['last_login_at'])) {
-            $value = $value->where('last_login_at', '<=', $input['last_login_at']);
-        }
-
-        /** check last login is have null  */
-        if (isset($input['is_last_login']) && $input['is_last_login'] == false) {
-            $value = $value->orWhereNull('last_login_at');
-        }
-
-        /** date wise records */
-        if (isset($input['start_date'])) {
-            $value = $value->where('created_at', ">=", $input['start_date']);
-        }
-
-        /** check for user active or not */
-        if (isset($input['is_active'])) {
-            $value = $value->where('is_active', $input['is_active']);
-        }
-
-        /** check if false then don't show current user in listing */
-        if (isset($input['is_current_user']) && $input['is_current_user'] == false) {
-            $value = $value->where('id', '<>', \Auth::id());
-        }
-
-        if (isset($input['facebook'])) {
-            $value = $value->where('facebook', $input['facebook']);
-        }
-
-        /** country_id and country_ids wise filter */
-        if (isset($input['country_id'])) {
-            $value = $value->where('country_id', $input['country_id']);
-        }
-        if (isset($input['country_ids']) && is_array($input['country_ids']) && count($input['country_ids'])) {
-            $value = $value->whereIn('country_id', $input['country_ids']);
-        }
-
-        if (isset($input['latitude'])) {
-            $value = $value->where('latitude', $input['latitude']);
-        }
-        if (isset($input['longitude'])) {
-            $value = $value->where('longitude', $input['longitude']);
-        }
-
-        if (isset($input['is_snooze'])) {
-            $value = $value->where('is_snooze', $input['is_snooze']);
-        }
-
-        /** check for user complete their profile or not */
-        if (isset($input['is_profile_complete'])) {
-            $value = $value->where('is_profile_complete', $input['is_profile_complete']);
         }
     }
 

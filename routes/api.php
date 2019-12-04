@@ -30,6 +30,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             $router->get('set-active-address/{id}', 'User\UserController@setToActiveAddress');
         });
 
+        /** get all products list */
+        $router->post('product-list', "Product\ProductController@list");
+        $router->post('add-to-cart', "Cart\CartController@store");
+        $router->post('cart-list', "Cart\CartController@list");
+        $router->post('delete-to-cart/{id}', "Cart\CartController@destroye");
+        $router->post('remove-cart-quantity/{id}', "Cart\CartController@substractCartQuantity");
+        // $router->group(['prefix' => 'products'])
+
         // $router->post('update-latitude-longitude', "AllInOneController@updateLatLongAPI");
 
     });

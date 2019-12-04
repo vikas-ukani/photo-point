@@ -17,6 +17,7 @@ class Products extends Model
         "sizes",
         "size_number",
         "description",
+        "is_active",
     ];
 
     /**

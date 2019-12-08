@@ -15,6 +15,7 @@
         "illuminate/notifications": "^5.8",
         "laravel/lumen-framework": "5.8.*",
         "maxsky/lumen-app-key-generator": "^1.0",
+        "mmghv/lumen-route-binding": "^1.0",
         "palanik/lumen-cors": "dev-master",
         "paypal/rest-api-sdk-php": "^1.14",
         "prettus/l5-repository": "^2.6",

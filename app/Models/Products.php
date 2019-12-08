@@ -14,7 +14,7 @@ class Products extends Model
         "name",
         'image',
         "price",
-        "sizes",
+        "size",
         "size_number",
         "description",
         "is_active",
@@ -36,7 +36,7 @@ class Products extends Model
             'name' => $once . 'required',
             'price' => $once . 'required',
             'image' => $once . "required",
-            'sizes' => $once . 'required|array',
+            'size' => $once . 'required',
             'size_number' => $once . 'required',
         ];
 
@@ -54,6 +54,30 @@ class Products extends Model
         return [
             'required' => __('validation.required'),
         ];
+    }
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::retrieved(function ($value) {
+            $value->is_active = $value->is_active == 1 ? true : false;
+        });
+
+        /** before creating */
+        static::creating(function ($value) {
+            $value->is_active = $value->is_active == true ? 1 : 0;
+        });
+
+        /** before updating */
+        static::updating(function ($value) {
+            $value->is_active = $value->is_active == true ? 1 : 0;
+        });
     }
 
     /**

@@ -8,8 +8,8 @@ class ImageHelperController extends Controller
 {
 
     /**
-     * singleImageUploadFn => 
-     *   NOTE  This is for templars file upload 
+     * singleImageUploadFn =>
+     *   NOTE  This is for templars file upload
      *   Single File Upload use for temporary
      *
      * @param  mixed $request
@@ -37,23 +37,22 @@ class ImageHelperController extends Controller
     /**
      * moveFile => move file to given folder name
      *
-     * @param  mixed $file => object 
+     * @param  mixed $file => object
      * @param  mixed $moduleName => Folder name
      *
      * @return void
      */
-    public function moveFile($file = null, $moduleName  = 'images')
+    public function moveFile($file = null, $moduleName = 'images')
     {
-        // dd('check image', $file);
         $fileName = $file->getClientOriginalName();
-        // dd('check ', $fileName);
 
         /** FIXME make compress image file */
         if (isset($fileName)) {
             $fileName = uniqid() . '_' . $fileName;
         }
-        $fileName = $this->removeExtension($fileName);
-        $filePath = UPLOADED_FOLDER_NAME .  'images/' . $moduleName;
+        $fileName = str_slug($this->removeExtension($fileName));
+
+        $filePath = UPLOADED_FOLDER_NAME . 'images/' . $moduleName;
         if (!is_dir(storage_path() . $filePath)) {
             mkdir(storage_path() . $filePath, 755, true);
         }
@@ -76,9 +75,9 @@ class ImageHelperController extends Controller
      */
     public function removeExtension($fileName)
     {
-        $arrayFile = explode('.',  $fileName);
+        $arrayFile = explode('.', $fileName);
         array_pop($arrayFile);
-        return  implode('.', $arrayFile);
+        return implode('.', $arrayFile);
     }
 
     /**
@@ -109,14 +108,14 @@ class ImageHelperController extends Controller
     public function fileMoveOnStorage($fileUrl = null)
     {
         if (!isset($fileUrl)) {
-            return $this->makeError([],  __('validation.common.error_in_file_upload'));
+            return $this->makeError([], __('validation.common.error_in_file_upload'));
         }
 
         /** check file exists */
         if (file_exists(public_path($fileUrl))) {
-            $storageFle =  $this->fileMoveToStorage($fileUrl);
-            if (isset($storageFle) &&  $storageFle['flag'] == false) {
-                return $this->makeError($storageFle['data'],  $storageFle['message']);
+            $storageFle = $this->fileMoveToStorage($fileUrl);
+            if (isset($storageFle) && $storageFle['flag'] == false) {
+                return $this->makeError($storageFle['data'], $storageFle['message']);
             }
         }
     }
@@ -142,8 +141,8 @@ class ImageHelperController extends Controller
     //     $moduleName = 'profiles';
     //     $storageFilePath = '/uploaded/images/' . $moduleName;
     //     $newPath = $fileUrl;
-    //     $oldPath =   $fileUrl; 
-    //     $fileName = $this->getFileNameFromPath($fileUrl); 
+    //     $oldPath =   $fileUrl;
+    //     $fileName = $this->getFileNameFromPath($fileUrl);
     //     try {
     //         if (move_uploaded_file($oldPath, $newPath)) {
     //             return $this->makeResponse(['image' => $fileUrl], __("validation.common.file_success_upload"));

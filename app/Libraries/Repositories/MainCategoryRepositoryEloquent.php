@@ -318,9 +318,7 @@ class MainCategoryRepositoryEloquent extends BaseRepository implements UsersRepo
     public function updateManyByWhere($input, $where)
     {
         $value = $this->makeModel();
-
-        // dd('key ', array_first(array_keys($where)), array_values($where));
-        $value = $value->where(array_first(array_keys($where)), array_first(array_values($where)));
+         $value = $value->where(array_first(array_keys($where)), array_first(array_values($where)));
         // $value = $value->where('user_id', $where['user_id']);
         $value = $value->update($input);
         return $value;

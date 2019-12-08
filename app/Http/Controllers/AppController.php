@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Laravel\Lumen\Routing\Controller as BaseController;
-use App\Supports\MessageClass;
 use App\Supports\DateConvertor;
+use App\Supports\MessageClass;
+use Laravel\Lumen\Routing\Controller as BaseController;
 
 class AppController extends BaseController
 {

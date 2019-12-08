@@ -22,12 +22,10 @@ class HelperController extends Controller
     {
         $this->userId = \Auth::id();
 
-        // dd('check id', $this->userId);
-
         $this->settingTrainingRepository = $settingTrainingRepository;
     }
 
-    public function convertKMtoMeters($km = null)/*  () => isset($km) ? ($km * 1000) : null; */
+    public function convertKMtoMeters($km = null) /*  () => isset($km) ? ($km * 1000) : null; */
     {
         $this->DIST = isset($km) ? ($km * 1000) : 0;
     }
@@ -40,8 +38,8 @@ class HelperController extends Controller
             $min = $timesArr[1] ?? 0;
             $sec = $timesArr[2] == "00" ? 0 : 1;
             $totalMinutes = ((((int) ($hr)) ?? 0) * 60)
-                + ((((int) ($min)) ?? 0))
-                + (int) $sec;
+             + ((((int) ($min)) ?? 0))
+             + (int) $sec;
             $this->T = $totalMinutes;
             // return $totalMinutes;
         } else {
@@ -56,7 +54,7 @@ class HelperController extends Controller
         // obj.mainModelView.raceTime = Double(totalTime)
     }
 
-    /** 
+    /**
      * * Start Here
      * Calculate vDOT For common_programs_weeks_laps table APP user only
      */
@@ -65,7 +63,7 @@ class HelperController extends Controller
         $settingTrainingDetails = $this->settingTrainingRepository->getDetailsByInput([
             'user_id' => $this->userId,
             'relation' => ["race_distance_detail"],
-            'first' => true
+            'first' => true,
         ]);
 
         /** check for race distance is exists or not */
@@ -88,22 +86,13 @@ class HelperController extends Controller
         # 4. calculate step four and speed to condition wise compare with laps vDOT added from admin side in common laps weeks
         $this->calculateFourthStepOf_V_DOT($input);
 
-        # all Calculation Done HERE
-        // dd(
-        //     'preset ',
-        //     "VO2 = " .  $this->VO2,
-        //     "PERCENT_MAX = " . $this->PERCENT_MAX,
-        //     "vDOT = " .  $this->vDOT,
-        //     "TARGET E = " . $this->TARGET
-        // );
-
         $input['speed'] = $this->TARGET;
         return $input;
     }
 
     /**
      ** Step => 1
-     * 
+     *
      * calculateFirstStepOf_V_DOT
      *
      * @param  mixed $input
@@ -113,16 +102,16 @@ class HelperController extends Controller
     public function calculateFirstStepOf_V_DOT($input = null)
     {
         $this->VO2 = -4.6 + 0.182258
-            * ($this->DIST / $this->T)
-            + 0.000104
-            * ($this->DIST / $this->T)
-            ^ 2;
+         * ($this->DIST / $this->T)
+         + 0.000104
+         * ($this->DIST / $this->T)
+         ^ 2;
     }
 
     /**
      ** Step => 2
-     * 
-     * calculateSecondStepOf_V_DOT 
+     *
+     * calculateSecondStepOf_V_DOT
      *
      * @param  mixed $input
      *
@@ -131,14 +120,14 @@ class HelperController extends Controller
     public function calculateSecondStepOf_V_DOT($input = null)
     {
         $this->PERCENT_MAX = 0.8 + 0.1894393
-            * exp(-0.012778 * $this->T)
-            + 0.2989558
-            * exp(-0.1932605 * $this->T);
+         * exp(-0.012778 * $this->T)
+         + 0.2989558
+         * exp(-0.1932605 * $this->T);
     }
 
     /**
-     ** Step => 3 
-     * 
+     ** Step => 3
+     *
      * calculateThirdStepOf_V_DOT => ( Step 1 / Step 2 )
      *
      * @param  mixed $input
@@ -151,9 +140,9 @@ class HelperController extends Controller
     }
 
     /**
-     ** Step => 4 
-     * 
-     * calculateFourthStepOf_V_DOT => 
+     ** Step => 4
+     *
+     * calculateFourthStepOf_V_DOT =>
      *
      * @param  mixed $input
      *
@@ -167,11 +156,11 @@ class HelperController extends Controller
             $this->calculateForEvDot();
         } else if (stripos($input['vdot'], 'M') !== false) {
             $this->calculateForMvDot();
-        } else  if (stripos($input['vdot'], 'I') !== false) {
+        } else if (stripos($input['vdot'], 'I') !== false) {
             $this->calculateForIvDot();
-        } else  if (stripos($input['vdot'], 'R') !== false) {
+        } else if (stripos($input['vdot'], 'R') !== false) {
             $this->calculateForRvDot();
-        } else  if (stripos($input['vdot'], 'T') !== false) {
+        } else if (stripos($input['vdot'], 'T') !== false) {
             $this->calculateForTvDot();
         }
     }
@@ -185,10 +174,10 @@ class HelperController extends Controller
     {
         $this->TARGET = ($this->DIST * 2 * 0.000104)
             / (-0.182258
-                +
-                sqrt(
-                    0.182258 ^ 2 - 4 * 0.000104 * (-4.6 - 0.67 * $this->vDOT)
-                ));
+             +
+            sqrt(
+                0.182258 ^ 2 - 4 * 0.000104 * (-4.6 - 0.67 * $this->vDOT)
+            ));
     }
 
     /**
@@ -200,10 +189,10 @@ class HelperController extends Controller
     {
         $this->TARGET = ($this->DIST * 2 * 0.000104)
             / (-0.182258
-                +
-                sqrt(
-                    0.182258 ^ 2 - 4 * 0.000104 * (-4.6 - 0.67 * $this->vDOT)
-                ));
+             +
+            sqrt(
+                0.182258 ^ 2 - 4 * 0.000104 * (-4.6 - 0.67 * $this->vDOT)
+            ));
     }
 
     /**
@@ -215,10 +204,10 @@ class HelperController extends Controller
     {
         $this->TARGET = ($this->DIST * 2 * 0.000104)
             / (-0.182258
-                +
-                sqrt(
-                    0.182258 ^ 2 - 4 * 0.000104 * (-4.6 - 0.975 * $this->vDOT)
-                ));
+             +
+            sqrt(
+                0.182258 ^ 2 - 4 * 0.000104 * (-4.6 - 0.975 * $this->vDOT)
+            ));
     }
     /**
      * calculateForTvDot => Calculate R
@@ -229,12 +218,11 @@ class HelperController extends Controller
     {
         $this->TARGET = ($this->DIST * 2 * 0.000104)
             / (-0.182258
-                +
-                sqrt(
-                    0.182258 ^ 2 - 4 * 0.000104 * (-4.6 - 0.975 * $this->vDOT)
-                ));
+             +
+            sqrt(
+                0.182258 ^ 2 - 4 * 0.000104 * (-4.6 - 0.975 * $this->vDOT)
+            ));
     }
-
 
     /**
      * calculateForTvDot => Calculate T
@@ -245,9 +233,9 @@ class HelperController extends Controller
     {
         $this->TARGET = ($this->DIST * 2 * 0.000104)
             / (-0.182258
-                +
-                sqrt(
-                    0.182258 ^ 2 - 4 * 0.000104 * (-4.6 - 0.88 * $this->vDOT)
-                ));
+             +
+            sqrt(
+                0.182258 ^ 2 - 4 * 0.000104 * (-4.6 - 0.88 * $this->vDOT)
+            ));
     }
 }

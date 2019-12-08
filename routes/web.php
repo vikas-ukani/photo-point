@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,23 +12,19 @@ use Illuminate\Http\Request;
 | It is a breeze. Simply tell Lumen the URIs it should respond to
 | and give it the Closure to call when that URI is requested.
 |
-*/
+ */
 
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
 $router->get('/test', function (Request $request) {
-    dd('testing route');
-    // $input = $request->all();
+     // $input = $request->all();
 
     // $encoded = json_encode($input['amenities_available'] ) ;
-
-
-    // dd('check requsest', $request->all());
 });
 
-$router->get('/verify-email/{id}',  "Controller@userEmailVerify");
+$router->get('/verify-email/{id}', "Controller@userEmailVerify");
 /** for vue routes */
 $router->get('/admin', function () {
     return view('admin');
@@ -37,7 +33,6 @@ $router->get('/admin', function () {
 // $router->get('/admin/{route}/', function () {
 //     return view('admin');
 // });
-
 
 /** For Image Security display user to show image */
 $router->get(UPLOADED_FOLDER_NAME . '{folderName}/{moduleName}/{fileName}', function ($folderName, $moduleName, $fileName) {
@@ -54,7 +49,7 @@ $router->get(UPLOADED_FOLDER_NAME . '{folderName}/{moduleName}/{fileName}', func
         'success' => false,
         'status' => 400,
         'data' => null,
-        'message' => ucfirst(strtolower(__('validation.common.image_not_found')))
+        'message' => ucfirst(strtolower(__('validation.common.image_not_found'))),
     ];
     return response()->json($response);
 });

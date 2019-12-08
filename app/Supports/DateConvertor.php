@@ -5,16 +5,16 @@ namespace App\Supports;
 use Illuminate\Support\Carbon;
 
 /**
- * 
+ *
  */
 trait DateConvertor
 {
     /**
      * isoToUTCFormat => convert ISOString to UTC date format
-     *  
-     ** 2019-10-09T18:30:00.000Z => 2019-10-09 18:30:00.0 UTC (+00:00) 
-     * 
-     * @param  mixed $date => ISO String Date Format 
+     *
+     ** 2019-10-09T18:30:00.000Z => 2019-10-09 18:30:00.0 UTC (+00:00)
+     *
+     * @param  mixed $date => ISO String Date Format
      *
      * @return void
      */
@@ -46,7 +46,6 @@ trait DateConvertor
     {
         // $date = \Carbon\Carbon::now();
         $date = $date->toDateTimeString();
-        // dd('check month', $date);
         return $date;
     }
 
@@ -64,7 +63,6 @@ trait DateConvertor
         return $weekAgoDate;
     }
 
-
     protected function getCurrentStartOfTheDay()
     {
         $now = \Carbon\Carbon::now();
@@ -78,7 +76,6 @@ trait DateConvertor
         $weekEndDate = $now->endOfDay()->toDateTimeString();
         return $weekEndDate;
     }
-
 
     protected function getDateWiseStartOfTheWeek($date)
     {

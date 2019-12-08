@@ -263,7 +263,6 @@ class CartRepositoryEloquent extends BaseRepository implements UsersRepository
     {
         $value = $this->makeModel();
 
-        // dd('key ', array_first(array_keys($where)), array_values($where));
         $value = $value->where(array_first(array_keys($where)), array_first(array_values($where)));
         // $value = $value->where('user_id', $where['user_id']);
         $value = $value->update($input);

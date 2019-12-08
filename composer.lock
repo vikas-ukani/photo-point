@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f803ca084b393f3de0a5da20e3d00579",
+    "content-hash": "374258e4805ae87180fcea5618e03c8c",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -2092,6 +2092,58 @@
             ],
             "description": "Set the application key in Lumen Framework.",
             "time": "2019-03-07T05:44:45+00:00"
+        },
+        {
+            "name": "mmghv/lumen-route-binding",
+            "version": "1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mmghv/lumen-route-binding.git",
+                "reference": "8a816c37fc80642eb8d2db1c8e210036aece8ac0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mmghv/lumen-route-binding/zipball/8a816c37fc80642eb8d2db1c8e210036aece8ac0",
+                "reference": "8a816c37fc80642eb8d2db1c8e210036aece8ac0",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/lumen-framework": "5.* || 6.*",
+                "nikic/fast-route": ">=0.4 <2.0",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9",
+                "phpunit/phpunit": "~7.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "mmghv\\LumenRouteBinding\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mohamed Gharib",
+                    "email": "mmghv@coddest.com"
+                }
+            ],
+            "description": "Route model binding for Lumen",
+            "homepage": "https://github.com/mmghv/lumen-route-binding",
+            "keywords": [
+                "bind",
+                "binding",
+                "fast-route",
+                "lumen",
+                "model",
+                "route",
+                "route model binding"
+            ],
+            "time": "2019-09-18T14:51:54+00:00"
         },
         {
             "name": "monolog/monolog",

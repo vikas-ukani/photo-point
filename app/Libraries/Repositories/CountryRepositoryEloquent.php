@@ -3,12 +3,12 @@
 namespace App\Libraries\Repositories;
 
 use App\Libraries\RepositoriesInterfaces\UsersRepository;
-use App\Models\Products;
+use App\Models\Country;
 use App\Supports\BaseMainRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
 
-class ProductRepositoryEloquent extends BaseRepository implements UsersRepository
+class CountryRepositoryEloquent extends BaseRepository implements UsersRepository
 {
     use BaseMainRepository;
 
@@ -19,7 +19,7 @@ class ProductRepositoryEloquent extends BaseRepository implements UsersRepositor
      */
     public function model()
     {
-        return Products::class;
+        return Country::class;
     }
 
     /**
@@ -47,7 +47,6 @@ class ProductRepositoryEloquent extends BaseRepository implements UsersRepositor
             $value = $this->customSearch($value, $input, ['name', 'price', 'description', 'size']);
         }
 
-        $this->customRelation($value, $input, []); //'account_detail'
         /** filter by id  */
         if (isset($input['id'])) {
             $value = $value->where('id', $input['id']);
@@ -55,14 +54,7 @@ class ProductRepositoryEloquent extends BaseRepository implements UsersRepositor
         if (isset($input['ids']) && is_array($input['ids']) && count($input['ids'])) {
             $value = $value->whereIn('id', $input['ids']);
         }
-
-        /** filter by id  */
-        if (isset($input['category_id'])) {
-            $value = $value->where('category_id', $input['category_id']);
-        }
-        if (isset($input['category_ids']) && is_array($input['category_ids']) && count($input['category_ids'])) {
-            $value = $value->whereIn('category_id', $input['category_ids']);
-        }
+ 
 
         if (isset($input['name'])) {
             $value = $value->whereName($input['name']);
@@ -75,6 +67,8 @@ class ProductRepositoryEloquent extends BaseRepository implements UsersRepositor
         if (isset($input['is_active'])) {
             $value = $value->where('is_active', $input['is_active']);
         }
+
+        $this->customRelation($value, $input, []); //'account_detail'
 
         /** gender and genders wise filter */
         if (isset($input['gender'])) {
@@ -339,12 +333,6 @@ class ProductRepositoryEloquent extends BaseRepository implements UsersRepositor
         // $value->fill($input)->update();
         return $value->fresh();
 
-    }
-
-    public function deleteWhereIn($key, $array)
-    {
-        $value = $this->makeModel();
-        return $value->whereIn($key, $array)->delete();
     }
 
 }

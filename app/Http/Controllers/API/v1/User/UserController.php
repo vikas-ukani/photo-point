@@ -78,7 +78,6 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        // dd('id found', $id);
         $this->userDeleveryAddress->delete($id);
         return $this->sendSuccessResponse(null, __('validation.common.deleted', ['module' => $this->moduleName]));
     }

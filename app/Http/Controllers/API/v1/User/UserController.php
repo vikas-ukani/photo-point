@@ -60,7 +60,6 @@ class UserController extends Controller
         }
 
         return $this->sendSuccessResponse($address, __('validation.common.details_found', ['module' => $this->moduleName]));
-
     }
 
     public function updateAddress(Request $request, $id)
@@ -108,7 +107,33 @@ class UserController extends Controller
             ['id' => $id]
         );
 
-        return $this->sendSuccessResponse($updatedAddress, __('validation.common.saved', ['module' => $this->moduleName]));
-    }
+        $addresses = $this->userDeleveryAddress->getDetails([
+            "user_id" => $userId,
+            "relation" => [
+                "country",
+                "state",
+                "city"
+            ],
+            "country_list" => [
+                "id",
+                "name",
+                "is_active"
+            ],
+            "state_list" => [
+                "id",
+                "name",
+                "is_active"
+            ],
+            "city_list" => [
+                "id",
+                "name",
+                "is_active"
+            ]
+        ]);
+        if (isset($addresses) && $addresses['count'] == 0) {
+            return $this->sendBadRequest(null, __('validation.common.details_not_found', ['module' => $this->moduleName]));
+        }
 
+        return $this->sendSuccessResponse($addresses, __('validation.common.saved', ['module' => $this->moduleName]));
+    }
 }

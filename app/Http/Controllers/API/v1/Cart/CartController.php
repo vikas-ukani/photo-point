@@ -17,15 +17,15 @@ class CartController extends Controller
         $this->cartRepository = $cartRepository;
     }
 
-    function list(Request $request) {
+    function list(Request $request)
+    {
         $input = $request->all();
         $input['user_id'] = $input['user_id'] ?? $this->userId;
         $carts = $this->cartRepository->getDetails($input);
         if (isset($carts) && $carts['count'] === 0) {
             return $this->sendBadRequest(null, __('validation.common.details_not_found', ['module' => 'Cart']));
         }
-
-        return $this->sendSuccessResponse($carts, __('validaiton.common.details_found', ['module' => 'Cart']));
+        return $this->sendSuccessResponse($carts, __('validation.common.details_found', ['module' => 'Cart']));
     }
 
     public function store(Request $request)
@@ -99,7 +99,5 @@ class CartController extends Controller
         $cart->save();
         $cart = $this->getCartDetails(['id' => $cart->id, 'relation' => ['product', 'user'], 'first' => true]);
         return $this->sendSuccessResponse($cart, __('validation.common.saved', ['module' => 'cart']));
-
     }
-
 }

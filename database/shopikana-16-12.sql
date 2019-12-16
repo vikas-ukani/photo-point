@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.2
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Dec 08, 2019 at 06:02 PM
--- Server version: 10.1.34-MariaDB
--- PHP Version: 7.2.8
+-- Host: localhost:3306
+-- Generation Time: Dec 16, 2019 at 11:01 AM
+-- Server version: 5.6.46-cll-lve
+-- PHP Version: 7.2.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,10 +19,11 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `laravel_anil_work`
+-- Database: `shopikana`
 --
-CREATE DATABASE IF NOT EXISTS `laravel_anil_work` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `laravel_anil_work`;
+DROP DATABASE IF EXISTS `shopikana`;
+CREATE DATABASE IF NOT EXISTS `shopikana` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `shopikana`;
 
 -- --------------------------------------------------------
 
@@ -39,14 +40,6 @@ CREATE TABLE `carts` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `carts`
---
-
-INSERT INTO `carts` (`id`, `user_id`, `product_id`, `quantity`, `created_at`, `updated_at`) VALUES
-(1, 4, 1, 4, '2019-12-04 16:27:11', '2019-12-04 16:52:20'),
-(2, 5, 2, 5, '2019-12-04 16:30:31', '2019-12-04 16:52:00');
-
 -- --------------------------------------------------------
 
 --
@@ -55,6 +48,7 @@ INSERT INTO `carts` (`id`, `user_id`, `product_id`, `quantity`, `created_at`, `u
 
 CREATE TABLE `cities` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `state_id` bigint(20) DEFAULT NULL,
   `name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'to show or not',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -65,10 +59,10 @@ CREATE TABLE `cities` (
 -- Dumping data for table `cities`
 --
 
-INSERT INTO `cities` (`id`, `name`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 'Surat', 1, '2019-11-29 18:30:00', '2019-11-29 18:30:00'),
-(2, 'Vapi', 1, '2019-11-29 18:30:00', '2019-11-29 18:30:00'),
-(3, 'Gandhinagar', 1, '2019-11-29 18:30:00', '2019-11-29 18:30:00');
+INSERT INTO `cities` (`id`, `state_id`, `name`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Surat', 1, '2019-11-29 18:30:00', '2019-11-29 18:30:00'),
+(2, 1, 'Vapi', 1, '2019-11-29 18:30:00', '2019-11-29 18:30:00'),
+(3, 2, 'Gandhinagar', 1, '2019-11-29 18:30:00', '2019-11-29 18:30:00');
 
 -- --------------------------------------------------------
 
@@ -129,9 +123,9 @@ CREATE TABLE `main_categories` (
 --
 
 INSERT INTO `main_categories` (`id`, `name`, `code`, `image`, `description`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 'T-Shirt', 'T_SHIRT', NULL, NULL, 1, '2019-12-01 18:30:00', '2019-12-01 18:30:00'),
-(2, 'Mug', 'MUG', NULL, NULL, 1, '2019-12-01 18:30:00', '2019-12-01 18:30:00'),
-(3, 'Water bottle', 'WATER_BOTTLE', NULL, NULL, 1, '2019-12-01 18:30:00', '2019-12-01 18:30:00'),
+(1, 'T-Shirt', 'T_SHIRT', '/uploaded/images/categories/ic_tshirt', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 1, '2019-12-01 18:30:00', '2019-12-01 18:30:00'),
+(2, 'Mug', 'MUG', '/uploaded/images/categories/ic_cup', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 1, '2019-12-01 18:30:00', '2019-12-01 18:30:00'),
+(3, 'Water bottle', 'WATER_BOTTLE', '/uploaded/images/categories/ic_bottle', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 1, '2019-12-01 18:30:00', '2019-12-01 18:30:00'),
 (4, 'Test Category', 'TEST', 'This is the test categry', NULL, 0, '2019-12-01 18:30:00', '2019-12-01 18:30:00');
 
 -- --------------------------------------------------------
@@ -248,6 +242,32 @@ CREATE TABLE `oauth_refresh_tokens` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `orders`
+--
+
+CREATE TABLE `orders` (
+  `id` int(11) NOT NULL,
+  `user_id` bigint(20) NOT NULL COMMENT 'user wise order details',
+  `customer_name` text,
+  `address_detail` text,
+  `product_details` text,
+  `order_date` timestamp NULL DEFAULT NULL,
+  `expected_date` timestamp NULL DEFAULT NULL,
+  `status` varchar(50) DEFAULT NULL COMMENT 'use  constants here,',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `user_id`, `customer_name`, `address_detail`, `product_details`, `order_date`, `expected_date`, `status`, `created_at`, `updated_at`) VALUES
+(1, 10, 'nail', '{\"mobile\":\"8866569630\",\"city_id\":\"1\",\"line2\":\"punagam, Surat\",\"alternate_mobile\":\"9726253099\",\"pincode\":\"395010\",\"line1\":\"harekrishna socientry, me.borda farm\",\"country_id\":\"1\",\"state_id\":\"1\"}', '[{\"quantity\":\"1\",\"id\":\"16\",\"category_id\":\"1\",\"price\":\"242.00\",\"image\":\"http:\\/\\/comedyclassroom.com\\/uploaded\\/images\\/categories\\/ic_tshirt\",\"size\":\"4242\",\"size_number\":\"242424\",\"description\":\"242424\",\"name\":\"test\",\"is_active\":true}]', '2019-12-16 17:58:51', '2019-12-23 17:58:51', 'PENDING', '2019-12-16 17:58:51', '2019-12-16 17:58:51');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `password_resets`
 --
 
@@ -282,11 +302,51 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `category_id`, `name`, `image`, `price`, `size`, `size_number`, `description`, `is_active`, `created_at`, `updated_at`) VALUES
-(2, 3, 'Clear Bottle', '/uploaded/images/products/5ded221066dd5-download-3', 2500.00, 'S', '1600', 'First Bottle', 1, '2019-12-08 12:51:49', '2019-12-08 16:17:20'),
-(3, 3, 'Vikas Lead', '/uploaded/images/products/5ded217dda7ca-download', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:56:32', '2019-12-08 16:14:53'),
-(4, 2, 'Vikas Lead Up to', '/uploaded/images/products/5ded1dd698fc2-new-doc-2017-11-27', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:57:02', '2019-12-08 16:10:19'),
-(5, 3, 'Vikas Lead Up to date', '/uploaded/images/products/5ded1e14f34ea-img-0619', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:58:25', '2019-12-08 16:09:52'),
-(6, 2, 'test', '/uploaded/images/products/5ded22d28554c-download', 242.00, '4242', '242424', '242424', 1, '2019-12-08 16:20:19', '2019-12-08 16:20:34');
+(2, 3, 'Clear Bottle', '/uploaded/images/categories/ic_tshirt', 2500.00, 'S', '1600', 'First Bottle', 1, '2019-12-08 12:51:49', '2019-12-08 16:17:20'),
+(3, 3, 'Vikas Lead', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:56:32', '2019-12-08 16:14:53'),
+(4, 2, 'Vikas Lead Up to', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:57:02', '2019-12-08 16:10:19'),
+(5, 3, 'Vikas Lead Up to date', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:58:25', '2019-12-11 17:31:43'),
+(6, 1, 'test', '/uploaded/images/categories/ic_tshirt', 242.00, '4242', '242424', '242424', 1, '2019-12-08 16:20:19', '2019-12-11 17:03:39'),
+(7, 3, 'Clear Bottle', '/uploaded/images/categories/ic_tshirt', 2500.00, 'S', '1600', 'First Bottle', 1, '2019-12-08 12:51:49', '2019-12-08 16:17:20'),
+(8, 3, 'Vikas Lead', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:56:32', '2019-12-08 16:14:53'),
+(9, 2, 'Vikas Lead Up to', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:57:02', '2019-12-08 16:10:19'),
+(10, 3, 'Vikas Lead Up to date', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:58:25', '2019-12-11 17:31:43'),
+(11, 2, 'test', '/uploaded/images/categories/ic_tshirt', 242.00, '4242', '242424', '242424', 1, '2019-12-08 16:20:19', '2019-12-11 17:03:39'),
+(12, 1, 'Clear Bottle', '/uploaded/images/categories/ic_tshirt', 2500.00, 'S', '1600', 'First Bottle', 1, '2019-12-08 12:51:49', '2019-12-08 16:17:20'),
+(13, 3, 'Vikas Lead', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:56:32', '2019-12-08 16:14:53'),
+(14, 2, 'Vikas Lead Up to', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:57:02', '2019-12-08 16:10:19'),
+(15, 1, 'Vikas Lead Up to date', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:58:25', '2019-12-11 17:31:43'),
+(16, 2, 'test', '/uploaded/images/categories/ic_tshirt', 242.00, '4242', '242424', '242424', 1, '2019-12-08 16:20:19', '2019-12-11 17:03:39'),
+(17, 3, 'Clear Bottle', '/uploaded/images/categories/ic_tshirt', 2500.00, 'S', '1600', 'First Bottle', 1, '2019-12-08 12:51:49', '2019-12-08 16:17:20'),
+(18, 3, 'Vikas Lead', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:56:32', '2019-12-08 16:14:53'),
+(19, 1, 'Vikas Lead Up to', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:57:02', '2019-12-08 16:10:19'),
+(20, 3, 'Vikas Lead Up to date', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:58:25', '2019-12-11 17:31:43'),
+(21, 2, 'test', '/uploaded/images/categories/ic_tshirt', 242.00, '4242', '242424', '242424', 1, '2019-12-08 16:20:19', '2019-12-11 17:03:39'),
+(22, 1, 'Clear Bottle', '/uploaded/images/categories/ic_tshirt', 2500.00, 'S', '1600', 'First Bottle', 1, '2019-12-08 12:51:49', '2019-12-08 16:17:20'),
+(23, 3, 'Vikas Lead', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:56:32', '2019-12-08 16:14:53'),
+(24, 2, 'Vikas Lead Up to', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:57:02', '2019-12-08 16:10:19'),
+(25, 3, 'Vikas Lead Up to date', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:58:25', '2019-12-11 17:31:43'),
+(26, 1, 'test', '/uploaded/images/categories/ic_tshirt', 242.00, '4242', '242424', '242424', 1, '2019-12-08 16:20:19', '2019-12-11 17:03:39'),
+(27, 3, 'Clear Bottle', '/uploaded/images/categories/ic_tshirt', 2500.00, 'S', '1600', 'First Bottle', 1, '2019-12-08 12:51:49', '2019-12-08 16:17:20'),
+(28, 1, 'Vikas Lead', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:56:32', '2019-12-08 16:14:53'),
+(29, 2, 'Vikas Lead Up to', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:57:02', '2019-12-08 16:10:19'),
+(30, 1, 'Vikas Lead Up to date', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:58:25', '2019-12-11 17:31:43'),
+(31, 2, 'test', '/uploaded/images/categories/ic_tshirt', 242.00, '4242', '242424', '242424', 1, '2019-12-08 16:20:19', '2019-12-11 17:03:39'),
+(32, 3, 'Clear Bottle', '/uploaded/images/categories/ic_tshirt', 2500.00, 'S', '1600', 'First Bottle', 1, '2019-12-08 12:51:49', '2019-12-08 16:17:20'),
+(33, 1, 'Vikas Lead', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:56:32', '2019-12-08 16:14:53'),
+(34, 2, 'Vikas Lead Up to', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:57:02', '2019-12-08 16:10:19'),
+(35, 1, 'Vikas Lead Up to date', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:58:25', '2019-12-11 17:31:43'),
+(36, 2, 'test', '/uploaded/images/categories/ic_tshirt', 242.00, '4242', '242424', '242424', 1, '2019-12-08 16:20:19', '2019-12-11 17:03:39'),
+(37, 3, 'Clear Bottle', '/uploaded/images/categories/ic_tshirt', 2500.00, 'S', '1600', 'First Bottle', 1, '2019-12-08 12:51:49', '2019-12-08 16:17:20'),
+(38, 3, 'Vikas Lead', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:56:32', '2019-12-08 16:14:53'),
+(39, 2, 'Vikas Lead Up to', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:57:02', '2019-12-08 16:10:19'),
+(40, 3, 'Vikas Lead Up to date', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:58:25', '2019-12-11 17:31:43'),
+(41, 2, 'test', '/uploaded/images/categories/ic_tshirt', 242.00, '4242', '242424', '242424', 1, '2019-12-08 16:20:19', '2019-12-11 17:03:39'),
+(42, 3, 'Clear Bottle', '/uploaded/images/categories/ic_tshirt', 2500.00, 'S', '1600', 'First Bottle', 1, '2019-12-08 12:51:49', '2019-12-08 16:17:20'),
+(43, 3, 'Vikas Lead', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:56:32', '2019-12-08 16:14:53'),
+(44, 1, 'Vikas Lead Up to', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:57:02', '2019-12-08 16:10:19'),
+(45, 3, 'Vikas Lead Up to date', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:58:25', '2019-12-11 17:31:43'),
+(46, 2, 'test', '/uploaded/images/categories/ic_tshirt', 242.00, '4242', '242424', '242424', 1, '2019-12-08 16:20:19', '2019-12-11 17:03:39');
 
 -- --------------------------------------------------------
 
@@ -327,6 +387,7 @@ INSERT INTO `products_copy` (`id`, `category_id`, `name`, `image`, `price`, `siz
 
 CREATE TABLE `states` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `country_id` bigint(20) DEFAULT NULL,
   `name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'to show or not',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -337,12 +398,12 @@ CREATE TABLE `states` (
 -- Dumping data for table `states`
 --
 
-INSERT INTO `states` (`id`, `name`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 'Gujarat', 1, '2019-11-29 18:30:00', '2019-11-29 18:30:00'),
-(2, 'Ahemedabad', 1, '2019-11-29 18:30:00', '2019-11-29 18:30:00'),
-(3, 'Pune', 1, '2019-11-29 18:30:00', '2019-11-29 18:30:00'),
-(4, 'Maharastra', 1, '2019-11-29 18:30:00', '2019-11-29 18:30:00'),
-(5, 'Delhi', 1, '2019-11-29 18:30:00', '2019-11-29 18:30:00');
+INSERT INTO `states` (`id`, `country_id`, `name`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Gujarat', 1, '2019-11-29 18:30:00', '2019-11-29 18:30:00'),
+(2, 1, 'Ahemedabad', 1, '2019-11-29 18:30:00', '2019-11-29 18:30:00'),
+(3, 1, 'Pune', 1, '2019-11-29 18:30:00', '2019-11-29 18:30:00'),
+(4, 1, 'Maharastra', 1, '2019-11-29 18:30:00', '2019-11-29 18:30:00'),
+(5, 1, 'Delhi', 1, '2019-11-29 18:30:00', '2019-11-29 18:30:00');
 
 -- --------------------------------------------------------
 
@@ -371,7 +432,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `user_type`, `email`, `email_verified_at`, `password`, `mobile`, `remember_token`, `created_at`, `updated_at`) VALUES
 (4, 'vikas', 'ukani', 0, 'vikas123@mailinator.com', NULL, '$2y$10$SoDaGWTDQkhFpykSDL6gCu6vbbJeb6ZaTbh.GJQIQTOPnZzLPccMi', '9876543210', NULL, '2019-11-24 07:37:14', '2019-11-27 10:29:58'),
 (6, 'test', '123', 0, 'test123@gmail.com', NULL, '$2y$10$8zzqoJ2f2Miyb56Xz73eU.jD0nBLYMf9Gln2Un61C4t2HSh0MJofS', '9090909090', NULL, '2019-11-28 17:59:05', '2019-11-28 17:59:05'),
-(7, 'admin', NULL, 1, 'admin@gmail.com', NULL, '$2y$12$Xq8doEnL2NRjwHQM5wcUbuHjGIrz5WvFpTJad4pscqTxHsfNa5aRa', '9876543210', NULL, '2019-12-07 18:30:00', '2019-12-07 18:30:00');
+(7, 'admin', NULL, 1, 'admin@gmail.com', NULL, '$2y$12$Xq8doEnL2NRjwHQM5wcUbuHjGIrz5WvFpTJad4pscqTxHsfNa5aRa', '9876543210', NULL, '2019-12-07 18:30:00', '2019-12-07 18:30:00'),
+(10, 'Anil', 'Dhameliya', 0, 'anil@gmail.com', NULL, '$2y$10$sRf0B/tWr4K6eS3MGc2GFOeuko4bEUx9YkyPVGWpmBKL4WfVXfQGq', '8866569630', NULL, '2019-12-11 17:28:07', '2019-12-11 17:28:07');
 
 -- --------------------------------------------------------
 
@@ -401,10 +463,12 @@ CREATE TABLE `user_delevery_addresses` (
 --
 
 INSERT INTO `user_delevery_addresses` (`id`, `user_id`, `name`, `mobile`, `alternate_mobile`, `pincode`, `line1`, `line2`, `country_id`, `state_id`, `city_id`, `is_default`, `created_at`, `updated_at`) VALUES
-(1, 4, 'Vikas Updated Address', '9876543210', '12456789987', 395010, 'Updated Line 1', 'Upted Line 2', 2, 2, 2, 0, '2019-11-30 16:33:30', '2019-11-30 18:07:47'),
+(1, 4, 'Vikas Updated Address', '9876543210', '12456789987', 395010, 'Updated Line 1', 'Upted Line 2', 2, 2, 2, 1, '2019-11-30 16:33:30', '2019-12-14 17:43:38'),
 (2, 6, 'Test Address Second', '9876543210', '12456789987', 395010, NULL, NULL, NULL, NULL, NULL, 0, '2019-11-30 16:45:53', '2019-11-30 17:22:43'),
-(3, 4, 'Saragam So', '9876543210', '12456789987', 395010, NULL, NULL, NULL, NULL, NULL, 1, '2019-11-30 16:45:53', '2019-11-30 17:22:43'),
-(4, 4, 'Anil u Address', '9876543210', '12456789987', 395010, 'Santiniketan soc', 'Near Dangigev Soc', 1, 1, 1, 0, '2019-11-30 17:24:21', '2019-11-30 17:24:21');
+(3, 4, 'Saragam So', '9876543210', '12456789987', 395010, NULL, NULL, NULL, NULL, NULL, 0, '2019-11-30 16:45:53', '2019-12-14 17:43:38'),
+(4, 4, 'Anil u Address', '9876543210', '12456789987', 395010, 'Santiniketan soc', 'Near Dangigev Soc', 1, 1, 1, 0, '2019-11-30 17:24:21', '2019-12-14 17:43:38'),
+(6, 10, 'nail', '8866569630', '9726253099', 395010, 'harekrishna socientry, me.borda farm', 'punagam, Surat', 1, 1, 1, 1, '2019-12-15 09:20:26', '2019-12-15 10:03:06'),
+(8, 10, 'Hardik', '9726253099', '8866569630', 395010, 'vfdsgfd', '6+6', 1, 1, 1, 0, '2019-12-15 09:43:42', '2019-12-15 10:03:06');
 
 --
 -- Indexes for dumped tables
@@ -482,6 +546,12 @@ ALTER TABLE `oauth_refresh_tokens`
   ADD KEY `oauth_refresh_tokens_access_token_id_index` (`access_token_id`);
 
 --
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `password_resets`
 --
 ALTER TABLE `password_resets`
@@ -511,8 +581,7 @@ ALTER TABLE `states`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_email_unique` (`email`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `user_delevery_addresses`
@@ -528,7 +597,7 @@ ALTER TABLE `user_delevery_addresses`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `cities`
@@ -561,22 +630,16 @@ ALTER TABLE `migrations`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- AUTO_INCREMENT for table `oauth_clients`
+-- AUTO_INCREMENT for table `orders`
 --
-ALTER TABLE `oauth_clients`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `oauth_personal_access_clients`
---
-ALTER TABLE `oauth_personal_access_clients`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `products_copy`
@@ -594,13 +657,13 @@ ALTER TABLE `states`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `user_delevery_addresses`
 --
 ALTER TABLE `user_delevery_addresses`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

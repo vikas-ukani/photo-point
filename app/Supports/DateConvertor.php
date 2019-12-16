@@ -30,6 +30,14 @@ trait DateConvertor
         // $date->setTimezone('UTC');
     }
 
+    protected function addNumberOfDayInCurrentDate(int $numberOfDay = 0)
+    {
+        $date = \Carbon\Carbon::now();
+        $date = $date->addDay($numberOfDay);
+        $date = $date->toDateTimeString();
+            return $date;
+    }
+
     /**
      * getCurrentDateUTC => get Current date in UTC format
      *

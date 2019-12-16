@@ -3,12 +3,13 @@
 namespace App\Libraries\Repositories;
 
 use App\Libraries\RepositoriesInterfaces\UsersRepository;
-use App\Models\Cart;
+use App\Models\City;
+use App\Models\State;
 use App\Supports\BaseMainRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
 
-class CartRepositoryEloquent extends BaseRepository implements UsersRepository
+class CityRepositoryEloquent extends BaseRepository implements UsersRepository
 {
     use BaseMainRepository;
 
@@ -19,7 +20,7 @@ class CartRepositoryEloquent extends BaseRepository implements UsersRepository
      */
     public function model()
     {
-        return Cart::class;
+        return City::class;
     }
 
     /**
@@ -44,10 +45,9 @@ class CartRepositoryEloquent extends BaseRepository implements UsersRepository
     {
         /** searching */
         if (isset($input['search'])) {
-            $value = $this->customSearch($value, $input, ['user_id', 'product_id', 'quantity']);
+            $value = $this->customSearch($value, $input, ['name',]);
         }
 
-        $this->customRelation($value, $input, []); //'account_detail'
         /** filter by id  */
         if (isset($input['id'])) {
             $value = $value->where('id', $input['id']);
@@ -56,31 +56,100 @@ class CartRepositoryEloquent extends BaseRepository implements UsersRepository
             $value = $value->whereIn('id', $input['ids']);
         }
 
-        /** filter by id  */
-        if (isset($input['user_id'])) {
-            $value = $value->where('user_id', $input['user_id']);
-        }
-        if (isset($input['user_ids']) && is_array($input['user_ids']) && count($input['user_ids'])) {
-            $value = $value->whereIn('user_id', $input['user_ids']);
+        if (isset($input['name'])) {
+            $value = $value->whereName($input['name']);
         }
 
-        /** filter by id  */
-        if (isset($input['product_id'])) {
-            $value = $value->where('product_id', $input['product_id']);
-        }
-        if (isset($input['product_id']) && is_array($input['product_id']) && count($input['product_id'])) {
-            $value = $value->whereIn('product_id', $input['product_id']);
+        if (isset($input['code'])) {
+            $value = $value->where('code', $input['code']);
         }
 
-        if (isset($input['quantity'])) {
-            $value = $value->where('quantity', $input['quantity']);
+        if (isset($input['state_id'])) {
+            $value = $value->where('state_id', $input['state_id']);
+        }
+
+        if (isset($input['state_ids'])) {
+            $value = $value->whereIn('state_id', $input['state_ids']);
+        }
+
+        if (isset($input['is_active'])) {
+            $value = $value->where('is_active', $input['is_active']);
         }
 
         $this->customRelation($value, $input, []); //'account_detail'
 
+        /** gender and genders wise filter */
+        if (isset($input['gender'])) {
+            $value = $value->where('gender', $input['gender']);
+        }
+        if (isset($input['genders']) && is_array($input['genders']) && count($input['genders'])) {
+            $value = $value->whereIn('gender', $input['genders']);
+        }
+
         if (isset($input['size'])) {
             $value = $value->where('size', $input['size']);
             // $value = $value->whereRaw("FIND_IN_SET(" . $input['size'] . ",Tags)");
+        }
+
+        /** check user type */
+        if (isset($input['user_type'])) {
+            $value = $value->where('user_type', $input['user_type']);
+        }
+        if (isset($input['user_types']) && is_array($input['user_types']) && count($input['user_types'])) {
+            $value = $value->whereIn('user_type', $input['user_types']);
+        }
+
+        /** check last login where user login */
+        if (isset($input['last_login_at'])) {
+            $value = $value->where('last_login_at', '<=', $input['last_login_at']);
+        }
+
+        /** check last login is have null  */
+        if (isset($input['is_last_login']) && $input['is_last_login'] == false) {
+            $value = $value->orWhereNull('last_login_at');
+        }
+
+        /** date wise records */
+        if (isset($input['start_date'])) {
+            $value = $value->where('created_at', ">=", $input['start_date']);
+        }
+
+        /** check for user active or not */
+        if (isset($input['is_active'])) {
+            $value = $value->where('is_active', $input['is_active']);
+        }
+
+        /** check if false then don't show current user in listing */
+        if (isset($input['is_current_user']) && $input['is_current_user'] == false) {
+            $value = $value->where('id', '<>', \Auth::id());
+        }
+
+        if (isset($input['facebook'])) {
+            $value = $value->where('facebook', $input['facebook']);
+        }
+
+        /** state_id and state_ids wise filter */
+        if (isset($input['state_id'])) {
+            $value = $value->where('state_id', $input['state_id']);
+        }
+        if (isset($input['state_ids']) && is_array($input['state_ids']) && count($input['state_ids'])) {
+            $value = $value->whereIn('state_id', $input['state_ids']);
+        }
+
+        if (isset($input['latitude'])) {
+            $value = $value->where('latitude', $input['latitude']);
+        }
+        if (isset($input['longitude'])) {
+            $value = $value->where('longitude', $input['longitude']);
+        }
+
+        if (isset($input['is_snooze'])) {
+            $value = $value->where('is_snooze', $input['is_snooze']);
+        }
+
+        /** check for user complete their profile or not */
+        if (isset($input['is_profile_complete'])) {
+            $value = $value->where('is_profile_complete', $input['is_profile_complete']);
         }
     }
 
@@ -263,7 +332,6 @@ class CartRepositoryEloquent extends BaseRepository implements UsersRepository
     public function updateManyByWhere($input, $where)
     {
         $value = $this->makeModel();
-
         $value = $value->where(array_first(array_keys($where)), array_first(array_values($where)));
         // $value = $value->where('user_id', $where['user_id']);
         $value = $value->update($input);

@@ -338,7 +338,6 @@ class ProductRepositoryEloquent extends BaseRepository implements UsersRepositor
         /** for return updated object */
         // $value->fill($input)->update();
         return $value->fresh();
-
     }
 
     public function deleteWhereIn($key, $array)
@@ -346,5 +345,4 @@ class ProductRepositoryEloquent extends BaseRepository implements UsersRepositor
         $value = $this->makeModel();
         return $value->whereIn($key, $array)->delete();
     }
-
 }

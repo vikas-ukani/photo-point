@@ -147,6 +147,10 @@ return [
         'details_not_found' => ':module details not found.',
         'details_found' => ':module details retrieve successfully.',
 
+        /** order module */
+        'order_placed_success' => "Order successfully placed.",
+
+
         'invalid_user' => 'You are not valid user.',
 
         'max_length' => ':key must be :max digit long.',
@@ -191,19 +195,10 @@ return [
         "please_give_key" => "please, give a :key",
         "invalid_key" => "please, give a valid :key",
 
-        "please_upgrade_your_account_to" => "Please, Upgrade your account to :account",
 
-        'successfully_followed' => "User successfully followed",
-        'successfully_unfollowed' => "User successfully unfollowed",
-
-        'professional_profile_is_in_snooze_mode' => "This professional user currently in snooze mode, you can not contact with this user",
-
-        'feed_liked' => "Feed successfully liked",
-        'feed_unlike' => "Feed successfully unlike",
 
         'image_not_found' => "Image not found",
 
-        'can_not_create_program_to_this_date' => "you can not create Preset.it is already created as same date.",
 
     ],
 

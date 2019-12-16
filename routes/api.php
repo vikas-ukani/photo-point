@@ -20,6 +20,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->group(['middleware' => ["auth:api"]], function () use ($router) {
 
         $router->get('get-all-data', "CommonController@getAllCommonData");
+        $router->get('get-country-state-city', "CommonController@getCountryStateCity");
 
         $router->group(['prefix' => 'account'], function () use ($router) {
             $router->post('get-address-list', 'User\UserController@getAddressList');
@@ -37,6 +38,12 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('delete-to-cart/{id}', "Cart\CartController@destroye");
         $router->post('remove-cart-quantity/{id}', "Cart\CartController@substractCartQuantity");
         // $router->group(['prefix' => 'products'])
+
+        /**order related apis  */
+        $router->get('get-order-details-from-cart', 'Order\OrderController@getOrderDetailsFromCart');
+        $router->post('place-order', 'Order\OrderController@store');
+        $router->post('orders-list', 'Order\OrderController@list');
+        $router->get('get-order-details/{id}', 'Order\OrderController@show');
 
         // $router->post('update-latitude-longitude', "AllInOneController@updateLatLongAPI");
 

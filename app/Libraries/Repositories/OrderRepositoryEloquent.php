@@ -3,12 +3,13 @@
 namespace App\Libraries\Repositories;
 
 use App\Libraries\RepositoriesInterfaces\UsersRepository;
-use App\Models\Cart;
+use App\Models\Order;
+use App\Models\Products;
 use App\Supports\BaseMainRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
 
-class CartRepositoryEloquent extends BaseRepository implements UsersRepository
+class OrderRepositoryEloquent extends BaseRepository implements UsersRepository
 {
     use BaseMainRepository;
 
@@ -19,7 +20,7 @@ class CartRepositoryEloquent extends BaseRepository implements UsersRepository
      */
     public function model()
     {
-        return Cart::class;
+        return Order::class;
     }
 
     /**
@@ -44,7 +45,7 @@ class CartRepositoryEloquent extends BaseRepository implements UsersRepository
     {
         /** searching */
         if (isset($input['search'])) {
-            $value = $this->customSearch($value, $input, ['user_id', 'product_id', 'quantity']);
+            $value = $this->customSearch($value, $input, ['customer_name', 'user_id', 'status']);
         }
 
         $this->customRelation($value, $input, []); //'account_detail'
@@ -64,23 +65,66 @@ class CartRepositoryEloquent extends BaseRepository implements UsersRepository
             $value = $value->whereIn('user_id', $input['user_ids']);
         }
 
-        /** filter by id  */
-        if (isset($input['product_id'])) {
-            $value = $value->where('product_id', $input['product_id']);
-        }
-        if (isset($input['product_id']) && is_array($input['product_id']) && count($input['product_id'])) {
-            $value = $value->whereIn('product_id', $input['product_id']);
+        if (isset($input['customer_name'])) {
+            $value = $value->where('customer_name', $input['customer_name']);
         }
 
-        if (isset($input['quantity'])) {
-            $value = $value->where('quantity', $input['quantity']);
+        if (isset($input['status'])) {
+            $value = $value->where('status', $input['status']);
         }
 
-        $this->customRelation($value, $input, []); //'account_detail'
+        if (isset($input['is_active'])) {
+            $value = $value->where('is_active', $input['is_active']);
+        }
 
-        if (isset($input['size'])) {
-            $value = $value->where('size', $input['size']);
-            // $value = $value->whereRaw("FIND_IN_SET(" . $input['size'] . ",Tags)");
+        if (isset($input['start_order_date'])) {
+            $value = $value->where('order_date', ">=", $input['start_order_date']);
+        }
+        if (isset($input['end_order_date'])) {
+            $value = $value->where('order_date', "<=", $input['end_order_date']);
+        }
+
+        /** date wise records */
+        if (isset($input['start_date'])) {
+            $value = $value->where('created_at', ">=", $input['start_date']);
+        }
+
+        /** check for user active or not */
+        if (isset($input['is_active'])) {
+            $value = $value->where('is_active', $input['is_active']);
+        }
+
+        /** check if false then don't show current user in listing */
+        if (isset($input['is_current_user']) && $input['is_current_user'] == false) {
+            $value = $value->where('id', '<>', \Auth::id());
+        }
+
+        if (isset($input['facebook'])) {
+            $value = $value->where('facebook', $input['facebook']);
+        }
+
+        /** country_id and country_ids wise filter */
+        if (isset($input['country_id'])) {
+            $value = $value->where('country_id', $input['country_id']);
+        }
+        if (isset($input['country_ids']) && is_array($input['country_ids']) && count($input['country_ids'])) {
+            $value = $value->whereIn('country_id', $input['country_ids']);
+        }
+
+        if (isset($input['latitude'])) {
+            $value = $value->where('latitude', $input['latitude']);
+        }
+        if (isset($input['longitude'])) {
+            $value = $value->where('longitude', $input['longitude']);
+        }
+
+        if (isset($input['is_snooze'])) {
+            $value = $value->where('is_snooze', $input['is_snooze']);
+        }
+
+        /** check for user complete their profile or not */
+        if (isset($input['is_profile_complete'])) {
+            $value = $value->where('is_profile_complete', $input['is_profile_complete']);
         }
     }
 
@@ -263,7 +307,6 @@ class CartRepositoryEloquent extends BaseRepository implements UsersRepository
     public function updateManyByWhere($input, $where)
     {
         $value = $this->makeModel();
-
         $value = $value->where(array_first(array_keys($where)), array_first(array_values($where)));
         // $value = $value->where('user_id', $where['user_id']);
         $value = $value->update($input);
@@ -272,5 +315,11 @@ class CartRepositoryEloquent extends BaseRepository implements UsersRepository
         /** for return updated object */
         // $value->fill($input)->update();
         return $value->fresh();
+    }
+
+    public function deleteWhereIn($key, $array)
+    {
+        $value = $this->makeModel();
+        return $value->whereIn($key, $array)->delete();
     }
 }

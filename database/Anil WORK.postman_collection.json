@@ -1,89 +1,85 @@
 {
+	"variables": [],
 	"info": {
-		"_postman_id": "26aa4c2e-6dd1-42f4-a2c8-658a3e207eb6",
 		"name": "Anil WORK",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"_postman_id": "38489ff4-f3b5-7f63-2b38-0041acb7e8fc",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "API",
+			"description": "All Device Side APIs Collection\n",
 			"item": [
 				{
 					"name": "Common APIs ",
+					"description": " API for use in any modules.",
 					"item": [
 						{
 							"name": "Get All Cmmon Details",
 							"request": {
+								"url": "{{live}}/api/get-all-data",
 								"method": "GET",
 								"header": [
 									{
 										"key": "Authorization",
 										"value": "{{token}}",
-										"type": "text"
+										"description": ""
 									}
 								],
-								"url": {
-									"raw": "http://127.0.0.1:8000/api/get-all-data",
-									"protocol": "http",
-									"host": [
-										"127",
-										"0",
-										"0",
-										"1"
-									],
-									"port": "8000",
-									"path": [
-										"api",
-										"get-all-data"
-									]
-								}
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Cmmon Details copy",
+							"request": {
+								"url": "{{live}}/api/get-country-state-city",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
 							},
 							"response": []
 						}
 					],
-					"description": " API for use in any modules.",
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
 					"name": "Auth Collection",
+					"description": "",
 					"item": [
 						{
 							"name": "Login In API",
 							"request": {
+								"url": "{{live}}/api/auth/login",
 								"method": "POST",
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"description": ""
 									}
 								],
 								"body": {
 									"mode": "raw",
 									"raw": "{\n\t\"email\" : \"vikas123@mailinator.com\",\n\t\"password\" : \"vikas123\"\n}"
 								},
-								"url": {
-									"raw": "http://127.0.0.1:8000/api/auth/login",
-									"protocol": "http",
-									"host": [
-										"127",
-										"0",
-										"0",
-										"1"
-									],
-									"port": "8000",
-									"path": [
-										"api",
-										"auth",
-										"login"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
 						{
 							"name": "Forgot Password",
 							"request": {
+								"url": "http://127.0.0.1:8000/api/auth/forgot-password",
 								"method": "POST",
 								"header": [
 									{
@@ -95,68 +91,41 @@
 									"mode": "raw",
 									"raw": "{\n    \"email\": \"vikas123@mailinator.com\"\n}"
 								},
-								"url": {
-									"raw": "http://127.0.0.1:8000/api/auth/forgot-password",
-									"protocol": "http",
-									"host": [
-										"127",
-										"0",
-										"0",
-										"1"
-									],
-									"port": "8000",
-									"path": [
-										"api",
-										"auth",
-										"forgot-password"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
 						{
 							"name": "Register User",
 							"request": {
+								"url": "{{live}}/api/auth/register",
 								"method": "POST",
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"description": ""
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"first_name\" : \"test\",\n\t\"last_name\" : \"123\", \n\t\"email\" : \"test123@gmail.com\",\n\t\"password\" : \"test123\",\n\t\"confirm_password\" : \"test123\",\n\t\"mobile\" : 9090909090\n}"
+									"raw": "{\n\"last_name\": \"dhameliya\", \"password\": \"12345678\", \"mobile\": \"8866569630\", \"email\": \"anil11@gmail.com\", \"confirm_password\": \"12345678\", \"first_name\": \"Anil\"\n\n}"
 								},
-								"url": {
-									"raw": "http://127.0.0.1:8000/api/auth/register",
-									"protocol": "http",
-									"host": [
-										"127",
-										"0",
-										"0",
-										"1"
-									],
-									"port": "8000",
-									"path": [
-										"api",
-										"auth",
-										"register"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						}
 					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
 					"name": "Accounts  APIS",
+					"description": "User Account related apis after login",
 					"item": [
 						{
 							"name": "Update Password",
 							"request": {
+								"url": "http://127.0.0.1:8000/api/account/update-password",
 								"method": "POST",
 								"header": [
 									{
@@ -173,28 +142,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"old_password\" : \"vikas123\",\n\t\"password\" : \"vikas123\",\n\t\"confirm_password\" : \"vikas123\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://127.0.0.1:8000/api/account/update-password",
-									"protocol": "http",
-									"host": [
-										"127",
-										"0",
-										"0",
-										"1"
-									],
-									"port": "8000",
-									"path": [
-										"api",
-										"account",
-										"update-password"
-									]
+									"raw": "{\n\t\"old_password\" : \"vikas123\",\n\t\"password\" : \"vikas123\",\n\t\"confirm_password\" : \"vikas123\"\n}"
 								},
 								"description": "User can update their passwprd"
 							},
@@ -203,44 +151,23 @@
 						{
 							"name": "Add Address",
 							"request": {
+								"url": "http://127.0.0.1:8000/api/account/add-address",
 								"method": "POST",
 								"header": [
 									{
 										"key": "Authorization",
-										"type": "text",
-										"value": "{{token}}"
+										"value": "{{token}}",
+										"description": ""
 									},
 									{
 										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
+										"value": "application/json",
+										"description": ""
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"user_id\": 4,\n    \"name\": \"Anil u Address\", \n    \"mobile\" : \"9876543210\",\n    \"alternate_mobile\": 12456789987,\n    \"pincode\": 395010,\n    \"line1\" : \"Santiniketan soc\",\n    \"line2\" : \"Near Dangigev Soc\",\n    \"country_id\" : 1,\n    \"state_id\" : 1,\n    \"city_id\" : 1\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://127.0.0.1:8000/api/account/add-address",
-									"protocol": "http",
-									"host": [
-										"127",
-										"0",
-										"0",
-										"1"
-									],
-									"port": "8000",
-									"path": [
-										"api",
-										"account",
-										"add-address"
-									]
+									"raw": "{\n    \"user_id\": 4,\n    \"name\": \"Anil u Address\", \n    \"mobile\" : \"9876543210\",\n    \"alternate_mobile\": 12456789987,\n    \"pincode\": 395010,\n    \"line1\" : \"Santiniketan soc\",\n    \"line2\" : \"Near Dangigev Soc\",\n    \"country_id\" : 1,\n    \"state_id\" : 1,\n    \"city_id\" : 1\n}"
 								},
 								"description": "User can add Multiple Delevery Addresses"
 							},
@@ -249,6 +176,7 @@
 						{
 							"name": "Update Address By Id",
 							"request": {
+								"url": "http://127.0.0.1:8000/api/account/update-address/1",
 								"method": "PUT",
 								"header": [
 									{
@@ -265,29 +193,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"user_id\": 4,\n    \"name\": \"Vikas Updated Address\",\n    \"mobile\": \"9876543210\",\n    \"alternate_mobile\": \"12456789987\",\n    \"pincode\": 395010,\n    \"line1\": \"Updated Line 1\",\n    \"line2\": \"Upted Line 2\",\n    \"country_id\": 2,\n    \"state_id\": 2,\n    \"city_id\": 2,\n    \"is_default\": 0\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://127.0.0.1:8000/api/account/update-address/1",
-									"protocol": "http",
-									"host": [
-										"127",
-										"0",
-										"0",
-										"1"
-									],
-									"port": "8000",
-									"path": [
-										"api",
-										"account",
-										"update-address",
-										"1"
-									]
+									"raw": "{\n    \"user_id\": 4,\n    \"name\": \"Vikas Updated Address\",\n    \"mobile\": \"9876543210\",\n    \"alternate_mobile\": \"12456789987\",\n    \"pincode\": 395010,\n    \"line1\": \"Updated Line 1\",\n    \"line2\": \"Upted Line 2\",\n    \"country_id\": 2,\n    \"state_id\": 2,\n    \"city_id\": 2,\n    \"is_default\": 0\n}"
 								},
 								"description": "User can add Multiple Delevery Addresses"
 							},
@@ -296,44 +202,23 @@
 						{
 							"name": "Get Address List By Users",
 							"request": {
+								"url": "{{local}}/api/account/get-address-list",
 								"method": "POST",
 								"header": [
 									{
 										"key": "Authorization",
-										"type": "text",
-										"value": "{{token}}"
+										"value": "{{token}}",
+										"description": ""
 									},
 									{
 										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
+										"value": "application/json",
+										"description": ""
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"user_id\" : 4,\n    \"relation\": [\n        \"country\",\n        \"state\",\n        \"city\"\n    ],\n    \"country_list\": [\n        \"id\",\n        \"name\",\n        \"is_active\"\n    ],\n    \"state_list\": [\n        \"id\",\n        \"name\",\n        \"is_active\"\n    ],\n    \"city_list\": [\n        \"id\",\n        \"name\",\n        \"is_active\"\n    ]\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://127.0.0.1:8000/api/account/get-address-list",
-									"protocol": "http",
-									"host": [
-										"127",
-										"0",
-										"0",
-										"1"
-									],
-									"port": "8000",
-									"path": [
-										"api",
-										"account",
-										"get-address-list"
-									]
+									"raw": "{\n\t\"user_id\" : 4,\n    \"relation\": [\n        \"country\",\n        \"state\",\n        \"city\"\n    ],\n    \"country_list\": [\n        \"id\",\n        \"name\",\n        \"is_active\"\n    ],\n    \"state_list\": [\n        \"id\",\n        \"name\",\n        \"is_active\"\n    ],\n    \"city_list\": [\n        \"id\",\n        \"name\",\n        \"is_active\"\n    ]\n}"
 								},
 								"description": "Get Address List With Country State City"
 							},
@@ -341,49 +226,24 @@
 						},
 						{
 							"name": "Set Active Address",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
 							"request": {
+								"url": "{{live}}/api/account/set-active-address/1",
 								"method": "GET",
 								"header": [
 									{
 										"key": "Authorization",
-										"type": "text",
-										"value": "{{token}}"
+										"value": "{{token}}",
+										"description": ""
 									},
 									{
 										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
+										"value": "application/json",
+										"description": ""
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"user_id\": 4,\n    \"name\": \"Vikas\",\n    \"mobile\": \"9876543210\",\n    \"alternate_mobile\": 12456789987,\n    \"pincode\": 395010\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://127.0.0.1:8000/api/account/set-active-address/3",
-									"protocol": "http",
-									"host": [
-										"127",
-										"0",
-										"0",
-										"1"
-									],
-									"port": "8000",
-									"path": [
-										"api",
-										"account",
-										"set-active-address",
-										"3"
-									]
+									"raw": "{\n    \"user_id\": 4,\n    \"name\": \"Vikas\",\n    \"mobile\": \"9876543210\",\n    \"alternate_mobile\": 12456789987,\n    \"pincode\": 395010\n}"
 								},
 								"description": "User can add Multiple Delevery Addresses\n\n\t* id -> address id you want to update"
 							},
@@ -391,49 +251,24 @@
 						},
 						{
 							"name": "Get Address Details By Address ID",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
 							"request": {
+								"url": "{{live}}/api/account/get-address/1",
 								"method": "GET",
 								"header": [
 									{
 										"key": "Authorization",
-										"type": "text",
-										"value": "{{token}}"
+										"value": "{{token}}",
+										"description": ""
 									},
 									{
 										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
+										"value": "application/json",
+										"description": ""
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://127.0.0.1:8000/api/account/get-address/1",
-									"protocol": "http",
-									"host": [
-										"127",
-										"0",
-										"0",
-										"1"
-									],
-									"port": "8000",
-									"path": [
-										"api",
-										"account",
-										"get-address",
-										"1"
-									]
+									"raw": ""
 								},
 								"description": "User can add Multiple Delevery Addresses\n\n\t* id -> address id you want to update"
 							},
@@ -442,6 +277,7 @@
 						{
 							"name": "Get Address Details By Address ID Copy",
 							"request": {
+								"url": "http://127.0.0.1:8000/api/account/delete-address/5",
 								"method": "DELETE",
 								"header": [
 									{
@@ -458,156 +294,71 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://127.0.0.1:8000/api/account/delete-address/5",
-									"protocol": "http",
-									"host": [
-										"127",
-										"0",
-										"0",
-										"1"
-									],
-									"port": "8000",
-									"path": [
-										"api",
-										"account",
-										"delete-address",
-										"5"
-									]
+									"raw": ""
 								},
 								"description": "User can add Multiple Delevery Addresses\n\n\t* id -> address id you want to update"
 							},
 							"response": []
 						}
 					],
-					"description": "User Account related apis after login",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "4403fb7c-979e-461e-90b9-b863ac20b179",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "754d46c6-3fb7-4f43-b77a-d76d8d41d9c7",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						}
-					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
 					"name": "Products",
+					"description": "",
 					"item": [
 						{
 							"name": "List of All Product By main category",
 							"request": {
+								"url": "{{live}}/api/product-list",
 								"method": "POST",
 								"header": [
 									{
 										"key": "Authorization",
-										"type": "text",
-										"value": "{{token}}"
+										"value": "{{token}}",
+										"description": ""
 									},
 									{
 										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
+										"value": "application/json",
+										"description": ""
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"category_id\" : 1 \n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
+									"raw": "{\n\t\"category_id\":  2\n}"
 								},
-								"url": {
-									"raw": "http://127.0.0.1:8000/api/product-list",
-									"protocol": "http",
-									"host": [
-										"127",
-										"0",
-										"0",
-										"1"
-									],
-									"port": "8000",
-									"path": [
-										"api",
-										"product-list"
-									]
-								},
-								"description": "Get Address List With Country State City"
+								"description": ""
 							},
 							"response": []
 						}
 					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
 					"name": "Cart",
+					"description": "",
 					"item": [
 						{
 							"name": "Add Product to Cart",
 							"request": {
+								"url": "{{local}}/api/add-to-cart",
 								"method": "POST",
 								"header": [
 									{
 										"key": "Authorization",
-										"type": "text",
-										"value": "{{token}}"
+										"value": "{{token}}",
+										"description": ""
 									},
 									{
 										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
+										"value": "application/json",
+										"description": ""
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"product_id\" : 3\t ,\n\t\"quantity\" : 1\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://127.0.0.1:8000/api/add-to-cart",
-									"protocol": "http",
-									"host": [
-										"127",
-										"0",
-										"0",
-										"1"
-									],
-									"port": "8000",
-									"path": [
-										"api",
-										"add-to-cart"
-									]
+									"raw": "{\n\t\"product_id\" : 3,\n\t\"quantity\" : 1\n}"
 								},
 								"description": "Add Product to cart"
 							},
@@ -616,43 +367,23 @@
 						{
 							"name": "Cart Listing",
 							"request": {
+								"url": "{{live}}/api/cart-list",
 								"method": "POST",
 								"header": [
 									{
 										"key": "Authorization",
-										"type": "text",
-										"value": "{{token}}"
+										"value": "{{token}}",
+										"description": ""
 									},
 									{
 										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
+										"value": "application/json",
+										"description": ""
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"product_id\" : 1\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://127.0.0.1:8000/api/cart-list",
-									"protocol": "http",
-									"host": [
-										"127",
-										"0",
-										"0",
-										"1"
-									],
-									"port": "8000",
-									"path": [
-										"api",
-										"cart-list"
-									]
+									"raw": "{\n\t\"user_id\" : 5,\n\t\"relation\" : [\"product\"]\n}"
 								},
 								"description": "Add Product to cart"
 							},
@@ -661,6 +392,7 @@
 						{
 							"name": "Delete Cart",
 							"request": {
+								"url": "http://127.0.0.1:8000/api/delete-to-cart/4",
 								"method": "POST",
 								"header": [
 									{
@@ -677,28 +409,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"product_id\" : 2\t ,\n\t\"quantity\" : 1\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://127.0.0.1:8000/api/delete-to-cart/4",
-									"protocol": "http",
-									"host": [
-										"127",
-										"0",
-										"0",
-										"1"
-									],
-									"port": "8000",
-									"path": [
-										"api",
-										"delete-to-cart",
-										"4"
-									]
+									"raw": "{\n\t\"product_id\" : 2\t ,\n\t\"quantity\" : 1\n}"
 								},
 								"description": "Add Product to cart"
 							},
@@ -707,6 +418,7 @@
 						{
 							"name": "Remove 1 quantity from cart by id",
 							"request": {
+								"url": "http://127.0.0.1:8000/api/remove-cart-quantity/1",
 								"method": "POST",
 								"header": [
 									{
@@ -723,41 +435,323 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"product_id\" : 2\t ,\n\t\"quantity\" : 1\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://127.0.0.1:8000/api/remove-cart-quantity/1",
-									"protocol": "http",
-									"host": [
-										"127",
-										"0",
-										"0",
-										"1"
-									],
-									"port": "8000",
-									"path": [
-										"api",
-										"remove-cart-quantity",
-										"1"
-									]
+									"raw": "{\n\t\"product_id\" : 2\t ,\n\t\"quantity\" : 1\n}"
 								},
 								"description": "Add Product to cart"
 							},
 							"response": []
 						}
 					],
-					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Orders",
+					"description": "",
+					"item": [
+						{
+							"name": "Place Order",
+							"request": {
+								"url": "{{local}}/api/place-order",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"customer_name\":  \"Vikas Ukani\",\n\t\"address_detail\" : {\n        \"line1\": \"Punagam \",\n        \"line2\": \"Address 1\",\n        \"pincode\": \"395010\",\n        \"country_id\": \"2\",\n        \"state_id\": \"2\",\n        \"city_id\": \"2\",\n\t\t\"mobile\": \"9876543210\",\n        \"alternate_mobile\": \"12456789987\"\n\t},\n\t\"product_details\" : [\n\t\t{\n\t\t\t\"id\": 11,\n\t\t\t\"category_id\": \"2\",\n\t        \"name\": \"Cup WOW\",\n\t        \"image\": \"http://comedyclassroom.com/uploaded/images/categories/ic_tshirt\",\n\t        \"price\": \"242.00\",\n\t        \"size\": \"4242\",\n\t        \"size_number\": \"242424\",\n\t        \"description\": \"242424\",\n\t        \"is_active\": true\n\t\t}\n\t]\n}"
+								},
+								"description": "Create Order And Place To Delivery Order."
+							},
+							"response": []
+						},
+						{
+							"name": "Get Orders List details",
+							"request": {
+								"url": "{{live}}/api/orders-list",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"status\" : \"PENDING\"\n}"
+								},
+								"description": "* Order Status Constant\n\t-\tconst ORDER_STATUS_COMPLETED = \"COMPLETED\";\n\t*\tconst ORDER_STATUS_RUNNING = \"RUNNING\";\n\t-\tconst ORDER_STATUS_CANCELED = \"CANCELED\";\n\t-\tconst ORDER_STATUS_INCOMPLETE = \"INCOMPLETE\";\n\t-\tconst ORDER_STATUS_PENDING = \"PENDING\";"
+							},
+							"response": []
+						},
+						{
+							"name": "Place Order Total Amount + Discounts",
+							"request": {
+								"url": "{{live}}/api/get-order-details-from-cart",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"customer_name\":  \"Test Order\",\n\t\"address)detail\" : {\n\t\t \"mobile\": \"9876543210\",\n        \"alternate_mobile\": \"12456789987\",\n        \"pincode\": \"395010\",\n        \"line1\": \"Updated Line 1\",\n        \"line2\": \"Upted Line 2\",\n        \"country_id\": \"2\",\n        \"state_id\": \"2\",\n        \"city_id\": \"2\"\n\t}\n}"
+								},
+								"description": "Get Address List With Country State City"
+							},
+							"response": [
+								{
+									"id": "fda5b17e-95a4-4bdc-aa4b-8b8f52b7d8ab",
+									"name": "Place Order Total Amount + Discounts",
+									"originalRequest": {
+										"url": "{{live}}/api/get-order-details-from-cart",
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"description": ""
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"description": ""
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"customer_name\":  \"Test Order\",\n\t\"address)detail\" : {\n\t\t \"mobile\": \"9876543210\",\n        \"alternate_mobile\": \"12456789987\",\n        \"pincode\": \"395010\",\n        \"line1\": \"Updated Line 1\",\n        \"line2\": \"Upted Line 2\",\n        \"country_id\": \"2\",\n        \"state_id\": \"2\",\n        \"city_id\": \"2\"\n\t}\n}"
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"_postman_previewtype": "text",
+									"header": [
+										{
+											"name": "access-control-allow-credentials",
+											"key": "access-control-allow-credentials",
+											"value": "true",
+											"description": "Indicates whether or not the response to the request can be exposed when the credentials flag is true. When used as part of a response to a preflight request, this indicates whether or not the actual request can be made using credentials."
+										},
+										{
+											"name": "access-control-allow-headers",
+											"key": "access-control-allow-headers",
+											"value": "Content-Type, Content-Range, Content-Disposition, Content-Description, Authorization, X-Requested-With",
+											"description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request."
+										},
+										{
+											"name": "access-control-allow-methods",
+											"key": "access-control-allow-methods",
+											"value": "GET, PUT, POST, DELETE, OPTIONS",
+											"description": "Specifies the method or methods allowed when accessing the resource. This is used in response to a preflight request."
+										},
+										{
+											"name": "access-control-allow-origin",
+											"key": "access-control-allow-origin",
+											"value": "*",
+											"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+										},
+										{
+											"name": "access-control-max-age",
+											"key": "access-control-max-age",
+											"value": "86400",
+											"description": "Indicates how long the results of a preflight request can be cached in seconds."
+										},
+										{
+											"name": "cache-control",
+											"key": "cache-control",
+											"value": "no-cache, private",
+											"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+										},
+										{
+											"name": "connection",
+											"key": "connection",
+											"value": "close",
+											"description": "Options that are desired for the connection"
+										},
+										{
+											"name": "content-type",
+											"key": "content-type",
+											"value": "application/json",
+											"description": "The mime type of this content"
+										},
+										{
+											"name": "date",
+											"key": "date",
+											"value": "Mon, 16 Dec 2019 15:24:25 GMT, Mon, 16 Dec 2019 15:24:25 GMT",
+											"description": "The date and time that the message was sent"
+										},
+										{
+											"name": "host",
+											"key": "host",
+											"value": "localhost:1001",
+											"description": "Custom header"
+										},
+										{
+											"name": "x-powered-by",
+											"key": "x-powered-by",
+											"value": "PHP/7.3.12",
+											"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+										}
+									],
+									"cookie": [],
+									"responseTime": 171,
+									"body": "{\"success\":true,\"status\":200,\"data\":{\"total_amount\":125,\"discount_amount\":0,\"delivery_charges\":50},\"message\":\"Place order details retrieve successfully.\"}"
+								}
+							]
+						},
+						{
+							"name": "Get Order Details",
+							"request": {
+								"url": "{{local}}/api/get-order-details/7",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"customer_name\":  \"Test Order\",\n\t\"address)detail\" : {\n\t\t \"mobile\": \"9876543210\",\n        \"alternate_mobile\": \"12456789987\",\n        \"pincode\": \"395010\",\n        \"line1\": \"Updated Line 1\",\n        \"line2\": \"Upted Line 2\",\n        \"country_id\": \"2\",\n        \"state_id\": \"2\",\n        \"city_id\": \"2\"\n\t}\n}"
+								},
+								"description": "Get Order Detaail by id"
+							},
+							"response": [
+								{
+									"id": "55c5345c-b8fb-4cc3-9178-f5b2ecff4c7e",
+									"name": "Place Order Total Amount + Discounts",
+									"originalRequest": {
+										"url": "{{live}}/api/get-order-details-from-cart",
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"description": ""
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"description": ""
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"customer_name\":  \"Test Order\",\n\t\"address)detail\" : {\n\t\t \"mobile\": \"9876543210\",\n        \"alternate_mobile\": \"12456789987\",\n        \"pincode\": \"395010\",\n        \"line1\": \"Updated Line 1\",\n        \"line2\": \"Upted Line 2\",\n        \"country_id\": \"2\",\n        \"state_id\": \"2\",\n        \"city_id\": \"2\"\n\t}\n}"
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"_postman_previewtype": "text",
+									"header": [
+										{
+											"name": "access-control-allow-credentials",
+											"key": "access-control-allow-credentials",
+											"value": "true",
+											"description": "Indicates whether or not the response to the request can be exposed when the credentials flag is true. When used as part of a response to a preflight request, this indicates whether or not the actual request can be made using credentials."
+										},
+										{
+											"name": "access-control-allow-headers",
+											"key": "access-control-allow-headers",
+											"value": "Content-Type, Content-Range, Content-Disposition, Content-Description, Authorization, X-Requested-With",
+											"description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request."
+										},
+										{
+											"name": "access-control-allow-methods",
+											"key": "access-control-allow-methods",
+											"value": "GET, PUT, POST, DELETE, OPTIONS",
+											"description": "Specifies the method or methods allowed when accessing the resource. This is used in response to a preflight request."
+										},
+										{
+											"name": "access-control-allow-origin",
+											"key": "access-control-allow-origin",
+											"value": "*",
+											"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+										},
+										{
+											"name": "access-control-max-age",
+											"key": "access-control-max-age",
+											"value": "86400",
+											"description": "Indicates how long the results of a preflight request can be cached in seconds."
+										},
+										{
+											"name": "cache-control",
+											"key": "cache-control",
+											"value": "no-cache, private",
+											"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+										},
+										{
+											"name": "connection",
+											"key": "connection",
+											"value": "close",
+											"description": "Options that are desired for the connection"
+										},
+										{
+											"name": "content-type",
+											"key": "content-type",
+											"value": "application/json",
+											"description": "The mime type of this content"
+										},
+										{
+											"name": "date",
+											"key": "date",
+											"value": "Mon, 16 Dec 2019 15:24:25 GMT, Mon, 16 Dec 2019 15:24:25 GMT",
+											"description": "The date and time that the message was sent"
+										},
+										{
+											"name": "host",
+											"key": "host",
+											"value": "localhost:1001",
+											"description": "Custom header"
+										},
+										{
+											"name": "x-powered-by",
+											"key": "x-powered-by",
+											"value": "PHP/7.3.12",
+											"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+										}
+									],
+									"cookie": [],
+									"responseTime": 171,
+									"body": "{\"success\":true,\"status\":200,\"data\":{\"total_amount\":125,\"discount_amount\":0,\"delivery_charges\":50},\"message\":\"Place order details retrieve successfully.\"}"
+								}
+							]
+						}
+					],
 					"_postman_isSubFolder": true
 				}
-			],
-			"description": "All Device Side APIs Collection\n",
-			"protocolProfileBehavior": {}
+			]
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

@@ -105,6 +105,8 @@ trait BaseMainRepository
                 $q = (isset($input[$key . "_list"]))
                     ? $q->select($input[$key . "_list"])
                     : $q->select("*");
+
+
                 if (isset($input[$key . "_where"]) && count($input[$key . "_where"]) > 0) {
                     foreach ($input[$key . "_where"] as $whkey => $whValue) {
                         $q = $q->where($whkey, $whValue);

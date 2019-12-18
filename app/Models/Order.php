@@ -13,7 +13,8 @@ class Order extends Model
         "address_detail", // store as json data
         'product_details', // single or multiple product details store  at one time only,.
         "status", // default set to pending use constant here
-        "order_date",
+        "total_amount", // order total amounts
+        "order_date", // order date
         "expected_date" // add days plus from product add time
     ];
 
@@ -32,6 +33,7 @@ class Order extends Model
             'customer_name' => $once . 'required',
             'address_detail' => $once . 'required',
             'product_details' => $once . 'required',
+            'total_amount' => $once . 'required',
         ];
 
         return $rules;

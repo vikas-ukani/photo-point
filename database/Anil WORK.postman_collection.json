@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "Anil WORK",
-		"_postman_id": "38489ff4-f3b5-7f63-2b38-0041acb7e8fc",
+		"_postman_id": "1e544be5-f623-9845-6a04-ed49bedacb1e",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -23,11 +23,13 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "{{token}}",
-										"description": ""
+										"value": "{{token}}"
 									}
 								],
-								"body": {},
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
 								"description": ""
 							},
 							"response": []
@@ -40,11 +42,13 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "{{token}}",
-										"description": ""
+										"value": "{{token}}"
 									}
 								],
-								"body": {},
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
 								"description": ""
 							},
 							"response": []
@@ -59,13 +63,12 @@
 						{
 							"name": "Login In API",
 							"request": {
-								"url": "{{live}}/api/auth/login",
+								"url": "{{local}}/api/auth/login",
 								"method": "POST",
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json",
-										"description": ""
+										"value": "application/json"
 									}
 								],
 								"body": {
@@ -103,8 +106,7 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json",
-										"description": ""
+										"value": "application/json"
 									}
 								],
 								"body": {
@@ -149,9 +151,9 @@
 							"response": []
 						},
 						{
-							"name": "Add Address",
+							"name": "Update Profile",
 							"request": {
-								"url": "http://127.0.0.1:8000/api/account/add-address",
+								"url": "{{local}}/api/profile-update",
 								"method": "POST",
 								"header": [
 									{
@@ -161,8 +163,118 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/json",
+										"value": "application/x-www-form-urlencoded",
 										"description": ""
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "first_name",
+											"value": "vikas",
+											"type": "text",
+											"description": ""
+										},
+										{
+											"key": "last_name",
+											"value": "ukani",
+											"type": "text",
+											"description": ""
+										},
+										{
+											"key": "email",
+											"value": "vikas123@mailinator.com",
+											"type": "text",
+											"description": ""
+										},
+										{
+											"key": "mobile",
+											"value": "9876543210",
+											"type": "text",
+											"description": ""
+										},
+										{
+											"key": "photo",
+											"description": "",
+											"type": "file",
+											"src": "1 (45).jpg"
+										}
+									]
+								},
+								"description": "User can update their passwprd"
+							},
+							"response": []
+						},
+						{
+							"name": "Get User Details",
+							"request": {
+								"url": "{{live}}/api/get-profile-detail",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "first_name",
+											"value": "vikas",
+											"type": "text",
+											"description": ""
+										},
+										{
+											"key": "last_name",
+											"value": "ukani",
+											"type": "text",
+											"description": ""
+										},
+										{
+											"key": "email",
+											"value": "vikas123@mailinator.com",
+											"type": "text",
+											"description": ""
+										},
+										{
+											"key": "mobile",
+											"value": "9876543210",
+											"type": "text",
+											"description": ""
+										},
+										{
+											"key": "photo",
+											"description": "",
+											"type": "file",
+											"src": "1 (45).jpg"
+										}
+									]
+								},
+								"description": "User can update their passwprd"
+							},
+							"response": []
+						},
+						{
+							"name": "Add Address",
+							"request": {
+								"url": "http://127.0.0.1:8000/api/account/add-address",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
 									}
 								],
 								"body": {
@@ -207,13 +319,11 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "{{token}}",
-										"description": ""
+										"value": "{{token}}"
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/json",
-										"description": ""
+										"value": "application/json"
 									}
 								],
 								"body": {
@@ -232,18 +342,16 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "{{token}}",
-										"description": ""
+										"value": "{{token}}"
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/json",
-										"description": ""
+										"value": "application/json"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"user_id\": 4,\n    \"name\": \"Vikas\",\n    \"mobile\": \"9876543210\",\n    \"alternate_mobile\": 12456789987,\n    \"pincode\": 395010\n}"
+									"raw": ""
 								},
 								"description": "User can add Multiple Delevery Addresses\n\n\t* id -> address id you want to update"
 							},
@@ -257,13 +365,11 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "{{token}}",
-										"description": ""
+										"value": "{{token}}"
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/json",
-										"description": ""
+										"value": "application/json"
 									}
 								],
 								"body": {
@@ -326,7 +432,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"category_id\":  2\n}"
+									"raw": "{\n    \"category_id\": 2,\n    \"relation\": [\n        \"customer_rating\"\n    ] \n}"
 								},
 								"description": ""
 							},
@@ -347,13 +453,11 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "{{token}}",
-										"description": ""
+										"value": "{{token}}"
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/json",
-										"description": ""
+										"value": "application/json"
 									}
 								],
 								"body": {
@@ -372,13 +476,11 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "{{token}}",
-										"description": ""
+										"value": "{{token}}"
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/json",
-										"description": ""
+										"value": "application/json"
 									}
 								],
 								"body": {
@@ -456,18 +558,16 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "{{token}}",
-										"description": ""
+										"value": "{{token}}"
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/json",
-										"description": ""
+										"value": "application/json"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"customer_name\":  \"Vikas Ukani\",\n\t\"address_detail\" : {\n        \"line1\": \"Punagam \",\n        \"line2\": \"Address 1\",\n        \"pincode\": \"395010\",\n        \"country_id\": \"2\",\n        \"state_id\": \"2\",\n        \"city_id\": \"2\",\n\t\t\"mobile\": \"9876543210\",\n        \"alternate_mobile\": \"12456789987\"\n\t},\n\t\"product_details\" : [\n\t\t{\n\t\t\t\"id\": 11,\n\t\t\t\"category_id\": \"2\",\n\t        \"name\": \"Cup WOW\",\n\t        \"image\": \"http://comedyclassroom.com/uploaded/images/categories/ic_tshirt\",\n\t        \"price\": \"242.00\",\n\t        \"size\": \"4242\",\n\t        \"size_number\": \"242424\",\n\t        \"description\": \"242424\",\n\t        \"is_active\": true\n\t\t}\n\t]\n}"
+									"raw": "{\r\n  \"address_detail\" : {\r\n    \"line1\" : \"harekrishna socientry, me.borda farm\",\r\n    \"pincode\" : \"395010\",\r\n    \"state_id\" : \"1\",\r\n    \"line2\" : \"punagam, Surat\",\r\n    \"country_id\" : \"1\",\r\n    \"alternate_mobile\" : \"9726253099\",\r\n    \"mobile\" : \"8866569630\",\r\n    \"city_id\" : \"1\"\r\n  },\r\n  \"product_details\" : [\r\n    {\r\n      \"name\" : \"Vikas Lead Up to date\",\r\n      \"description\" : \"ajsdjkahsdjhajkshd\",\r\n      \"size_number\" : \"asjkdaskjdh\",\r\n      \"image\" : \"http:\\/\\/comedyclassroom.com\\/uploaded\\/images\\/categories\\/ic_tshirt\",\r\n      \"id\" : \"15\",\r\n      \"category_id\" : \"1\",\r\n      \"size\" : \"asjkdhajk\",\r\n      \"is_active\" : true,\r\n      \"price\" : \"125.00\"\r\n    },\r\n    {\r\n      \"name\" : \"test\",\r\n      \"description\" : \"242424\",\r\n      \"size_number\" : \"242424\",\r\n      \"image\" : \"http:\\/\\/comedyclassroom.com\\/uploaded\\/images\\/categories\\/ic_tshirt\",\r\n      \"id\" : \"13\",\r\n      \"category_id\" : \"1\",\r\n      \"size\" : \"4242\",\r\n      \"is_active\" : true,\r\n      \"price\" : \"242.00\"\r\n    }\r\n  ],\r\n  \"customer_name\" : \"nail\"\r\n}\r\n"
 								},
 								"description": "Create Order And Place To Delivery Order."
 							},
@@ -481,13 +581,11 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "{{token}}",
-										"description": ""
+										"value": "{{token}}"
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/json",
-										"description": ""
+										"value": "application/json"
 									}
 								],
 								"body": {
@@ -506,24 +604,22 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "{{token}}",
-										"description": ""
+										"value": "{{token}}"
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/json",
-										"description": ""
+										"value": "application/json"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"customer_name\":  \"Test Order\",\n\t\"address)detail\" : {\n\t\t \"mobile\": \"9876543210\",\n        \"alternate_mobile\": \"12456789987\",\n        \"pincode\": \"395010\",\n        \"line1\": \"Updated Line 1\",\n        \"line2\": \"Upted Line 2\",\n        \"country_id\": \"2\",\n        \"state_id\": \"2\",\n        \"city_id\": \"2\"\n\t}\n}"
+									"raw": ""
 								},
 								"description": "Get Address List With Country State City"
 							},
 							"response": [
 								{
-									"id": "fda5b17e-95a4-4bdc-aa4b-8b8f52b7d8ab",
+									"id": "f4218401-ad75-4a00-9357-8d13a02f6be0",
 									"name": "Place Order Total Amount + Discounts",
 									"originalRequest": {
 										"url": "{{live}}/api/get-order-details-from-cart",
@@ -531,94 +627,92 @@
 										"header": [
 											{
 												"key": "Authorization",
-												"value": "{{token}}",
-												"description": ""
+												"value": "{{token}}"
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/json",
-												"description": ""
+												"value": "application/json"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n\t\"customer_name\":  \"Test Order\",\n\t\"address)detail\" : {\n\t\t \"mobile\": \"9876543210\",\n        \"alternate_mobile\": \"12456789987\",\n        \"pincode\": \"395010\",\n        \"line1\": \"Updated Line 1\",\n        \"line2\": \"Upted Line 2\",\n        \"country_id\": \"2\",\n        \"state_id\": \"2\",\n        \"city_id\": \"2\"\n\t}\n}"
-										}
+											"raw": ""
+										},
+										"description": ""
 									},
 									"status": "OK",
 									"code": 200,
 									"_postman_previewlanguage": "json",
-									"_postman_previewtype": "text",
+									"_postman_previewtype": "html",
 									"header": [
 										{
-											"name": "access-control-allow-credentials",
 											"key": "access-control-allow-credentials",
 											"value": "true",
+											"name": "access-control-allow-credentials",
 											"description": "Indicates whether or not the response to the request can be exposed when the credentials flag is true. When used as part of a response to a preflight request, this indicates whether or not the actual request can be made using credentials."
 										},
 										{
-											"name": "access-control-allow-headers",
 											"key": "access-control-allow-headers",
 											"value": "Content-Type, Content-Range, Content-Disposition, Content-Description, Authorization, X-Requested-With",
+											"name": "access-control-allow-headers",
 											"description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request."
 										},
 										{
-											"name": "access-control-allow-methods",
 											"key": "access-control-allow-methods",
 											"value": "GET, PUT, POST, DELETE, OPTIONS",
+											"name": "access-control-allow-methods",
 											"description": "Specifies the method or methods allowed when accessing the resource. This is used in response to a preflight request."
 										},
 										{
-											"name": "access-control-allow-origin",
 											"key": "access-control-allow-origin",
 											"value": "*",
+											"name": "access-control-allow-origin",
 											"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
 										},
 										{
-											"name": "access-control-max-age",
 											"key": "access-control-max-age",
 											"value": "86400",
+											"name": "access-control-max-age",
 											"description": "Indicates how long the results of a preflight request can be cached in seconds."
 										},
 										{
-											"name": "cache-control",
 											"key": "cache-control",
 											"value": "no-cache, private",
+											"name": "cache-control",
 											"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
 										},
 										{
-											"name": "connection",
 											"key": "connection",
 											"value": "close",
+											"name": "connection",
 											"description": "Options that are desired for the connection"
 										},
 										{
-											"name": "content-type",
 											"key": "content-type",
 											"value": "application/json",
+											"name": "content-type",
 											"description": "The mime type of this content"
 										},
 										{
-											"name": "date",
 											"key": "date",
 											"value": "Mon, 16 Dec 2019 15:24:25 GMT, Mon, 16 Dec 2019 15:24:25 GMT",
+											"name": "date",
 											"description": "The date and time that the message was sent"
 										},
 										{
-											"name": "host",
 											"key": "host",
 											"value": "localhost:1001",
+											"name": "host",
 											"description": "Custom header"
 										},
 										{
-											"name": "x-powered-by",
 											"key": "x-powered-by",
 											"value": "PHP/7.3.12",
+											"name": "x-powered-by",
 											"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
 										}
 									],
 									"cookie": [],
-									"responseTime": 171,
 									"body": "{\"success\":true,\"status\":200,\"data\":{\"total_amount\":125,\"discount_amount\":0,\"delivery_charges\":50},\"message\":\"Place order details retrieve successfully.\"}"
 								}
 							]
@@ -631,24 +725,22 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "{{token}}",
-										"description": ""
+										"value": "{{token}}"
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/json",
-										"description": ""
+										"value": "application/json"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"customer_name\":  \"Test Order\",\n\t\"address)detail\" : {\n\t\t \"mobile\": \"9876543210\",\n        \"alternate_mobile\": \"12456789987\",\n        \"pincode\": \"395010\",\n        \"line1\": \"Updated Line 1\",\n        \"line2\": \"Upted Line 2\",\n        \"country_id\": \"2\",\n        \"state_id\": \"2\",\n        \"city_id\": \"2\"\n\t}\n}"
+									"raw": ""
 								},
 								"description": "Get Order Detaail by id"
 							},
 							"response": [
 								{
-									"id": "55c5345c-b8fb-4cc3-9178-f5b2ecff4c7e",
+									"id": "2e02b3e1-500a-44bb-ba3a-43f6952e0dcf",
 									"name": "Place Order Total Amount + Discounts",
 									"originalRequest": {
 										"url": "{{live}}/api/get-order-details-from-cart",
@@ -656,97 +748,125 @@
 										"header": [
 											{
 												"key": "Authorization",
-												"value": "{{token}}",
-												"description": ""
+												"value": "{{token}}"
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/json",
-												"description": ""
+												"value": "application/json"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n\t\"customer_name\":  \"Test Order\",\n\t\"address)detail\" : {\n\t\t \"mobile\": \"9876543210\",\n        \"alternate_mobile\": \"12456789987\",\n        \"pincode\": \"395010\",\n        \"line1\": \"Updated Line 1\",\n        \"line2\": \"Upted Line 2\",\n        \"country_id\": \"2\",\n        \"state_id\": \"2\",\n        \"city_id\": \"2\"\n\t}\n}"
-										}
+											"raw": ""
+										},
+										"description": ""
 									},
 									"status": "OK",
 									"code": 200,
 									"_postman_previewlanguage": "json",
-									"_postman_previewtype": "text",
+									"_postman_previewtype": "html",
 									"header": [
 										{
-											"name": "access-control-allow-credentials",
 											"key": "access-control-allow-credentials",
 											"value": "true",
+											"name": "access-control-allow-credentials",
 											"description": "Indicates whether or not the response to the request can be exposed when the credentials flag is true. When used as part of a response to a preflight request, this indicates whether or not the actual request can be made using credentials."
 										},
 										{
-											"name": "access-control-allow-headers",
 											"key": "access-control-allow-headers",
 											"value": "Content-Type, Content-Range, Content-Disposition, Content-Description, Authorization, X-Requested-With",
+											"name": "access-control-allow-headers",
 											"description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request."
 										},
 										{
-											"name": "access-control-allow-methods",
 											"key": "access-control-allow-methods",
 											"value": "GET, PUT, POST, DELETE, OPTIONS",
+											"name": "access-control-allow-methods",
 											"description": "Specifies the method or methods allowed when accessing the resource. This is used in response to a preflight request."
 										},
 										{
-											"name": "access-control-allow-origin",
 											"key": "access-control-allow-origin",
 											"value": "*",
+											"name": "access-control-allow-origin",
 											"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
 										},
 										{
-											"name": "access-control-max-age",
 											"key": "access-control-max-age",
 											"value": "86400",
+											"name": "access-control-max-age",
 											"description": "Indicates how long the results of a preflight request can be cached in seconds."
 										},
 										{
-											"name": "cache-control",
 											"key": "cache-control",
 											"value": "no-cache, private",
+											"name": "cache-control",
 											"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
 										},
 										{
-											"name": "connection",
 											"key": "connection",
 											"value": "close",
+											"name": "connection",
 											"description": "Options that are desired for the connection"
 										},
 										{
-											"name": "content-type",
 											"key": "content-type",
 											"value": "application/json",
+											"name": "content-type",
 											"description": "The mime type of this content"
 										},
 										{
-											"name": "date",
 											"key": "date",
 											"value": "Mon, 16 Dec 2019 15:24:25 GMT, Mon, 16 Dec 2019 15:24:25 GMT",
+											"name": "date",
 											"description": "The date and time that the message was sent"
 										},
 										{
-											"name": "host",
 											"key": "host",
 											"value": "localhost:1001",
+											"name": "host",
 											"description": "Custom header"
 										},
 										{
-											"name": "x-powered-by",
 											"key": "x-powered-by",
 											"value": "PHP/7.3.12",
+											"name": "x-powered-by",
 											"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
 										}
 									],
 									"cookie": [],
-									"responseTime": 171,
 									"body": "{\"success\":true,\"status\":200,\"data\":{\"total_amount\":125,\"discount_amount\":0,\"delivery_charges\":50},\"message\":\"Place order details retrieve successfully.\"}"
 								}
 							]
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Order Rate And Review",
+					"description": "",
+					"item": [
+						{
+							"name": "Add Rate And Review on Product",
+							"request": {
+								"url": "{{local}}/api/add-review-on-product",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"order_id\" : 11,\n\t\"product_id\" : 11,\n\t\"rate\" : 3\n}"
+								},
+								"description": "* Order Status Constant\n\t-\tconst ORDER_STATUS_COMPLETED = \"COMPLETED\";\n\t*\tconst ORDER_STATUS_RUNNING = \"RUNNING\";\n\t-\tconst ORDER_STATUS_CANCELED = \"CANCELED\";\n\t-\tconst ORDER_STATUS_INCOMPLETE = \"INCOMPLETE\";\n\t-\tconst ORDER_STATUS_PENDING = \"PENDING\";"
+							},
+							"response": []
 						}
 					],
 					"_postman_isSubFolder": true

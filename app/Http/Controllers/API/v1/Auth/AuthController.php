@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\v1\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ImageHelperController;
 use App\Libraries\Repositories\UsersRepositoryEloquent;
+use App\Models\User;
 use App\Notifications\ChangePasswordNotification;
 use App\Supports\DateConvertor;
 use Illuminate\Http\Request;
@@ -81,7 +82,17 @@ class AuthController extends Controller
         $user = $this->usersRepository->create($input);
 
         return $this->sendSuccessResponse($user, __('validation.common.register_success'));
+    }
 
+
+    public function getProfileDetails()
+    {
+        $user = $this->usersRepository->getDetailsByInput([
+            'id' => \Auth::id(),
+            'first' => true
+        ]);
+
+        return $this->sendSuccessResponse($user, __('validation.common.details_found', ['module' => "User"]));
     }
 
     /**
@@ -91,42 +102,38 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function updateUserProfileFn($input = null)
+    public function updateUserProfileFn(Request $request)
     {
+        $input = $request->all();
         /** check profile required validation */
-        $validation = $this->requiredValidation(['id', 'name', 'date_of_birth', 'gender', 'height', 'weight', 'photo'], $input);
+        $validation = $this->requiredAllKeysValidation(['first_name', 'last_name', 'email', 'mobile'], $input);
         if (isset($validation) && $validation['flag'] == false) {
-            return $this->makeError(null, $validation['message']);
+            return $this->sendBadRequest(null, $validation['message']);
         }
-
         // FIXME Image uploading not working in live server
-        try {
-            /** file upload */
-            $data = $this->imageController->moveFile($input['photo'], 'users');
-            if (isset($data) && $data['flag'] == false) {
-                return $this->makeError(null, $data['message']);
+        if (isset($input['photo'])) {
+            try {
+                /** file upload */
+                $data = $this->imageController->moveFile($input['photo'], 'users');
+                if (isset($data) && $data['flag'] == false) {
+                    return $this->sendBadRequest(null, $data['message']);
+                }
+                $input['photo'] = $data['data']['image'];
+            } catch (\Exception $exception) {
+                \Log::error($exception->getMessage());
+                return $this->sendBadRequest(null, $exception->getMessage());
             }
-            $input['photo'] = $data['data']['image'];
-        } catch (\Exception $exception) {
-            \Log::error($exception->getMessage());
-            return $this->makeError(null, $exception->getMessage());
         }
-
-        /** convert date iso to utc format */
-        // $input['date_of_birth'] = $this->isoToUTCFormat($input['date_of_birth']); // NOTE No need to convert to UTC format
-
-        /** set to profile complete flag */
-        $input['is_profile_complete'] = true;
 
         /** update some info of users */
-        $user = $this->usersRepository->updateRich($input, $input['id']);
+        $user = $this->usersRepository->updateRich($input, \Auth::id());
         if (!!!$user) {
-            return $this->makeError(null, __('validation.common.invalid_user'));
+            return $this->sendBadRequest(null, __('validation.common.invalid_user'));
         }
         $token = Auth::tokenById($user->id);
 
         $returnResponse = $this->makeAuthTokenResponse($user, $token);
-        return $this->makeResponse($returnResponse, __('validation.common.created', ['module' => "User"]));
+        return $this->sendSuccessResponse($returnResponse, __('validation.common.updated', ['module' => "User"]));
     }
 
     /**

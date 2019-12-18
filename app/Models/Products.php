@@ -56,29 +56,6 @@ class Products extends Model
         ];
     }
 
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::retrieved(function ($value) {
-            $value->is_active = $value->is_active == 1 ? true : false;
-        });
-
-        /** before creating */
-        static::creating(function ($value) {
-            $value->is_active = $value->is_active == true ? 1 : 0;
-        });
-
-        /** before updating */
-        static::updating(function ($value) {
-            $value->is_active = $value->is_active == true ? 1 : 0;
-        });
-    }
 
     /**
      * validation => **
@@ -106,6 +83,17 @@ class Products extends Model
     {
         return $query->orderBy('created_at', 'desc');
     }
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+    }
+
 
     /**
      * setSizesAttribute => convert array to string
@@ -162,4 +150,10 @@ class Products extends Model
         return $this->hasOne(MainCategory::class, 'id', 'category_id');
     }
 
+    /** get product rate and review */
+    public function customer_rating()
+    {
+        return $this->hasMany(OrderRateReview::class, 'product_id', 'id');
+        // return $this->belongsToMany(OrderRateReview::class, Products::class, 'id', 'id');
+    }
 }

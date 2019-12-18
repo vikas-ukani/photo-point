@@ -29,6 +29,10 @@ class OrderController extends Controller
     {
         $input = $request->all();
 
+        /** get user wise orders */
+        $input['user_id'] = $input['user_id'] ?? \Auth::id();
+
+        /** get order details */
         $orders = $this->orderRepository->getDetails($input);
         if (isset($orders['count']) && $orders['count'] == 0) {
             return $this->sendBadRequest(null, __('validation.common.details_not_found', ['module' => "Order"]));

@@ -22,6 +22,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('get-all-data', "CommonController@getAllCommonData");
         $router->get('get-country-state-city', "CommonController@getCountryStateCity");
 
+        $router->post('profile-update', 'Auth\AuthController@updateUserProfileFn');
+        $router->get('get-profile-detail', 'Auth\AuthController@getProfileDetails');
+
         $router->group(['prefix' => 'account'], function () use ($router) {
             $router->post('get-address-list', 'User\UserController@getAddressList');
             $router->post('add-address', 'User\UserController@storeAddress');
@@ -33,6 +36,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         /** get all products list */
         $router->post('product-list', "Product\ProductController@list");
+        $router->get('product-detail/{id}', "Product\ProductController@show");
+
         $router->post('add-to-cart', "Cart\CartController@store");
         $router->post('cart-list', "Cart\CartController@list");
         $router->post('delete-to-cart/{id}', "Cart\CartController@destroye");
@@ -47,5 +52,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         // $router->post('update-latitude-longitude', "AllInOneController@updateLatLongAPI");
 
+        /** order rating and rate */
+        $router->post('add-review-on-product', 'Order\OrderRateReviewController@store');
     });
 });

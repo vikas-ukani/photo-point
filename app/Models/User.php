@@ -88,7 +88,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public static function validation($input, $id = null)
     {
-        return Validator::make($input, User::rules($id), User::messages());
+        $className = __CLASS__;
+        return Validator::make($input, $className::rules($id), $className::messages());
     }
 
     /**
@@ -184,5 +185,4 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasOne(Countries::class, 'id', 'country_id');
     }
-
 }

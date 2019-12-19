@@ -4,18 +4,22 @@ namespace App\Http\Controllers\API\v1\Product;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Libraries\Repositories\OrderRateReviewRepositoryEloquent;
 use App\Libraries\Repositories\UsersRepositoryEloquent;
 use App\Libraries\Repositories\ProductRepositoryEloquent;
 
 class ProductController extends Controller
 {
+    protected $orderRateReviewRepository;
     protected $productRepository;
     protected $userRepository;
 
     public function __construct(
+        OrderRateReviewRepositoryEloquent $orderRateReviewRepository,
         ProductRepositoryEloquent $productRepository,
         UsersRepositoryEloquent $userRepository
     ) {
+        $this->orderRateReviewRepository = $orderRateReviewRepository;
         $this->productRepository = $productRepository;
         $this->userRepository = $userRepository;
     }
@@ -56,7 +60,6 @@ class ProductController extends Controller
                 //     ]);
                 // }
 
-
                 // dd('cehck data', $sumOfAllRate, count($product['customer_rating']), $product['ratting'], $product);
             }
             unset($product['customer_rating']);
@@ -70,15 +73,78 @@ class ProductController extends Controller
     {
         $product = $this->productRepository->getDetailsByInput([
             'id' => $id,
-            'relation' => ["customer_rating" => [""]],
-            'customer_rating_list' => ["id", "product_id", "user_id", "review", "rate", "created_at"],
+            // 'relation' => ["customer_rating.customer_detail"],
+            // 'customer_rating_list' => ["id", "product_id", "user_id", "review", "rate", "created_at"],
+            // 'customer_rating.customer_detail_list' => ["id", "first_name", "photo", "email", "created_at"],
             'first' => true
         ]);
-
         if (!isset($product)) {
             return $this->sendBadRequest(null, __('validation.common.details_not_found', ['module' => "product"]));
         }
+        $product = $product->toArray();
+        $product['customer_rating'] = $this->getProductRateReviewByInput([
+            'product_id' => $id,
+            'relation'  => ['customer_detail'],
+            'customer_detail_list' => ["id", "first_name", "photo", "email", "created_at"],
+            'list' => ["id", "product_id", "user_id", "review", "rate", "created_at"],
+            'page' => 1,
+            'limit' => 5
+        ]);
 
-        dd('check data', (int) $id, $product->toArray());
+        // $product['customer_rating'] = $this->orderRateReviewRepository->getDetailsByInput([
+        //     'product_id' => $id,
+        //     'relation'  => ['customer_detail'],
+        //     'customer_detail_list' => ["id", "first_name", "photo", "email", "created_at"],
+        //     'list' => ["id", "product_id", "user_id", "review", "rate", "created_at"],
+        //     'page' => 1,
+        //     'limit' => 5
+        // ]);
+
+        /** get total sum and toal reviewer */
+        $allReviews = $this->orderRateReviewRepository->getDetailsByInput([
+            'product_id' =>  $id,
+            'list' => ["id", 'rate']
+        ]);
+        $sumOfAllRate = collect($allReviews)->sum('rate');
+
+        if (isset($sumOfAllRate)) {
+            $product['ratting'] = round($sumOfAllRate / count($allReviews), 1);
+            $product['ratting_count'] =  count($allReviews);
+        }
+
+        return $this->sendSuccessResponse($product, __('validation.common.details_found', ['module' => "Product"]));
+    }
+
+    public function getProductRateReviewByInput($input = null)
+    {
+        if (isset($input)) {
+            $reviews = $this->orderRateReviewRepository->getDetailsByInput(
+                $input
+                //      [
+                //      'product_id' => $id,
+                //      'relation'  => ['customer_detail'],
+                //      'customer_detail_list' => ["id", "first_name", "photo", "email", "created_at"],
+                //      'list' => ["id", "product_id", "user_id", "review", "rate", "created_at"],
+                //      'page' => $input['page'] ?? 1,
+                //      'limit' => $input['limit'] ?? 5
+                //      ]
+            );
+            return $reviews;
+        }
+    }
+
+    /**
+     * getProductReviews
+     *
+     * @param  mixed $request
+     *
+     * @return void
+     */
+    public function getProductReviews(Request $request)
+    {
+        $input = $request->all();
+        $reviews = $this->getProductRateReviewByInput($input);
+        if (isset($reviews) && count($reviews) == 0) return $this->sendBadRequest(null, __('validation.common.details_not_found', ['module' => "review and rate"]));
+        return $this->sendSuccessResponse($reviews, __('validation.common.details_found', ['module' => 'review and rate']));
     }
 }

@@ -1,24 +1,19 @@
 {
-	"variables": [],
 	"info": {
+		"_postman_id": "4ba75408-ef14-484a-b007-70fc7324db73",
 		"name": "Anil WORK",
-		"_postman_id": "1e544be5-f623-9845-6a04-ed49bedacb1e",
-		"description": "",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "API",
-			"description": "All Device Side APIs Collection\n",
 			"item": [
 				{
 					"name": "Common APIs ",
-					"description": " API for use in any modules.",
 					"item": [
 						{
 							"name": "Get All Cmmon Details",
 							"request": {
-								"url": "{{live}}/api/get-all-data",
 								"method": "GET",
 								"header": [
 									{
@@ -26,18 +21,22 @@
 										"value": "{{token}}"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"description": ""
+								"url": {
+									"raw": "{{live}}/api/get-all-data",
+									"host": [
+										"{{live}}"
+									],
+									"path": [
+										"api",
+										"get-all-data"
+									]
+								}
 							},
 							"response": []
 						},
 						{
 							"name": "Get All Cmmon Details copy",
 							"request": {
-								"url": "{{live}}/api/get-country-state-city",
 								"method": "GET",
 								"header": [
 									{
@@ -45,25 +44,30 @@
 										"value": "{{token}}"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"description": ""
+								"url": {
+									"raw": "{{live}}/api/get-country-state-city",
+									"host": [
+										"{{live}}"
+									],
+									"path": [
+										"api",
+										"get-country-state-city"
+									]
+								}
 							},
 							"response": []
 						}
 					],
+					"description": " API for use in any modules.",
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
 					"name": "Auth Collection",
-					"description": "",
 					"item": [
 						{
 							"name": "Login In API",
 							"request": {
-								"url": "{{local}}/api/auth/login",
 								"method": "POST",
 								"header": [
 									{
@@ -75,14 +79,23 @@
 									"mode": "raw",
 									"raw": "{\n\t\"email\" : \"vikas123@mailinator.com\",\n\t\"password\" : \"vikas123\"\n}"
 								},
-								"description": ""
+								"url": {
+									"raw": "{{local}}/api/auth/login",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								}
 							},
 							"response": []
 						},
 						{
 							"name": "Forgot Password",
 							"request": {
-								"url": "http://127.0.0.1:8000/api/auth/forgot-password",
 								"method": "POST",
 								"header": [
 									{
@@ -94,14 +107,28 @@
 									"mode": "raw",
 									"raw": "{\n    \"email\": \"vikas123@mailinator.com\"\n}"
 								},
-								"description": ""
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/auth/forgot-password",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"auth",
+										"forgot-password"
+									]
+								}
 							},
 							"response": []
 						},
 						{
 							"name": "Register User",
 							"request": {
-								"url": "{{live}}/api/auth/register",
 								"method": "POST",
 								"header": [
 									{
@@ -113,21 +140,30 @@
 									"mode": "raw",
 									"raw": "{\n\"last_name\": \"dhameliya\", \"password\": \"12345678\", \"mobile\": \"8866569630\", \"email\": \"anil11@gmail.com\", \"confirm_password\": \"12345678\", \"first_name\": \"Anil\"\n\n}"
 								},
-								"description": ""
+								"url": {
+									"raw": "{{live}}/api/auth/register",
+									"host": [
+										"{{live}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"register"
+									]
+								}
 							},
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
 					"name": "Accounts  APIS",
-					"description": "User Account related apis after login",
 					"item": [
 						{
 							"name": "Update Password",
 							"request": {
-								"url": "http://127.0.0.1:8000/api/account/update-password",
 								"method": "POST",
 								"header": [
 									{
@@ -146,6 +182,22 @@
 									"mode": "raw",
 									"raw": "{\n\t\"old_password\" : \"vikas123\",\n\t\"password\" : \"vikas123\",\n\t\"confirm_password\" : \"vikas123\"\n}"
 								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/account/update-password",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"account",
+										"update-password"
+									]
+								},
 								"description": "User can update their passwprd"
 							},
 							"response": []
@@ -153,18 +205,15 @@
 						{
 							"name": "Update Profile",
 							"request": {
-								"url": "{{local}}/api/profile-update",
 								"method": "POST",
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "{{token}}",
-										"description": ""
+										"value": "{{token}}"
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/x-www-form-urlencoded",
-										"description": ""
+										"value": "application/x-www-form-urlencoded"
 									}
 								],
 								"body": {
@@ -173,33 +222,39 @@
 										{
 											"key": "first_name",
 											"value": "vikas",
-											"type": "text",
-											"description": ""
+											"type": "text"
 										},
 										{
 											"key": "last_name",
 											"value": "ukani",
-											"type": "text",
-											"description": ""
+											"type": "text"
 										},
 										{
 											"key": "email",
 											"value": "vikas123@mailinator.com",
-											"type": "text",
-											"description": ""
+											"type": "text"
 										},
 										{
 											"key": "mobile",
 											"value": "9876543210",
-											"type": "text",
-											"description": ""
+											"type": "text"
 										},
 										{
 											"key": "photo",
-											"description": "",
 											"type": "file",
-											"src": "1 (45).jpg"
+											"src": "/C:/Users/Hardik P/Desktop/page/1/78587562_426551851581600_4898895523802513408_n.jpg",
+											"disabled": true
 										}
+									]
+								},
+								"url": {
+									"raw": "{{live}}/api/profile-update",
+									"host": [
+										"{{live}}"
+									],
+									"path": [
+										"api",
+										"profile-update"
 									]
 								},
 								"description": "User can update their passwprd"
@@ -209,53 +264,25 @@
 						{
 							"name": "Get User Details",
 							"request": {
-								"url": "{{live}}/api/get-profile-detail",
 								"method": "GET",
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "{{token}}",
-										"description": ""
+										"value": "{{token}}"
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/x-www-form-urlencoded",
-										"description": ""
+										"value": "application/x-www-form-urlencoded"
 									}
 								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "first_name",
-											"value": "vikas",
-											"type": "text",
-											"description": ""
-										},
-										{
-											"key": "last_name",
-											"value": "ukani",
-											"type": "text",
-											"description": ""
-										},
-										{
-											"key": "email",
-											"value": "vikas123@mailinator.com",
-											"type": "text",
-											"description": ""
-										},
-										{
-											"key": "mobile",
-											"value": "9876543210",
-											"type": "text",
-											"description": ""
-										},
-										{
-											"key": "photo",
-											"description": "",
-											"type": "file",
-											"src": "1 (45).jpg"
-										}
+								"url": {
+									"raw": "{{live}}/api/get-profile-detail",
+									"host": [
+										"{{live}}"
+									],
+									"path": [
+										"api",
+										"get-profile-detail"
 									]
 								},
 								"description": "User can update their passwprd"
@@ -265,7 +292,6 @@
 						{
 							"name": "Add Address",
 							"request": {
-								"url": "http://127.0.0.1:8000/api/account/add-address",
 								"method": "POST",
 								"header": [
 									{
@@ -281,6 +307,17 @@
 									"mode": "raw",
 									"raw": "{\n    \"user_id\": 4,\n    \"name\": \"Anil u Address\", \n    \"mobile\" : \"9876543210\",\n    \"alternate_mobile\": 12456789987,\n    \"pincode\": 395010,\n    \"line1\" : \"Santiniketan soc\",\n    \"line2\" : \"Near Dangigev Soc\",\n    \"country_id\" : 1,\n    \"state_id\" : 1,\n    \"city_id\" : 1\n}"
 								},
+								"url": {
+									"raw": "{{local}}/api/account/add-address",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"account",
+										"add-address"
+									]
+								},
 								"description": "User can add Multiple Delevery Addresses"
 							},
 							"response": []
@@ -288,7 +325,6 @@
 						{
 							"name": "Update Address By Id",
 							"request": {
-								"url": "http://127.0.0.1:8000/api/account/update-address/1",
 								"method": "PUT",
 								"header": [
 									{
@@ -307,6 +343,23 @@
 									"mode": "raw",
 									"raw": "{\n    \"user_id\": 4,\n    \"name\": \"Vikas Updated Address\",\n    \"mobile\": \"9876543210\",\n    \"alternate_mobile\": \"12456789987\",\n    \"pincode\": 395010,\n    \"line1\": \"Updated Line 1\",\n    \"line2\": \"Upted Line 2\",\n    \"country_id\": 2,\n    \"state_id\": 2,\n    \"city_id\": 2,\n    \"is_default\": 0\n}"
 								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/account/update-address/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"account",
+										"update-address",
+										"1"
+									]
+								},
 								"description": "User can add Multiple Delevery Addresses"
 							},
 							"response": []
@@ -314,7 +367,6 @@
 						{
 							"name": "Get Address List By Users",
 							"request": {
-								"url": "{{local}}/api/account/get-address-list",
 								"method": "POST",
 								"header": [
 									{
@@ -330,6 +382,17 @@
 									"mode": "raw",
 									"raw": "{\n\t\"user_id\" : 4,\n    \"relation\": [\n        \"country\",\n        \"state\",\n        \"city\"\n    ],\n    \"country_list\": [\n        \"id\",\n        \"name\",\n        \"is_active\"\n    ],\n    \"state_list\": [\n        \"id\",\n        \"name\",\n        \"is_active\"\n    ],\n    \"city_list\": [\n        \"id\",\n        \"name\",\n        \"is_active\"\n    ]\n}"
 								},
+								"url": {
+									"raw": "{{local}}/api/account/get-address-list",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"account",
+										"get-address-list"
+									]
+								},
 								"description": "Get Address List With Country State City"
 							},
 							"response": []
@@ -337,7 +400,6 @@
 						{
 							"name": "Set Active Address",
 							"request": {
-								"url": "{{live}}/api/account/set-active-address/1",
 								"method": "GET",
 								"header": [
 									{
@@ -349,9 +411,17 @@
 										"value": "application/json"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
+								"url": {
+									"raw": "{{live}}/api/account/set-active-address/1",
+									"host": [
+										"{{live}}"
+									],
+									"path": [
+										"api",
+										"account",
+										"set-active-address",
+										"1"
+									]
 								},
 								"description": "User can add Multiple Delevery Addresses\n\n\t* id -> address id you want to update"
 							},
@@ -360,7 +430,6 @@
 						{
 							"name": "Get Address Details By Address ID",
 							"request": {
-								"url": "{{live}}/api/account/get-address/1",
 								"method": "GET",
 								"header": [
 									{
@@ -372,9 +441,17 @@
 										"value": "application/json"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
+								"url": {
+									"raw": "{{live}}/api/account/get-address/1",
+									"host": [
+										"{{live}}"
+									],
+									"path": [
+										"api",
+										"account",
+										"get-address",
+										"1"
+									]
 								},
 								"description": "User can add Multiple Delevery Addresses\n\n\t* id -> address id you want to update"
 							},
@@ -383,7 +460,6 @@
 						{
 							"name": "Get Address Details By Address ID Copy",
 							"request": {
-								"url": "http://127.0.0.1:8000/api/account/delete-address/5",
 								"method": "DELETE",
 								"header": [
 									{
@@ -402,204 +478,72 @@
 									"mode": "raw",
 									"raw": ""
 								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/account/delete-address/5",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"account",
+										"delete-address",
+										"5"
+									]
+								},
 								"description": "User can add Multiple Delevery Addresses\n\n\t* id -> address id you want to update"
 							},
 							"response": []
 						}
 					],
+					"description": "User Account related apis after login",
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
 					"name": "Products",
-					"description": "",
 					"item": [
 						{
 							"name": "List of All Product By main category",
 							"request": {
-								"url": "{{live}}/api/product-list",
 								"method": "POST",
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "{{token}}",
-										"description": ""
+										"value": "{{token}}"
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/json",
-										"description": ""
+										"value": "application/json"
 									}
 								],
 								"body": {
 									"mode": "raw",
 									"raw": "{\n    \"category_id\": 2,\n    \"relation\": [\n        \"customer_rating\"\n    ] \n}"
 								},
-								"description": ""
-							},
-							"response": []
-						}
-					],
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "Cart",
-					"description": "",
-					"item": [
-						{
-							"name": "Add Product to Cart",
-							"request": {
-								"url": "{{local}}/api/add-to-cart",
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"product_id\" : 3,\n\t\"quantity\" : 1\n}"
-								},
-								"description": "Add Product to cart"
+								"url": {
+									"raw": "{{local}}/api/product-list",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"product-list"
+									]
+								}
 							},
 							"response": []
 						},
 						{
-							"name": "Cart Listing",
-							"request": {
-								"url": "{{live}}/api/cart-list",
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"user_id\" : 5,\n\t\"relation\" : [\"product\"]\n}"
-								},
-								"description": "Add Product to cart"
+							"name": "Get Details for Product Details",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
 							},
-							"response": []
-						},
-						{
-							"name": "Delete Cart",
 							"request": {
-								"url": "http://127.0.0.1:8000/api/delete-to-cart/4",
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "{{token}}"
-									},
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"product_id\" : 2\t ,\n\t\"quantity\" : 1\n}"
-								},
-								"description": "Add Product to cart"
-							},
-							"response": []
-						},
-						{
-							"name": "Remove 1 quantity from cart by id",
-							"request": {
-								"url": "http://127.0.0.1:8000/api/remove-cart-quantity/1",
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "{{token}}"
-									},
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"product_id\" : 2\t ,\n\t\"quantity\" : 1\n}"
-								},
-								"description": "Add Product to cart"
-							},
-							"response": []
-						}
-					],
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "Orders",
-					"description": "",
-					"item": [
-						{
-							"name": "Place Order",
-							"request": {
-								"url": "{{local}}/api/place-order",
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"address_detail\" : {\r\n    \"line1\" : \"harekrishna socientry, me.borda farm\",\r\n    \"pincode\" : \"395010\",\r\n    \"state_id\" : \"1\",\r\n    \"line2\" : \"punagam, Surat\",\r\n    \"country_id\" : \"1\",\r\n    \"alternate_mobile\" : \"9726253099\",\r\n    \"mobile\" : \"8866569630\",\r\n    \"city_id\" : \"1\"\r\n  },\r\n  \"product_details\" : [\r\n    {\r\n      \"name\" : \"Vikas Lead Up to date\",\r\n      \"description\" : \"ajsdjkahsdjhajkshd\",\r\n      \"size_number\" : \"asjkdaskjdh\",\r\n      \"image\" : \"http:\\/\\/comedyclassroom.com\\/uploaded\\/images\\/categories\\/ic_tshirt\",\r\n      \"id\" : \"15\",\r\n      \"category_id\" : \"1\",\r\n      \"size\" : \"asjkdhajk\",\r\n      \"is_active\" : true,\r\n      \"price\" : \"125.00\"\r\n    },\r\n    {\r\n      \"name\" : \"test\",\r\n      \"description\" : \"242424\",\r\n      \"size_number\" : \"242424\",\r\n      \"image\" : \"http:\\/\\/comedyclassroom.com\\/uploaded\\/images\\/categories\\/ic_tshirt\",\r\n      \"id\" : \"13\",\r\n      \"category_id\" : \"1\",\r\n      \"size\" : \"4242\",\r\n      \"is_active\" : true,\r\n      \"price\" : \"242.00\"\r\n    }\r\n  ],\r\n  \"customer_name\" : \"nail\"\r\n}\r\n"
-								},
-								"description": "Create Order And Place To Delivery Order."
-							},
-							"response": []
-						},
-						{
-							"name": "Get Orders List details",
-							"request": {
-								"url": "{{live}}/api/orders-list",
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"status\" : \"PENDING\"\n}"
-								},
-								"description": "* Order Status Constant\n\t-\tconst ORDER_STATUS_COMPLETED = \"COMPLETED\";\n\t*\tconst ORDER_STATUS_RUNNING = \"RUNNING\";\n\t-\tconst ORDER_STATUS_CANCELED = \"CANCELED\";\n\t-\tconst ORDER_STATUS_INCOMPLETE = \"INCOMPLETE\";\n\t-\tconst ORDER_STATUS_PENDING = \"PENDING\";"
-							},
-							"response": []
-						},
-						{
-							"name": "Place Order Total Amount + Discounts",
-							"request": {
-								"url": "{{live}}/api/get-order-details-from-cart",
 								"method": "GET",
 								"header": [
 									{
@@ -615,14 +559,22 @@
 									"mode": "raw",
 									"raw": ""
 								},
-								"description": "Get Address List With Country State City"
+								"url": {
+									"raw": "{{local}}/api/product-detail/11",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"product-detail",
+										"11"
+									]
+								}
 							},
 							"response": [
 								{
-									"id": "f4218401-ad75-4a00-9357-8d13a02f6be0",
-									"name": "Place Order Total Amount + Discounts",
+									"name": "Get Details for Product Details",
 									"originalRequest": {
-										"url": "{{live}}/api/get-order-details-from-cart",
 										"method": "GET",
 										"header": [
 											{
@@ -638,12 +590,473 @@
 											"mode": "raw",
 											"raw": ""
 										},
-										"description": ""
+										"url": {
+											"raw": "{{local}}/api/product-detail/11",
+											"host": [
+												"{{local}}"
+											],
+											"path": [
+												"api",
+												"product-detail",
+												"11"
+											]
+										}
 									},
 									"status": "OK",
 									"code": 200,
 									"_postman_previewlanguage": "json",
-									"_postman_previewtype": "html",
+									"header": [
+										{
+											"key": "Host",
+											"value": "localhost:1001"
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 19 Dec 2019 17:33:51 GMT"
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 19 Dec 2019 17:33:51 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/7.3.12"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "GET, PUT, POST, DELETE, OPTIONS"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Access-Control-Max-Age",
+											"value": "86400"
+										},
+										{
+											"key": "Access-Control-Allow-Headers",
+											"value": "Content-Type, Content-Range, Content-Disposition, Content-Description, Authorization, X-Requested-With"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"status\": 200,\n    \"data\": {\n        \"id\": 11,\n        \"category_id\": 2,\n        \"name\": \"test\",\n        \"image\": \"http://localhost:1001/uploaded/images/categories/ic_tshirt\",\n        \"price\": 242,\n        \"size\": \"4242\",\n        \"size_number\": \"242424\",\n        \"description\": \"242424\",\n        \"is_active\": 1,\n        \"created_at\": \"2019-12-08 16:20:19\",\n        \"updated_at\": \"2019-12-11 17:03:39\",\n        \"customer_rating\": [\n            {\n                \"id\": 3,\n                \"product_id\": 11,\n                \"user_id\": 4,\n                \"review\": null,\n                \"rate\": 2,\n                \"created_at\": \"2019-12-18 14:47:55\",\n                \"customer_detail\": {\n                    \"id\": 4,\n                    \"first_name\": \"vikas\",\n                    \"photo\": \"http://localhost:1001/uploaded/images/users/5dfa5c1bc31a7-78587562-426551851581600-4898895523802513408-n\",\n                    \"email\": \"vikas123@mailinator.com\",\n                    \"created_at\": \"2019-11-24 07:37:14\"\n                }\n            },\n            {\n                \"id\": 6,\n                \"product_id\": 11,\n                \"user_id\": 4,\n                \"review\": null,\n                \"rate\": 2,\n                \"created_at\": \"2019-12-18 14:47:55\",\n                \"customer_detail\": {\n                    \"id\": 4,\n                    \"first_name\": \"vikas\",\n                    \"photo\": \"http://localhost:1001/uploaded/images/users/5dfa5c1bc31a7-78587562-426551851581600-4898895523802513408-n\",\n                    \"email\": \"vikas123@mailinator.com\",\n                    \"created_at\": \"2019-11-24 07:37:14\"\n                }\n            },\n            {\n                \"id\": 9,\n                \"product_id\": 11,\n                \"user_id\": 4,\n                \"review\": null,\n                \"rate\": 2,\n                \"created_at\": \"2019-12-18 14:47:55\",\n                \"customer_detail\": {\n                    \"id\": 4,\n                    \"first_name\": \"vikas\",\n                    \"photo\": \"http://localhost:1001/uploaded/images/users/5dfa5c1bc31a7-78587562-426551851581600-4898895523802513408-n\",\n                    \"email\": \"vikas123@mailinator.com\",\n                    \"created_at\": \"2019-11-24 07:37:14\"\n                }\n            },\n            {\n                \"id\": 12,\n                \"product_id\": 11,\n                \"user_id\": 4,\n                \"review\": null,\n                \"rate\": 2,\n                \"created_at\": \"2019-12-18 14:47:55\",\n                \"customer_detail\": {\n                    \"id\": 4,\n                    \"first_name\": \"vikas\",\n                    \"photo\": \"http://localhost:1001/uploaded/images/users/5dfa5c1bc31a7-78587562-426551851581600-4898895523802513408-n\",\n                    \"email\": \"vikas123@mailinator.com\",\n                    \"created_at\": \"2019-11-24 07:37:14\"\n                }\n            },\n            {\n                \"id\": 2,\n                \"product_id\": 11,\n                \"user_id\": 4,\n                \"review\": \"This Product was too good!\",\n                \"rate\": 2,\n                \"created_at\": \"2019-12-17 17:03:15\",\n                \"customer_detail\": {\n                    \"id\": 4,\n                    \"first_name\": \"vikas\",\n                    \"photo\": \"http://localhost:1001/uploaded/images/users/5dfa5c1bc31a7-78587562-426551851581600-4898895523802513408-n\",\n                    \"email\": \"vikas123@mailinator.com\",\n                    \"created_at\": \"2019-11-24 07:37:14\"\n                }\n            }\n        ],\n        \"ratting\": 2,\n        \"ratting_count\": 5\n    },\n    \"message\": \"Product details retrieve successfully.\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Get Product Detail Review By Listing ( View All Reviews )",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"product_id\": 11,\n    \"relation\": [\n        \"customer_detail\"\n    ],\n    \"customer_detail_list\": [\n        \"id\",\n        \"first_name\",\n        \"photo\",\n        \"email\",\n        \"created_at\"\n    ],\n    \"list\": [\n        \"id\",\n        \"product_id\",\n        \"user_id\",\n        \"review\",\n        \"rate\",\n        \"created_at\"\n    ],\n    \"page\": 1,\n    \"limit\": 5\n}"
+								},
+								"url": {
+									"raw": "{{local}}/api/product-detail-review-list",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"product-detail-review-list"
+									]
+								},
+								"description": "Get All Review of this product with paginations"
+							},
+							"response": [
+								{
+									"name": "Get Product Detail Review By Listing ( View All Reviews )",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"product_id\": 11,\n    \"relation\": [\n        \"customer_detail\"\n    ],\n    \"customer_detail_list\": [\n        \"id\",\n        \"first_name\",\n        \"photo\",\n        \"email\",\n        \"created_at\"\n    ],\n    \"list\": [\n        \"id\",\n        \"product_id\",\n        \"user_id\",\n        \"review\",\n        \"rate\",\n        \"created_at\"\n    ],\n    \"page\": 1,\n    \"limit\": 5\n}"
+										},
+										"url": {
+											"raw": "{{local}}/api/product-detail-review-list",
+											"host": [
+												"{{local}}"
+											],
+											"path": [
+												"api",
+												"product-detail-review-list"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Host",
+											"value": "localhost:1001"
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 19 Dec 2019 17:23:28 GMT"
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 19 Dec 2019 17:23:28 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/7.3.12"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "GET, PUT, POST, DELETE, OPTIONS"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Access-Control-Max-Age",
+											"value": "86400"
+										},
+										{
+											"key": "Access-Control-Allow-Headers",
+											"value": "Content-Type, Content-Range, Content-Disposition, Content-Description, Authorization, X-Requested-With"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"status\": 200,\n    \"data\": [\n        {\n            \"id\": 3,\n            \"product_id\": 11,\n            \"user_id\": 4,\n            \"review\": null,\n            \"rate\": 2,\n            \"created_at\": \"2019-12-18 14:47:55\",\n            \"customer_detail\": {\n                \"id\": 4,\n                \"first_name\": \"vikas\",\n                \"photo\": \"http://localhost:1001/uploaded/images/users/5dfa5c1bc31a7-78587562-426551851581600-4898895523802513408-n\",\n                \"email\": \"vikas123@mailinator.com\",\n                \"created_at\": \"2019-11-24 07:37:14\"\n            }\n        },\n        {\n            \"id\": 6,\n            \"product_id\": 11,\n            \"user_id\": 4,\n            \"review\": null,\n            \"rate\": 2,\n            \"created_at\": \"2019-12-18 14:47:55\",\n            \"customer_detail\": {\n                \"id\": 4,\n                \"first_name\": \"vikas\",\n                \"photo\": \"http://localhost:1001/uploaded/images/users/5dfa5c1bc31a7-78587562-426551851581600-4898895523802513408-n\",\n                \"email\": \"vikas123@mailinator.com\",\n                \"created_at\": \"2019-11-24 07:37:14\"\n            }\n        },\n        {\n            \"id\": 9,\n            \"product_id\": 11,\n            \"user_id\": 4,\n            \"review\": null,\n            \"rate\": 2,\n            \"created_at\": \"2019-12-18 14:47:55\",\n            \"customer_detail\": {\n                \"id\": 4,\n                \"first_name\": \"vikas\",\n                \"photo\": \"http://localhost:1001/uploaded/images/users/5dfa5c1bc31a7-78587562-426551851581600-4898895523802513408-n\",\n                \"email\": \"vikas123@mailinator.com\",\n                \"created_at\": \"2019-11-24 07:37:14\"\n            }\n        },\n        {\n            \"id\": 12,\n            \"product_id\": 11,\n            \"user_id\": 4,\n            \"review\": null,\n            \"rate\": 2,\n            \"created_at\": \"2019-12-18 14:47:55\",\n            \"customer_detail\": {\n                \"id\": 4,\n                \"first_name\": \"vikas\",\n                \"photo\": \"http://localhost:1001/uploaded/images/users/5dfa5c1bc31a7-78587562-426551851581600-4898895523802513408-n\",\n                \"email\": \"vikas123@mailinator.com\",\n                \"created_at\": \"2019-11-24 07:37:14\"\n            }\n        },\n        {\n            \"id\": 2,\n            \"product_id\": 11,\n            \"user_id\": 4,\n            \"review\": \"This Product was too good!\",\n            \"rate\": 2,\n            \"created_at\": \"2019-12-17 17:03:15\",\n            \"customer_detail\": {\n                \"id\": 4,\n                \"first_name\": \"vikas\",\n                \"photo\": \"http://localhost:1001/uploaded/images/users/5dfa5c1bc31a7-78587562-426551851581600-4898895523802513408-n\",\n                \"email\": \"vikas123@mailinator.com\",\n                \"created_at\": \"2019-11-24 07:37:14\"\n            }\n        }\n    ],\n    \"message\": \"Review and rate details retrieve successfully.\"\n}"
+								}
+							]
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Cart",
+					"item": [
+						{
+							"name": "Add Product to Cart",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"product_id\" : 3,\n\t\"quantity\" : 1\n}"
+								},
+								"url": {
+									"raw": "{{local}}/api/add-to-cart",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"add-to-cart"
+									]
+								},
+								"description": "Add Product to cart"
+							},
+							"response": []
+						},
+						{
+							"name": "Cart Listing",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"user_id\" : 5,\n\t\"relation\" : [\"product\"]\n}"
+								},
+								"url": {
+									"raw": "{{live}}/api/cart-list",
+									"host": [
+										"{{live}}"
+									],
+									"path": [
+										"api",
+										"cart-list"
+									]
+								},
+								"description": "Add Product to cart"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Cart",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"product_id\" : 2\t ,\n\t\"quantity\" : 1\n}"
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/delete-to-cart/4",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"delete-to-cart",
+										"4"
+									]
+								},
+								"description": "Add Product to cart"
+							},
+							"response": []
+						},
+						{
+							"name": "Remove 1 quantity from cart by id",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"product_id\" : 2\t ,\n\t\"quantity\" : 1\n}"
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/remove-cart-quantity/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"remove-cart-quantity",
+										"1"
+									]
+								},
+								"description": "Add Product to cart"
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Orders",
+					"item": [
+						{
+							"name": "Place Order",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"address_detail\" : {\r\n    \"line1\" : \"harekrishna socientry, me.borda farm\",\r\n    \"pincode\" : \"395010\",\r\n    \"state_id\" : \"1\",\r\n    \"line2\" : \"punagam, Surat\",\r\n    \"country_id\" : \"1\",\r\n    \"alternate_mobile\" : \"9726253099\",\r\n    \"mobile\" : \"8866569630\",\r\n    \"city_id\" : \"1\"\r\n  },\r\n  \"product_details\" : [\r\n    {\r\n      \"name\" : \"Vikas Lead Up to date\",\r\n      \"description\" : \"ajsdjkahsdjhajkshd\",\r\n      \"size_number\" : \"asjkdaskjdh\",\r\n      \"image\" : \"http:\\/\\/comedyclassroom.com\\/uploaded\\/images\\/categories\\/ic_tshirt\",\r\n      \"id\" : \"15\",\r\n      \"category_id\" : \"1\",\r\n      \"size\" : \"asjkdhajk\",\r\n      \"is_active\" : true,\r\n      \"price\" : \"125.00\"\r\n    },\r\n    {\r\n      \"name\" : \"test\",\r\n      \"description\" : \"242424\",\r\n      \"size_number\" : \"242424\",\r\n      \"image\" : \"http:\\/\\/comedyclassroom.com\\/uploaded\\/images\\/categories\\/ic_tshirt\",\r\n      \"id\" : \"13\",\r\n      \"category_id\" : \"1\",\r\n      \"size\" : \"4242\",\r\n      \"is_active\" : true,\r\n      \"price\" : \"242.00\"\r\n    }\r\n  ],\r\n  \"customer_name\" : \"nail\"\r\n}\r\n"
+								},
+								"url": {
+									"raw": "{{local}}/api/place-order",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"place-order"
+									]
+								},
+								"description": "Create Order And Place To Delivery Order."
+							},
+							"response": []
+						},
+						{
+							"name": "Get Orders List details",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"status\" : \"PENDING\"\n}"
+								},
+								"url": {
+									"raw": "{{live}}/api/orders-list",
+									"host": [
+										"{{live}}"
+									],
+									"path": [
+										"api",
+										"orders-list"
+									]
+								},
+								"description": "* Order Status Constant\n\t-\tconst ORDER_STATUS_COMPLETED = \"COMPLETED\";\n\t*\tconst ORDER_STATUS_RUNNING = \"RUNNING\";\n\t-\tconst ORDER_STATUS_CANCELED = \"CANCELED\";\n\t-\tconst ORDER_STATUS_INCOMPLETE = \"INCOMPLETE\";\n\t-\tconst ORDER_STATUS_PENDING = \"PENDING\";"
+							},
+							"response": []
+						},
+						{
+							"name": "Place Order Total Amount + Discounts",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{live}}/api/get-order-details-from-cart",
+									"host": [
+										"{{live}}"
+									],
+									"path": [
+										"api",
+										"get-order-details-from-cart"
+									]
+								},
+								"description": "Get Address List With Country State City"
+							},
+							"response": [
+								{
+									"name": "Place Order Total Amount + Discounts",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{live}}/api/get-order-details-from-cart",
+											"host": [
+												"{{live}}"
+											],
+											"path": [
+												"api",
+												"get-order-details-from-cart"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
 									"header": [
 										{
 											"key": "access-control-allow-credentials",
@@ -720,7 +1133,6 @@
 						{
 							"name": "Get Order Details",
 							"request": {
-								"url": "{{local}}/api/get-order-details/7",
 								"method": "GET",
 								"header": [
 									{
@@ -732,18 +1144,23 @@
 										"value": "application/json"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
+								"url": {
+									"raw": "{{local}}/api/get-order-details/7",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"get-order-details",
+										"7"
+									]
 								},
 								"description": "Get Order Detaail by id"
 							},
 							"response": [
 								{
-									"id": "2e02b3e1-500a-44bb-ba3a-43f6952e0dcf",
 									"name": "Place Order Total Amount + Discounts",
 									"originalRequest": {
-										"url": "{{live}}/api/get-order-details-from-cart",
 										"method": "GET",
 										"header": [
 											{
@@ -755,16 +1172,20 @@
 												"value": "application/json"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
-										"description": ""
+										"url": {
+											"raw": "{{live}}/api/get-order-details-from-cart",
+											"host": [
+												"{{live}}"
+											],
+											"path": [
+												"api",
+												"get-order-details-from-cart"
+											]
+										}
 									},
 									"status": "OK",
 									"code": 200,
 									"_postman_previewlanguage": "json",
-									"_postman_previewtype": "html",
 									"header": [
 										{
 											"key": "access-control-allow-credentials",
@@ -839,16 +1260,15 @@
 							]
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
 					"name": "Order Rate And Review",
-					"description": "",
 					"item": [
 						{
 							"name": "Add Rate And Review on Product",
 							"request": {
-								"url": "{{local}}/api/add-review-on-product",
 								"method": "POST",
 								"header": [
 									{
@@ -864,14 +1284,74 @@
 									"mode": "raw",
 									"raw": "{\n\t\"order_id\" : 11,\n\t\"product_id\" : 11,\n\t\"rate\" : 3\n}"
 								},
+								"url": {
+									"raw": "{{local}}/api/add-review-on-product",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"add-review-on-product"
+									]
+								},
 								"description": "* Order Status Constant\n\t-\tconst ORDER_STATUS_COMPLETED = \"COMPLETED\";\n\t*\tconst ORDER_STATUS_RUNNING = \"RUNNING\";\n\t-\tconst ORDER_STATUS_CANCELED = \"CANCELED\";\n\t-\tconst ORDER_STATUS_INCOMPLETE = \"INCOMPLETE\";\n\t-\tconst ORDER_STATUS_PENDING = \"PENDING\";"
 							},
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Offers",
+					"item": [
+						{
+							"name": "Create Offer",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\" : \"Offer 1\",\n\t\"code\" : \"OFFER_1\",\n\t\"discount\" : \"1\",\n\t\"valid_from\" : \"2019-12-19T17:59:27.596Z\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/api/offers-create",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"api",
+										"offers-create"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
-			]
+			],
+			"description": "All Device Side APIs Collection\n",
+			"protocolProfileBehavior": {}
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }

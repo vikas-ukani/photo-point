@@ -21,7 +21,7 @@ class CreateProductsTable extends Migration
             $table->text('image')->nullable();
             $table->float('price');
             $table->text('size', 50)->comment("Multiple Sizes.");
-            $table->text('size_number', 50)->comment("numeric size number.");
+            $table->text('color', 50)->comment("color.");
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(true)->comment("product is active or not.");
             $table->timestamps();

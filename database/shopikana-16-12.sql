@@ -263,7 +263,7 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `user_id`, `customer_name`, `address_detail`, `product_details`, `order_date`, `expected_date`, `status`, `created_at`, `updated_at`) VALUES
-(1, 10, 'nail', '{\"mobile\":\"8866569630\",\"city_id\":\"1\",\"line2\":\"punagam, Surat\",\"alternate_mobile\":\"9726253099\",\"pincode\":\"395010\",\"line1\":\"harekrishna socientry, me.borda farm\",\"country_id\":\"1\",\"state_id\":\"1\"}', '[{\"quantity\":\"1\",\"id\":\"16\",\"category_id\":\"1\",\"price\":\"242.00\",\"image\":\"http:\\/\\/comedyclassroom.com\\/uploaded\\/images\\/categories\\/ic_tshirt\",\"size\":\"4242\",\"size_number\":\"242424\",\"description\":\"242424\",\"name\":\"test\",\"is_active\":true}]', '2019-12-16 17:58:51', '2019-12-23 17:58:51', 'PENDING', '2019-12-16 17:58:51', '2019-12-16 17:58:51');
+(1, 10, 'nail', '{\"mobile\":\"8866569630\",\"city_id\":\"1\",\"line2\":\"punagam, Surat\",\"alternate_mobile\":\"9726253099\",\"pincode\":\"395010\",\"line1\":\"harekrishna socientry, me.borda farm\",\"country_id\":\"1\",\"state_id\":\"1\"}', '[{\"quantity\":\"1\",\"id\":\"16\",\"category_id\":\"1\",\"price\":\"242.00\",\"image\":\"http:\\/\\/comedyclassroom.com\\/uploaded\\/images\\/categories\\/ic_tshirt\",\"size\":\"4242\",\"color\":\"242424\",\"description\":\"242424\",\"name\":\"test\",\"is_active\":true}]', '2019-12-16 17:58:51', '2019-12-23 17:58:51', 'PENDING', '2019-12-16 17:58:51', '2019-12-16 17:58:51');
 
 -- --------------------------------------------------------
 
@@ -290,7 +290,7 @@ CREATE TABLE `products` (
   `image` text COLLATE utf8mb4_unicode_ci,
   `price` double(8,2) NOT NULL,
   `size` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Multiple Sizes.',
-  `size_number` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'numeric size number.',
+  `color` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'numeric size number.',
   `description` text COLLATE utf8mb4_unicode_ci,
   `is_active` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'product is active or not.',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -301,7 +301,7 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `category_id`, `name`, `image`, `price`, `size`, `size_number`, `description`, `is_active`, `created_at`, `updated_at`) VALUES
+INSERT INTO `products` (`id`, `category_id`, `name`, `image`, `price`, `size`, `color`, `description`, `is_active`, `created_at`, `updated_at`) VALUES
 (2, 3, 'Clear Bottle', '/uploaded/images/categories/ic_tshirt', 2500.00, 'S', '1600', 'First Bottle', 1, '2019-12-08 12:51:49', '2019-12-08 16:17:20'),
 (3, 3, 'Vikas Lead', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:56:32', '2019-12-08 16:14:53'),
 (4, 2, 'Vikas Lead Up to', '/uploaded/images/categories/ic_tshirt', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:57:02', '2019-12-08 16:10:19'),
@@ -361,7 +361,7 @@ CREATE TABLE `products_copy` (
   `image` text COLLATE utf8mb4_unicode_ci,
   `price` double(8,2) NOT NULL,
   `size` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Multiple Sizes.',
-  `size_number` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'numeric size number.',
+  `color` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'numeric size number.',
   `description` text COLLATE utf8mb4_unicode_ci,
   `is_active` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'product is active or not.',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -372,7 +372,7 @@ CREATE TABLE `products_copy` (
 -- Dumping data for table `products_copy`
 --
 
-INSERT INTO `products_copy` (`id`, `category_id`, `name`, `image`, `price`, `size`, `size_number`, `description`, `is_active`, `created_at`, `updated_at`) VALUES
+INSERT INTO `products_copy` (`id`, `category_id`, `name`, `image`, `price`, `size`, `color`, `description`, `is_active`, `created_at`, `updated_at`) VALUES
 (2, 3, 'Clear Bottle', '/uploaded/images/products/5ded221066dd5-download-3', 2500.00, 'S', '1600', 'First Bottle', 1, '2019-12-08 12:51:49', '2019-12-08 16:17:20'),
 (3, 3, 'Vikas Lead', '/uploaded/images/products/5ded217dda7ca-download', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:56:32', '2019-12-08 16:14:53'),
 (4, 2, 'Vikas Lead Up to', '/uploaded/images/products/5ded1dd698fc2-new-doc-2017-11-27', 125.00, 'asjkdhajk', 'asjkdaskjdh', 'ajsdjkahsdjhajkshd', 1, '2019-12-08 12:57:02', '2019-12-08 16:10:19'),

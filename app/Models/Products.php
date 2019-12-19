@@ -15,7 +15,7 @@ class Products extends Model
         'image',
         "price",
         "size",
-        "size_number",
+        "color",
         "description",
         "is_active",
     ];
@@ -37,7 +37,7 @@ class Products extends Model
             'price' => $once . 'required',
             'image' => $once . "required",
             'size' => $once . 'required',
-            'size_number' => $once . 'required',
+            'color' => $once . 'required',
         ];
 
         return $rules;

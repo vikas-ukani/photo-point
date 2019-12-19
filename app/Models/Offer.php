@@ -5,18 +5,28 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
-class OrderRateReview extends Model
+class Offer extends Model
 {
     protected $fillable = [
-        "order_id", // ordered id
-        "product_id", // product id on review added
-        "user_id", // which user add this rate and review
-        'review', // customer review
-        'rate', // customer rate number between 5
+        "name", // name of offer
+        "code", // uniue offer code
+        "discount", // amount of values
+        "valid_from", // offer starting from
+        "valid_to", // offer starting to
+        "category_id", // offer apply of this category 
+        'is_active', // offer active or not
     ];
 
-    protected $hidden = [
-        'updated_at',
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_admin' => 'boolean',
+        'discount' => 'integer',
+        'valid_from' => 'timestamp',
+        'valid_to' => 'timestamp',
     ];
 
     /**
@@ -31,12 +41,14 @@ class OrderRateReview extends Model
         $once = isset($id) ? 'sometimes|' : '';
 
         $rules = [
-            'order_id' => $once . 'required',
-            'product_id' => $once . 'required',
-            'user_id' => $once . 'required',
-            'rate' => $once . 'required|numeric|between:1,5',
+            'name' => $once . 'required',
+            'code' => $once . 'required',
+            'discount' => $once . 'required|numeric',
+            'valid_from' => $once . 'required|date',
+            'valid_to' => $once . 'required|date',
+            'category_id' => $once . 'required|numeric',
+            'is_active' => $once . 'required|boolean',
         ];
-
         return $rules;
     }
 
@@ -90,18 +102,13 @@ class OrderRateReview extends Model
         return $query->orderBy('created_at', 'desc');
     }
 
-    public function user_detail()
+    /**
+     * category_detail => main category wise offer relation
+     *
+     * @return void
+     */
+    public function category_detail()
     {
-        return $this->hasOne(User::class, 'id', 'user_id');
-    }
-
-    public function product_detail()
-    {
-        return $this->hasOne(Products::class, 'id', 'product_id');
-    }
-
-    public function customer_detail()
-    {
-        return $this->hasOne(User::class, 'id', 'user_id');
+        return $this->hasOne(MainCategory::class, 'id', 'category_id');
     }
 }

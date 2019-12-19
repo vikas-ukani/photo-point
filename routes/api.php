@@ -34,9 +34,21 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             $router->get('set-active-address/{id}', 'User\UserController@setToActiveAddress');
         });
 
-        /** get all products list */
+        /**
+         * Offer Module
+         */
+        $router->post('offers-create', "Offer\OfferController@store");
+
+
+
+
+
+        /**
+         * Product Module
+         */
         $router->post('product-list', "Product\ProductController@list");
         $router->get('product-detail/{id}', "Product\ProductController@show");
+        $router->post('product-detail-review-list', "Product\ProductController@getProductReviews");
 
         $router->post('add-to-cart', "Cart\CartController@store");
         $router->post('cart-list', "Cart\CartController@list");

@@ -39,10 +39,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
          */
         $router->post('offers-create', "Offer\OfferController@store");
 
-
-
-
-
         /**
          * Product Module
          */

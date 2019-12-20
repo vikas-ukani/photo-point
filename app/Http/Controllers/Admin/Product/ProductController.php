@@ -13,13 +13,16 @@ class ProductController extends Controller
     protected $productRepository;
     protected $imageController;
 
-    public function __construct(ProductRepositoryEloquent $productRepository,
-        ImageHelperController $imageController) {
+    public function __construct(
+        ProductRepositoryEloquent $productRepository,
+        ImageHelperController $imageController
+    ) {
         $this->productRepository = $productRepository;
         $this->imageController = $imageController;
     }
 
-    function list(Request $request) {
+    function list(Request $request)
+    {
         $input = $request->all();
 
         $products = $this->productRepository->getDetails($input);
@@ -89,14 +92,27 @@ class ProductController extends Controller
         }
 
         return $this->sendSuccessResponse($product['data'], $product['message']);
-
     }
 
     public function commonCreateUpdate($input, $id = null)
     {
 
-        /** image upload code */
-        if (isset($input['image'])) {
+        /** upload multiple images */
+        if (isset($input['image']) && is_array($input['image']) && count($input['image']) > 0) {
+            #pass
+            $imagesArray = [];
+            foreach ($input['image'] as $key => $images) {
+                /** image upload code */
+                $data = $this->imageController->moveFile($images, 'products');
+                if (isset($data) && $data['flag'] == false) {
+                    return $this->makeError(null, $data['message']);
+                }
+                // $input['image'] = $data['data']['image'];
+                $imagesArray[] = $data['data']['image'];
+            }
+            $input['image'] = is_array($imagesArray) ? implode(',', $imagesArray) : $imagesArray;
+        } else if (isset($input['image'])) {
+            /** image upload code */
             $data = $this->imageController->moveFile($input['image'], 'products');
             if (isset($data) && $data['flag'] == false) {
                 return $this->makeError(null, $data['message']);
@@ -106,7 +122,7 @@ class ProductController extends Controller
 
         $product = $this->productRepository->updateOrCreate(['id' => $id], $input);
 
-        $c = $this->productRepository->getDetailsByInput([
+        $product = $this->productRepository->getDetailsByInput([
             'id' => $product->id,
             'relation' => ["category"],
             'first' => true,
@@ -132,7 +148,6 @@ class ProductController extends Controller
         ], $input['id']);
 
         return $this->sendSuccessResponse($product, __('validation.common.updated', ['module' => "Product"]));
-
     }
 
     public function destory($id)

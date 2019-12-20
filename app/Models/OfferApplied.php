@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
-class Offer extends Model
+class OfferApplied extends Model
 {
+
     protected $fillable = [
         "name", // name of offer
         "code", // uniue offer code
@@ -100,15 +101,5 @@ class Offer extends Model
     public function scopeOrdered($query)
     {
         return $query->orderBy('created_at', 'desc');
-    }
-
-    /**
-     * category_detail => main category wise offer relation
-     *
-     * @return void
-     */
-    public function category_detail()
-    {
-        return $this->hasOne(MainCategory::class, 'id', 'category_id');
     }
 }

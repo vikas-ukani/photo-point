@@ -85,7 +85,7 @@ class ProductController extends Controller
         $product['customer_rating'] = $this->getProductRateReviewByInput([
             'product_id' => $id,
             'relation'  => ['customer_detail'],
-            'customer_detail_list' => ["id", "first_name", "photo", "email", "created_at"],
+            'customer_detail_list' => ["id", "first_name", "last_name", "photo", "email", "created_at"],
             'list' => ["id", "product_id", "user_id", "review", "rate", "created_at"],
             'page' => 1,
             'limit' => 5
@@ -107,7 +107,9 @@ class ProductController extends Controller
         ]);
         $sumOfAllRate = collect($allReviews)->sum('rate');
 
-        if (isset($sumOfAllRate)) {
+        $product['ratting'] = 0;
+        $product['ratting_count'] = 0;
+        if (isset($sumOfAllRate) && $sumOfAllRate > 0) {
             $product['ratting'] = round($sumOfAllRate / count($allReviews), 1);
             $product['ratting_count'] =  count($allReviews);
         }

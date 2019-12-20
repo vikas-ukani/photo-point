@@ -140,9 +140,20 @@ class Products extends Model
      */
     public function getImageAttribute($value)
     {
-        $this->attributes['image'] = env('APP_URL', url('/')) . $value;
-        $arr = array_unique(explode(env('APP_URL', url('/')), $this->attributes['image']));
-        return $this->attributes['image'] = implode(env('APP_URL', url('/')), $arr);
+        if (isset($value) && is_string($value)) {
+            $value = explode(',', $value);
+            $value = array_filter($value);
+            foreach ($value as $key => &$val) {
+                $val = env('APP_URL', url('/')) . $val;
+                $arr = array_unique(explode(env('APP_URL', url('/')), $val));
+                $val = implode(env('APP_URL', url('/')), $arr);
+            }
+            return $this->attributes['image'] = $value;
+        } else {
+            $this->attributes['image'] = env('APP_URL', url('/')) . $value;
+            $arr = array_unique(explode(env('APP_URL', url('/')), $this->attributes['image']));
+            return $this->attributes['image'] = implode(env('APP_URL', url('/')), $arr);
+        }
     }
 
     public function category()

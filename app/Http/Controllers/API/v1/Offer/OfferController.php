@@ -33,12 +33,7 @@ class OfferController extends Controller
             return $this->sendBadRequest(null, $validation->errors()->first());
         }
 
-
-
-        dd('final offer', $input);
-
         $offer = $this->offerRepository->create($input);
-
         return $this->sendSuccessResponse($offer, __('validation.common.created', ['module' => "Offer"]));
     }
 }

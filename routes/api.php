@@ -26,6 +26,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('get-profile-detail', 'Auth\AuthController@getProfileDetails');
 
         $router->group(['prefix' => 'account'], function () use ($router) {
+
+            $router->post('update-password', 'Auth\AuthController@updatePassword');
+
             $router->post('get-address-list', 'User\UserController@getAddressList');
             $router->post('add-address', 'User\UserController@storeAddress');
             $router->put('update-address/{id}', 'User\UserController@updateAddress');
@@ -62,5 +65,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         /** order rating and rate */
         $router->post('add-review-on-product', 'Order\OrderRateReviewController@store');
+
+        /**
+         * Complaints module
+         */
+        $router->post('add-complaints', "Complaints\ComplaintController@store");
+        $router->post('complaints-list', "Complaints\ComplaintController@list");
     });
 });

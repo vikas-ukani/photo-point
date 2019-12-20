@@ -256,7 +256,7 @@ class AuthController extends Controller
     {
         $input = $request->all();
         /** required validation */
-        $validation = $this->requiredValidation(['email', 'password', 'confirm_password'], $input);
+        $validation = $this->requiredAllKeysValidation(['email', 'password', 'confirm_password'], $input);
         if (isset($validation) && $validation['flag'] == false) {
             return $this->sendBadRequest(null, $validation['message']);
         }
@@ -294,5 +294,31 @@ class AuthController extends Controller
             \Log::error($exception->getMessage());
             return $this->sendBadRequest(null, __('validation.common.token_required_in_header'));
         }
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $input = $request->all();
+
+        $validation = $this->requiredAllKeysValidation(['old_password', 'password', 'confirm_password'], $input);
+        if (isset($validation) && $validation['flag'] == false) {
+            return $this->sendBadRequest(null, $validation['message']);
+        }
+
+        /** check old password */
+        $user = \Auth::user();
+        // $user = $user->fresh();
+        if (!Hash::check($input['old_password'], $user->password)) {
+            return $this->sendBadRequest(null, __('validation.common.old_password_not_match'));
+        }
+
+        /** compare password */
+        if ($input['password'] !== $input['confirm_password']) {
+            return $this->sendBadRequest(null, __('validation.confirmed', ['attribute' => "Password"]));
+        }
+
+        $user->password = $input['password'];
+        $user->save();
+        return $this->sendSuccessResponse(null, __('validation.common.password_changed_success'));
     }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\API\v1\Offer;
 
+use App\Models\Offer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Libraries\Repositories\OfferRepositoryEloquent;
-use App\Models\Offer;
 
 class OfferController extends Controller
 {

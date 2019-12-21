@@ -3,12 +3,12 @@
 namespace App\Libraries\Repositories;
 
 use App\Libraries\RepositoriesInterfaces\UsersRepository;
-use App\Models\Complaint;
+use App\Models\ComplaintCategory;
 use App\Supports\BaseMainRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
 
-class ComplaintRepositoryEloquent extends BaseRepository implements UsersRepository
+class ComplaintCategoryRepositoryEloquent extends BaseRepository implements UsersRepository
 {
     use BaseMainRepository;
 
@@ -19,7 +19,7 @@ class ComplaintRepositoryEloquent extends BaseRepository implements UsersReposit
      */
     public function model()
     {
-        return Complaint::class;
+        return ComplaintCategory::class;
     }
 
     /**
@@ -44,10 +44,10 @@ class ComplaintRepositoryEloquent extends BaseRepository implements UsersReposit
     {
         /** searching */
         if (isset($input['search'])) {
-            $value = $this->customSearch($value, $input, ['subject', 'description']);
+            $value = $this->customSearch($value, $input, ['name', 'code']);
         }
-
         $this->customRelation($value, $input, []); //'account_detail'
+
         /** filter by id  */
         if (isset($input['id'])) {
             $value = $value->where('id', $input['id']);
@@ -56,12 +56,20 @@ class ComplaintRepositoryEloquent extends BaseRepository implements UsersReposit
             $value = $value->whereIn('id', $input['ids']);
         }
 
-        /** filter by category_id  */
-        if (isset($input['category_id'])) {
-            $value = $value->where('category_id', $input['category_id']);
+        if (isset($input['name'])) {
+            $value = $value->where('name', $input['name']);
         }
-        if (isset($input['category_ids']) && is_array($input['category_ids']) && count($input['category_ids'])) {
-            $value = $value->whereIn('category_id', $input['category_ids']);
+
+        if (isset($input['code'])) {
+            $value = $value->where('code', $input['code']);
+        }
+
+        if (isset($input['sequence'])) {
+            $value = $value->where('sequence', $input['sequence']);
+        }
+
+        if (isset($input['is_active'])) {
+            $value = $value->where('is_active', $input['is_active']);
         }
     }
 

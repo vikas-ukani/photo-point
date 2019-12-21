@@ -134,11 +134,7 @@ class Complaint extends Model
         }
     }
 
-
-
-
-
-    public function order_id()
+    public function order_detail()
     {
         return $this->hasOne(Order::class, 'id', 'order_id');
     }

@@ -71,5 +71,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
          */
         $router->post('add-complaints', "Complaints\ComplaintController@store");
         $router->post('complaints-list', "Complaints\ComplaintController@list");
+        $router->get('get-complaint/{id}', "Complaints\ComplaintController@show");
+        $router->post('update-complaint/{id}', "Complaints\ComplaintController@update");
+        $router->get('delete-complaint/{id}', "Complaints\ComplaintController@destroy");
+
+        $router->post('complaint-categories-list', "Complaints\ComplaintController@complaintCategoriesList");
     });
 });

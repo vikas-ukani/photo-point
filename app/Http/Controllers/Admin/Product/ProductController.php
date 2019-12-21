@@ -60,6 +60,7 @@ class ProductController extends Controller
             return $this->sendBadRequest(null, $validator->errors()->first());
         }
 
+        dd('creat', $input);
         $product = $this->commonCreateUpdate($input);
         if (isset($product) && $product['flag'] == false) {
             return $this->sendBadRequest(null, $product['message']);

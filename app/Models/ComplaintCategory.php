@@ -5,15 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
-class MainCategory extends Model
+class ComplaintCategory extends Model
 {
-    //
     protected $fillable = [
-        "name",
-        "code",
-        'image',
-        "is_active",
-        "description"
+        "name", // Main title name
+        "code", // code for unique
+        "sequence", // for dropdown sequence
+        'is_active', // active or not
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'sequence' => 'integer',
+        'is_active' => 'boolean',
     ];
 
     /**
@@ -29,11 +37,9 @@ class MainCategory extends Model
 
         $rules = [
             'name' => $once . 'required',
-            'code' => $once . "required|code|unique:main_categories,code,{$id}",
-            'image' => $once . "required",
-            'is_active' => $once . 'required|boolean',
+            'code' => $once . 'required|unique:complaint_categories,code,' . $id,
+            'is_active' => $once . 'required|boolean'
         ];
-
         return $rules;
     }
 
@@ -48,6 +54,25 @@ class MainCategory extends Model
         return [
             'required' => __('validation.required'),
         ];
+    }
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($value) {
+            // $value->user_id = \Auth::id();
+        });
+        static::updating(function ($value) {
+            // $value->user_id = \Auth::id();
+        });
+        static::saving(function ($value) {
+            // $value->user_id = \Auth::id();
+        });
     }
 
     /**
@@ -77,17 +102,18 @@ class MainCategory extends Model
         return $query->orderBy('created_at', 'desc');
     }
 
+    public function order_detail()
+    {
+        return $this->hasOne(Order::class, 'id', 'order_id');
+    }
+
     /**
-     * getPhotoAttribute => append base url to image with unique
-     *
-     * @param  mixed $value
+     * category_detail => main category wise offer relation
      *
      * @return void
      */
-    public function getImageAttribute($value)
+    public function category_detail()
     {
-        $this->attributes['image'] = env('APP_URL', url('/')) . $value;
-        $arr = array_unique(explode(env('APP_URL', url('/')), $this->attributes['image']));
-        return $this->attributes['image'] = implode(env('APP_URL', url('/')), $arr);
+        return $this->hasOne(MainCategory::class, 'id', 'category_id');
     }
 }

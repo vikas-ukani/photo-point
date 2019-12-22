@@ -14,6 +14,18 @@ define('UPLOADED_FOLDER_NAME', '/uploaded/');
 /** Image File Extension */
 define('PNG_EXTENSION', '.png'); //
 
+/**
+ * Setting Fixed Values
+ */
+// const SETTING_SUPPORT_WEBSITE = env('APP_URL', url('/'));
+const SETTING_SUPPORT_CONTACT_NUMBER = '0261-364856';
+const SETTING_SUPPORT_EMAIL = 'support@sipikana.com';
+const SETTING_SUPPORT_DAYS = "Monday-Saturday";
+const SETTING_SUPPORT_TIMES = '09:00AM-10PM';
+
+/**
+ * Order Status
+ */
 const ORDER_STATUS_COMPLETED = "COMPLETED";
 const ORDER_STATUS_RUNNING = "RUNNING";
 const ORDER_STATUS_CANCELED = "CANCELED";

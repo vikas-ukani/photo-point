@@ -16,6 +16,20 @@ class OfferController extends Controller
         $this->offerRepository = $offerRepository;
     }
 
+
+    public function list(Request $request)
+    {
+        $input = $request->all();
+
+        $input['is_active'] = $input['is_active']  ?? true;
+
+        $offers = $this->offerRepository->getDetails($input);
+        if (isset($offers) && $offers['count'] == 0) return $this->sendBadRequest(null, __('validation.common.details_not_found', ['module' => "offer"]));
+
+        return $this->sendSuccessResponse($offers, __('validation.common.details_found', ['module' => "Offer"]));
+    }
+
+
     /**
      * store
      *

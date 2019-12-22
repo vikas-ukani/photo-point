@@ -273,4 +273,11 @@ class CartRepositoryEloquent extends BaseRepository implements UsersRepository
         // $value->fill($input)->update();
         return $value->fresh();
     }
+
+
+    public function getCountByInput($input)
+    {
+        $value = $this->makeModel();
+        return $value->where('user_id', $input['user_id'])->count();
+    }
 }

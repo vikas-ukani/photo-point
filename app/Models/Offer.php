@@ -13,6 +13,8 @@ class Offer extends Model
         "discount", // amount of values
         "valid_from", // offer starting from
         "valid_to", // offer starting to
+        "description", // offer starting to
+        "image", // offer starting to
         "category_id", // offer apply of this category 
         'is_active', // offer active or not
     ];
@@ -47,7 +49,9 @@ class Offer extends Model
             'valid_from' => $once . 'required|date',
             'valid_to' => $once . 'required|date',
             'category_id' => $once . 'required|numeric',
-            'is_active' => $once . 'required|boolean',
+            'description' => $once . 'required',
+            'image' => $once . 'required',
+            'is_active' => $once . 'required',
         ];
         return $rules;
     }
@@ -73,6 +77,20 @@ class Offer extends Model
     protected static function boot()
     {
         parent::boot();
+
+        static::retrieved(function ($value) {
+            $value->is_active = $value->is_active == 1 ? true : false;
+        });
+
+        static::creating(function ($value) {
+            $value->is_active = $value->is_active == true ? 1 : 0;
+        });
+        static::updating(function ($value) {
+            $value->is_active = $value->is_active == true ? 1 : 0;
+        });
+        static::saving(function ($value) {
+            $value->is_active = $value->is_active == true ? 1 : 0;
+        });
     }
 
     /**
@@ -100,6 +118,20 @@ class Offer extends Model
     public function scopeOrdered($query)
     {
         return $query->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * getPhotoAttribute => append base url to image with unique
+     *
+     * @param  mixed $value
+     *
+     * @return void
+     */
+    public function getImageAttribute($value)
+    {
+        $this->attributes['image'] = env('APP_URL', url('/')) . $value;
+        $arr = array_unique(explode(env('APP_URL', url('/')), $this->attributes['image']));
+        return $this->attributes['image'] = implode(env('APP_URL', url('/')), $arr);
     }
 
     /**

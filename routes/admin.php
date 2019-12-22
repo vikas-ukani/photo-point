@@ -21,12 +21,22 @@ $router->group(['middleware' => ["auth:api"]], function () use ($router) {
         $router->post('/products-status-change', "ProductController@statusChange");
         $router->delete('/products-delete/{id}', "ProductController@destory");
         $router->post('/products-delete-multiple', "ProductController@multipleDelete");
-        // $router->bind('product', 'App\Models\Products');
     });
 
+    /**
+     * Offer APIs
+     */
+    $router->group(['namespace' => 'Offer'], function () use ($router) {
+        $router->post('/offers-list', "OfferController@list");
+        $router->post('/offers-create', "OfferController@store");
+        $router->get('/offers-show/{id}', "OfferController@show");
+        $router->post('/offers-update/{id}', "OfferController@update");
+        $router->post('/offers-status-change', "OfferController@statusChange");
+        $router->delete('/offers-delete/{id}', "OfferController@destory");
+        $router->post('/offers-delete-multiple', "OfferController@multipleDelete");
+    });
 
     $router->group(['namespace' => 'Complaint'], function () use ($router) {
-        # pass...
         $router->post('/complaint-category-list', "ComplaintCategoryController@list");
         $router->post('/complaint-category-create', "ComplaintCategoryController@store");
         $router->get('/complaint-category-show/{id}', "ComplaintCategoryController@show");
@@ -36,8 +46,6 @@ $router->group(['middleware' => ["auth:api"]], function () use ($router) {
         $router->post('/complaint-category-delete-multiple', "ComplaintCategoryController@multipleDelete");
     });
 });
-
-
 
 $router->group(['namespace' => 'Country'], function () use ($router) {
     $router->post('/countries-list', "CountryController@list");

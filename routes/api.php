@@ -38,24 +38,31 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         });
 
         /**
-         * Offer Module
-         */
-        $router->post('offers-create', "Offer\OfferController@store");
-
-        /**
          * Product Module
          */
         $router->post('product-list', "Product\ProductController@list");
         $router->get('product-detail/{id}', "Product\ProductController@show");
         $router->post('product-detail-review-list', "Product\ProductController@getProductReviews");
 
+        /**
+         * Offers
+         */
+        $router->post('offer-list', "Offer\OfferController@list");
+
+        /**
+         * Cart Module
+         */
         $router->post('add-to-cart', "Cart\CartController@store");
         $router->post('cart-list', "Cart\CartController@list");
         $router->post('delete-to-cart/{id}', "Cart\CartController@destroye");
         $router->post('remove-cart-quantity/{id}', "Cart\CartController@substractCartQuantity");
-        // $router->group(['prefix' => 'products'])
 
-        /**order related apis  */
+        $router->get('cart-count', "Cart\CartController@getCartCount");
+
+
+        /**
+         * Order related apis
+         */
         $router->get('get-order-details-from-cart', 'Order\OrderController@getOrderDetailsFromCart');
         $router->post('place-order', 'Order\OrderController@store');
         $router->post('orders-list', 'Order\OrderController@list');
@@ -63,7 +70,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         // $router->post('update-latitude-longitude', "AllInOneController@updateLatLongAPI");
 
-        /** order rating and rate */
+        /**
+         * order rating and rate
+         */
         $router->post('add-review-on-product', 'Order\OrderRateReviewController@store');
 
         /**
@@ -76,5 +85,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('delete-complaint/{id}', "Complaints\ComplaintController@destroy");
 
         $router->post('complaint-categories-list', "Complaints\ComplaintController@complaintCategoriesList");
+
+        /**
+         * Setting Common API
+         */
+        $router->get('get-setting-common', "Setting\SettingController@getCommonData");
     });
 });

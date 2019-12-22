@@ -100,4 +100,13 @@ class CartController extends Controller
         $cart = $this->getCartDetails(['id' => $cart->id, 'relation' => ['product', 'user'], 'first' => true]);
         return $this->sendSuccessResponse($cart, __('validation.common.saved', ['module' => 'cart']));
     }
+
+    public function getCartCount()
+    {
+        $input = [
+            'user_id' => \Auth::id()
+        ];
+        $count = $this->cartRepository->getCountByInput($input);
+        return $this->sendSuccessResponse(['count' => $count], __("validation.common.details_found", ["module" => "Cart count"]));
+    }
 }

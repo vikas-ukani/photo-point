@@ -19,9 +19,21 @@ $router->get('/', function () use ($router) {
 });
 
 $router->get('/test', function (Request $request) {
-     // $input = $request->all();
+    return view('test');
+    // $input = $request->all();
 
     // $encoded = json_encode($input['amenities_available'] ) ;
+});
+
+
+$router->get('privacy-policy', function () {
+    return view('settings.privacy_policy');
+});
+$router->get('terms-and-conditions', function () {
+    return view('settings.terms_and_conditions');
+});
+$router->get('refund-and-cancellation-policy', function () {
+    return view('settings.refund_and_cancellation_policy');
 });
 
 $router->get('/verify-email/{id}', "Controller@userEmailVerify");

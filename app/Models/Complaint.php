@@ -40,8 +40,8 @@ class Complaint extends Model
             'subject' => $once . 'required',
             'description' => $once . 'required',
             'complain_category_id' => $once . 'required',
-            'order_id' => $once . 'required',
-            'images' => $once . 'required',
+            'order_id' => $once . 'requiredZ|integer',
+            'images' => $once . 'required|array',
         ];
         return $rules;
     }
@@ -146,6 +146,6 @@ class Complaint extends Model
      */
     public function category_detail()
     {
-        return $this->hasOne(MainCategory::class, 'id', 'category_id');
+        return $this->hasOne(ComplaintCategory::class, 'id', 'complain_category_id');
     }
 }

@@ -40,7 +40,7 @@ class Complaint extends Model
             'subject' => $once . 'required',
             'description' => $once . 'required',
             'complain_category_id' => $once . 'required',
-            'order_id' => $once . 'requiredZ|integer',
+            'order_id' => $once . 'required|integer',
             'images' => $once . 'required|array',
         ];
         return $rules;

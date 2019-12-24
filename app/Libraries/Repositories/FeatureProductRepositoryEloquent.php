@@ -2,13 +2,13 @@
 
 namespace App\Libraries\Repositories;
 
-use App\Models\User;
-use App\Supports\BaseMainRepository;
-use Prettus\Repository\Eloquent\BaseRepository;
-use Prettus\Repository\Criteria\RequestCriteria;
 use App\Libraries\RepositoriesInterfaces\UsersRepository;
+use App\Models\FeatureProducts;
+use App\Supports\BaseMainRepository;
+use Prettus\Repository\Criteria\RequestCriteria;
+use Prettus\Repository\Eloquent\BaseRepository;
 
-class UsersRepositoryEloquent extends BaseRepository implements UsersRepository
+class FeatureProductRepositoryEloquent extends BaseRepository implements UsersRepository
 {
     use BaseMainRepository;
 
@@ -19,7 +19,7 @@ class UsersRepositoryEloquent extends BaseRepository implements UsersRepository
      */
     public function model()
     {
-        return User::class;
+        return FeatureProducts::class;
     }
 
     /**
@@ -44,26 +44,10 @@ class UsersRepositoryEloquent extends BaseRepository implements UsersRepository
     {
         /** searching */
         if (isset($input['search'])) {
-            $value = $this->customSearch($value, $input, ['name', 'email', 'mobile']);
+            $value = $this->customSearch($value, $input, ['product_id']);
         }
 
-        /** except current login user */
-        if (isset($input['is_except_current_user']) && $input['is_except_current_user'] == true) {
-            $value = $value->where('id', '<>', \Auth::user()->id);
-        }
-
-        /** filter by account id */
-        if (isset($input['account_id'])) {
-            $value = $value->where('account_id', $input['account_id']);
-        }
-        if (isset($input['account_ids']) && is_array($input['account_ids']) && count($input['account_ids'])) {
-            $value = $value->whereIn('account_id', $input['account_ids']);
-        }
-
-        /** get users from id */
-        if (isset($input['user_id'])) {
-            $value = $value->whereUserId($input['user_id']);
-        }
+        $this->customRelation($value, $input, []); //'account_detail'
         /** filter by id  */
         if (isset($input['id'])) {
             $value = $value->where('id', $input['id']);
@@ -72,84 +56,17 @@ class UsersRepositoryEloquent extends BaseRepository implements UsersRepository
             $value = $value->whereIn('id', $input['ids']);
         }
 
-        if (isset($input['name'])) {
-            $value = $value->whereName($input['name']);
+        /** product_id and product_ids wise filter */
+        if (isset($input['product_id'])) {
+            $value = $value->where('product_id', $input['product_id']);
         }
-
-        if (isset($input['email'])) {
-            $value = $value->whereEmail($input['email']);
-        }
-
-        $this->customRelation($value, $input, []); //'account_detail'
-
-        /** gender and genders wise filter */
-        if (isset($input['gender'])) {
-            $value = $value->where('gender', $input['gender']);
-        }
-        if (isset($input['genders']) && is_array($input['genders']) && count($input['genders'])) {
-            $value = $value->whereIn('gender', $input['genders']);
-        }
-
-        /** check user type */
-        if (isset($input['user_type'])) {
-            $value = $value->where('user_type', $input['user_type']);
-        }
-        if (isset($input['user_types']) && is_array($input['user_types']) && count($input['user_types'])) {
-            $value = $value->whereIn('user_type', $input['user_types']);
-        }
-
-        /** check last login where user login */
-        if (isset($input['last_login_at'])) {
-            $value = $value->where('last_login_at', '<=', $input['last_login_at']);
-        }
-
-        /** check last login is have null  */
-        if (isset($input['is_last_login']) && $input['is_last_login'] == false) {
-            $value = $value->orWhereNull('last_login_at');
+        if (isset($input['product_ids']) && count($input['product_ids']) > 0) {
+            $value = $value->whereIn('product_id', $input['product_ids']);
         }
 
         /** date wise records */
         if (isset($input['start_date'])) {
             $value = $value->where('created_at', ">=", $input['start_date']);
-        }
-
-        /** check for user active or not */
-        if (isset($input['is_active'])) {
-            $value = $value->where('is_active', $input['is_active']);
-        }
-
-        /** check if false then don't show current user in listing */
-        if (isset($input['is_current_user']) && $input['is_current_user'] == false) {
-            $value = $value->where('id', '<>', \Auth::id());
-        }
-
-        if (isset($input['facebook'])) {
-            $value = $value->where('facebook', $input['facebook']);
-        }
-
-        /** country_id and country_ids wise filter */
-        if (isset($input['country_id'])) {
-            $value = $value->where('country_id', $input['country_id']);
-        }
-        if (isset($input['country_ids']) && is_array($input['country_ids']) && count($input['country_ids'])) {
-            $value = $value->whereIn('country_id', $input['country_ids']);
-        }
-
-        if (isset($input['latitude'])) {
-            $value = $value->where('latitude', $input['latitude']);
-        }
-        if (isset($input['longitude'])) {
-            $value = $value->where('longitude', $input['longitude']);
-        }
-
-
-        if (isset($input['is_snooze'])) {
-            $value = $value->where('is_snooze', $input['is_snooze']);
-        }
-
-        /** check for user complete their profile or not */
-        if (isset($input['is_profile_complete'])) {
-            $value = $value->where('is_profile_complete', $input['is_profile_complete']);
         }
     }
 
@@ -202,13 +119,13 @@ class UsersRepositoryEloquent extends BaseRepository implements UsersRepository
 
         return [
             'count' => $count,
-            'list' => $value
+            'list' => $value,
         ];
     }
 
     /**
-     * updateRich => update some keys 
-     * 
+     * updateRich => update some keys
+     *
      * @param  mixed $input => updated input
      * @param  mixed $id => update id record
      *
@@ -245,7 +162,7 @@ class UsersRepositoryEloquent extends BaseRepository implements UsersRepository
     }
 
     /**
-     * checkKeysExist => Check key exists in db or not - RESPONSE BOOLEAN 
+     * checkKeysExist => Check key exists in db or not - RESPONSE BOOLEAN
      *
      * @param  mixed $key
      * @param  mixed $input
@@ -326,26 +243,25 @@ class UsersRepositoryEloquent extends BaseRepository implements UsersRepository
     {
         $value = $this->makeModel();
 
-
-
-
-
-
         return $value;
     }
 
-    public function checkEmailOrMobileExistsOrNot($input = null)
+    public function updateManyByWhere($input, $where)
     {
-        if (isset($input)) {
-            $value = $this->makeModel();
+        $value = $this->makeModel();
+        $value = $value->where(array_first(array_keys($where)), array_first(array_values($where)));
+        // $value = $value->where('user_id', $where['user_id']);
+        $value = $value->update($input);
+        return $value;
 
-            $value = $value->where(function ($query) use ($input) {
-                $query = $query->where('email', $input['email'])
-                    ->orWhere('mobile', $input['mobile']);
-            });
+        /** for return updated object */
+        // $value->fill($input)->update();
+        return $value->fresh();
+    }
 
-            $value = $value->first();
-            return $value;
-        }
+    public function deleteWhereIn($key, $array)
+    {
+        $value = $this->makeModel();
+        return $value->whereIn($key, $array)->delete();
     }
 }

@@ -192,6 +192,8 @@ return [
         'successfully_activated_account' => "Congratulation, Your account has been successfully activated.",
         'already_account_activated' => "You are already Activated your account",
 
+        'selar_account_requested_success' => "Seller account request successfully send.",
+
         "please_give_key" => "please, give a :key",
         "invalid_key" => "please, give a valid :key",
 

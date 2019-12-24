@@ -13,11 +13,9 @@ use Illuminate\Support\Facades\Validator;
 use Laravel\Lumen\Auth\Authorizable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
+class Shopper extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
     use Authenticatable, Authorizable, Notifiable, DateConvertor;
-
-    protected $table = "users";
 
     /**
      * The attributes that are mass assignable.
@@ -35,15 +33,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     ];
 
     /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-    ];
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array
@@ -52,6 +41,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'email_verified_at' => 'datetime',
         'is_active' => 'boolean',
         'is_seller_requested' => 'boolean',
+    ];
+
+    /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password',
     ];
 
     /**
@@ -64,45 +62,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public static function rules($id)
     {
         $once = isset($id) ? 'sometimes|' : '';
-
         $rules = [
             'first_name' => $once . 'required|max:100',
             'last_name' => $once . 'required|max:100',
             'email' => $once . "required|email|unique:users,email,{$id}",
             'password' => $once . 'required',
-            'mobile' => "required|unique:users,mobile,{$id}",
+            'mobile' => "required|mobile|unique:users,mobile,{$id}"
         ];
-
         return $rules;
     }
 
-    /**
-     * messages => Set Error Message
-     *
-     * @return void
-     */
-    public static function messages()
-    {
-        /** set error message in trans files */
-        return [
-            'required' => __('validation.required'),
-        ];
-    }
-
-    /**
-     * validation => **
-     *
-     *
-     * @param  mixed $input
-     * @param  mixed $id
-     *
-     * @return void
-     */
-    public static function validation($input, $id = null)
-    {
-        $className = __CLASS__;
-        return Validator::make($input, $className::rules($id), $className::messages());
-    }
 
     /**
      * setNameAttribute => tittle case
@@ -133,6 +102,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $this->attributes['email'] = strtolower($value);
     }
 
+
     /**
      * getPhotoAttribute => append base url to image with unique
      *
@@ -152,11 +122,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         parent::boot();
 
         static::retrieved(function ($query) {
-
             $query->is_active = $query->is_active == 1 ? true : false;
-            $query->is_seller_requested = $query->is_seller_requested == 1 ? true : false;
+        });
+
+        static::creating(function ($query) {
+            $query->is_active = isset($query->is_active) ? $query->is_active : 1;
         });
     }
+
+
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
@@ -188,15 +162,5 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function scopeOrdered($query)
     {
         return $query->orderBy('created_at', 'desc');
-    }
-
-    /**
-     * country_detail => relation with user country
-     *
-     * @return void
-     */
-    public function country_detail()
-    {
-        return $this->hasOne(Country::class, 'id', 'country_id');
     }
 }

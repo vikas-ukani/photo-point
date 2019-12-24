@@ -136,4 +136,15 @@ class UserController extends Controller
 
         return $this->sendSuccessResponse($addresses, __('validation.common.saved', ['module' => $this->moduleName]));
     }
+
+    public function wantToBecameSaler()
+    {
+        $userId = \Auth::id();
+
+        $this->userRepository->updateRich([
+            'is_seller_requested' => true
+        ], $userId);
+
+        return $this->sendSuccessResponse(null, __('validation.common.selar_account_requested_success'));
+    }
 }

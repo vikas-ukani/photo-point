@@ -5,22 +5,29 @@ $router->group(['prefix' => 'api'], function () use ($router) {
      * Authentication related routes
      */
     $router->group(['prefix' => 'auth', 'namespace' => 'Auth'], function () use ($router) {
-
         $router->post('/login', "AuthController@login");
         $router->post('/register', "AuthController@register");
-
         $router->post('/forgot-password', "AuthController@resetPasswordFn");
         $router->post('/change-password', "AuthController@changePasswordFn");
         /** FIXME  Remain To Set Change Password From App */
+    });
+
+    $router->get('get-all-data', "CommonController@getAllCommonData");
+    $router->get('get-country-state-city', "CommonController@getCountryStateCity");
+
+    $router->post('product-list', "Product\ProductController@list");
+    $router->post('feature-product-list', "Product\ProductController@featureProductList");
+
+    /** shopper Authentication */
+    $router->group(['prefix' => 'shopper-auth', 'namespace' => 'AuthShopper'], function () use ($router) {
+        $router->post('/register', "AuthShopperController@register");
+        $router->post('/login', "AuthShopperController@login");
     });
 
     /**
      * after login routes access
      */
     $router->group(['middleware' => ["auth:api"]], function () use ($router) {
-
-        $router->get('get-all-data', "CommonController@getAllCommonData");
-        $router->get('get-country-state-city', "CommonController@getCountryStateCity");
 
         $router->post('profile-update', 'Auth\AuthController@updateUserProfileFn');
         $router->get('get-profile-detail', 'Auth\AuthController@getProfileDetails');
@@ -35,12 +42,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             $router->get('get-address/{id}', 'User\UserController@showAddress');
             $router->delete('delete-address/{id}', 'User\UserController@destroy');
             $router->get('set-active-address/{id}', 'User\UserController@setToActiveAddress');
+
+            $router->get('want-to-became-saler', 'User\UserController@wantToBecameSaler');
         });
 
         /**
          * Product Module
          */
-        $router->post('product-list', "Product\ProductController@list");
         $router->get('product-detail/{id}', "Product\ProductController@show");
         $router->post('product-detail-review-list', "Product\ProductController@getProductReviews");
 

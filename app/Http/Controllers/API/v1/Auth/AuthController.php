@@ -64,14 +64,15 @@ class AuthController extends Controller
         }
 
         /**check email manual validation */
-        $emailIsExist = $this->usersRepository->getDetailsByInput(
+        $emailIsExist = $this->usersRepository->checkEmailOrMobileExistsOrNot(
             [
                 'email' => $input['email'],
+                'mobile' => $input['mobile'],
                 'first' => true,
             ]
         );
-        if (isset($emailIsExist) && $emailIsExist->count() > 0) {
-            return $this->makeError(null, __('validation.unique', ['attribute' => 'email']));
+        if (!!$emailIsExist) {
+            return $this->makeError(null, __('validation.unique', ['attribute' => 'email or password']));
         }
 
         /** password confirmations */

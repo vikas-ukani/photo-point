@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\v1\Product;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Libraries\Repositories\FeatureProductRepositoryEloquent;
 use App\Libraries\Repositories\OrderRateReviewRepositoryEloquent;
 use App\Libraries\Repositories\UsersRepositoryEloquent;
 use App\Libraries\Repositories\ProductRepositoryEloquent;
@@ -12,16 +13,35 @@ class ProductController extends Controller
 {
     protected $orderRateReviewRepository;
     protected $productRepository;
+    protected $featureProductRepository;
     protected $userRepository;
 
     public function __construct(
         OrderRateReviewRepositoryEloquent $orderRateReviewRepository,
         ProductRepositoryEloquent $productRepository,
+        FeatureProductRepositoryEloquent $featureProductRepository,
         UsersRepositoryEloquent $userRepository
     ) {
         $this->orderRateReviewRepository = $orderRateReviewRepository;
         $this->productRepository = $productRepository;
+        $this->featureProductRepository = $featureProductRepository;
         $this->userRepository = $userRepository;
+    }
+
+    public function featureProductList(Request $request)
+    {
+        $input = $request->all();
+        $products = $this->featureProductRepository->getDetails($input);
+        if (isset($products['count']) && $products['count'] == 0) {
+            return $this->sendBadRequest(null, __('validation.common.details_not_found', ['module' => "Feature Products"]));
+        }
+
+
+        $products = array_values(array_flatten(collect($products['list'])->pluck('product_details')->all()));
+
+        $productsRes = $this->setProductRating($products);
+
+        return $this->sendSuccessResponse($productsRes, __('validation.common.details_found', ['module' => "Feature products"]));
     }
 
     function list(Request $request)
@@ -39,35 +59,44 @@ class ProductController extends Controller
         }
 
         $products['list'] = $products['list']->toArray();
+        $products['list'] = $this->setProductRating($products['list']);
 
-        foreach ($products['list'] as $key => &$product) {
-            $product['ratting'] = 0;
-            $product['ratting_count'] = 0;
-            if (isset($product['customer_rating']) && count($product['customer_rating']) > 0) {
-                $sumOfAllRate = collect($product['customer_rating'])->sum('rate');
+        // foreach ($products['list'] as $key => &$product) {
+        //     $product['ratting'] = 0;
+        //     $product['ratting_count'] = 0;
+        //     if (isset($product['customer_rating']) && count($product['customer_rating']) > 0) {
+        //         $sumOfAllRate = collect($product['customer_rating'])->sum('rate');
 
-                if (isset($sumOfAllRate)) {
-                    $product['ratting'] = round($sumOfAllRate / count($product['customer_rating']), 1);
-                    $product['ratting_count'] =  count($product['customer_rating']);
-                }
-
-                /** get customer details */
-                // foreach ($product['customer_rating'] as $key => &$review) {
-                //     $review['customer'] = $this->userRepository->getDetailsByInput([
-                //         'id' => $review['user_id'],
-                //         'list' => ["id", "photo", "first_name", "last_name"],
-                //         'first' => true
-                //     ]);
-                // }
-
-                // dd('cehck data', $sumOfAllRate, count($product['customer_rating']), $product['ratting'], $product);
-            }
-            unset($product['customer_rating']);
-        }
+        //         if (isset($sumOfAllRate)) {
+        //             $product['ratting'] = round($sumOfAllRate / count($product['customer_rating']), 1);
+        //             $product['ratting_count'] =  count($product['customer_rating']);
+        //         }
+        //     }
+        //     unset($product['customer_rating']);
+        // }
 
         return $this->sendSuccessResponse($products, __('validation.common.details_found', ['module' => "products"]));
     }
 
+    public function setProductRating(&$products = null)
+    {
+        if (isset($products)) {
+            foreach ($products as $key => &$product) {
+                $product['ratting'] = 0;
+                $product['ratting_count'] = 0;
+                if (isset($product['customer_rating']) && count($product['customer_rating']) > 0) {
+                    $sumOfAllRate = collect($product['customer_rating'])->sum('rate');
+
+                    if (isset($sumOfAllRate)) {
+                        $product['ratting'] = round($sumOfAllRate / count($product['customer_rating']), 1);
+                        $product['ratting_count'] =  count($product['customer_rating']);
+                    }
+                }
+                unset($product['customer_rating']);
+            }
+            return $products;
+        }
+    }
 
     public function show($id)
     {

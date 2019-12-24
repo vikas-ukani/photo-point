@@ -2,13 +2,13 @@
 
 namespace App\Libraries\Repositories;
 
-use App\Models\User;
+use App\Models\Shopper;
 use App\Supports\BaseMainRepository;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Libraries\RepositoriesInterfaces\UsersRepository;
 
-class UsersRepositoryEloquent extends BaseRepository implements UsersRepository
+class ShopperUserRepositoryEloquent extends BaseRepository implements UsersRepository
 {
     use BaseMainRepository;
 
@@ -19,7 +19,7 @@ class UsersRepositoryEloquent extends BaseRepository implements UsersRepository
      */
     public function model()
     {
-        return User::class;
+        return Shopper::class;
     }
 
     /**

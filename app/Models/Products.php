@@ -35,7 +35,7 @@ class Products extends Model
             'category_id' => $once . 'required',
             'name' => $once . 'required',
             'price' => $once . 'required',
-            'image' => $once . "required",
+            // 'image' => $once . "required",
             'size' => $once . 'required',
             'color' => $once . 'required',
         ];
@@ -55,7 +55,6 @@ class Products extends Model
             'required' => __('validation.required'),
         ];
     }
-
 
     /**
      * validation => **
@@ -92,6 +91,18 @@ class Products extends Model
     protected static function boot()
     {
         parent::boot();
+
+        static::retrieved(function ($model) {
+            $model->is_active = $model->is_active == 1 ? true : false;
+        });
+
+        static::creating(function ($model) {
+            $model->is_active = $model->is_active == true ?  1 : 0;
+        });
+
+        static::updating(function ($model) {
+            $model->is_active = $model->is_active == true ?  1 : 0;
+        });
     }
 
 

@@ -60,7 +60,6 @@ class ProductController extends Controller
             return $this->sendBadRequest(null, $validator->errors()->first());
         }
 
-        dd('creat', $input);
         $product = $this->commonCreateUpdate($input);
         if (isset($product) && $product['flag'] == false) {
             return $this->sendBadRequest(null, $product['message']);
@@ -98,22 +97,21 @@ class ProductController extends Controller
     public function commonCreateUpdate($input, $id = null)
     {
 
-        /** upload multiple images */
-        if (isset($input['image']) && is_array($input['image']) && count($input['image']) > 0) {
-            #pass
-            $imagesArray = [];
-            foreach ($input['image'] as $key => $images) {
-                /** image upload code */
-                $data = $this->imageController->moveFile($images, 'products');
-                if (isset($data) && $data['flag'] == false) {
-                    return $this->makeError(null, $data['message']);
-                }
-                // $input['image'] = $data['data']['image'];
+
+        /**
+         * Multiple Upload
+         */
+        if (isset($input['images'])  && is_array($input['images']) && count($input['images']) > 0) {
+            foreach ($input['images'] as $key => $image) {
+                $data =  $this->imageController->moveFile($image, 'products');
+                array_push($input['images'], $data['data']['image']);
                 $imagesArray[] = $data['data']['image'];
             }
             $input['image'] = is_array($imagesArray) ? implode(',', $imagesArray) : $imagesArray;
         } else if (isset($input['image'])) {
-            /** image upload code */
+            /**
+             * Single Upload
+             */
             $data = $this->imageController->moveFile($input['image'], 'products');
             if (isset($data) && $data['flag'] == false) {
                 return $this->makeError(null, $data['message']);

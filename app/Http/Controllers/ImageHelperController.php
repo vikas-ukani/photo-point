@@ -44,7 +44,11 @@ class ImageHelperController extends Controller
      */
     public function moveFile($file = null, $moduleName = 'images')
     {
-        $fileName = $file->getClientOriginalName();
+
+        //     $image = str_replace('data:image/png;base64,', '', $file);
+        // $image = str_replace(' ', '+', $image);
+        // $fileName = str_random(10) . '.' . 'png';
+         $fileName = $file->getClientOriginalName();
 
         /** FIXME make compress image file */
         if (isset($fileName)) {

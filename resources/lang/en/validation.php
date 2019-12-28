@@ -151,6 +151,8 @@ return [
         'order_placed_success' => "Order successfully placed.",
 
 
+
+        'improved_shopper' => 'Your account is in-review. We will inform you when it is done. Thanks.',
         'invalid_user' => 'You are not valid user.',
 
         'max_length' => ':key must be :max digit long.',
@@ -197,11 +199,7 @@ return [
         "please_give_key" => "please, give a :key",
         "invalid_key" => "please, give a valid :key",
 
-
-
         'image_not_found' => "Image not found",
-
-
     ],
 
     "exceptions" => [

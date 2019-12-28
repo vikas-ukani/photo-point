@@ -11,7 +11,13 @@ $router->group(['namespace' => 'Category'], function () use ($router) {
  * after login routes access
  */
 $router->group(['middleware' => ["auth:api"]], function () use ($router) {
-    # pass
+     /**
+     * Shoppers
+     */
+    $router->group(['namespace' => 'Shopper'], function () use ($router) {
+        $router->post('/shopper-list', "ShopperController@shopperList");
+        $router->post('/shopper-status-change', "ShopperController@statusChange");
+    });
 
     $router->group(['namespace' => 'Product'], function () use ($router) {
         $router->post('/products-list', "ProductController@list");
@@ -21,6 +27,9 @@ $router->group(['middleware' => ["auth:api"]], function () use ($router) {
         $router->post('/products-status-change', "ProductController@statusChange");
         $router->delete('/products-delete/{id}', "ProductController@destory");
         $router->post('/products-delete-multiple', "ProductController@multipleDelete");
+
+        /** feature */
+        $router->post('feature-product-list', "Product\ProductController@featureProductList");
     });
 
     /**

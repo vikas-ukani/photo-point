@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 
 namespace App\Http\Controllers\Admin\Product;
 
@@ -19,6 +19,45 @@ class ProductController extends Controller
     ) {
         $this->productRepository = $productRepository;
         $this->imageController = $imageController;
+    }
+
+// featureProductList
+    /**
+     * @param Request $request
+     */
+    public function featureProductList(Request $request)
+    {
+        $input = $request->all();
+        $products = $this->featureProductRepository->getDetails($input);
+        if (isset($products['count']) && $products['count'] == 0) {
+            return $this->sendBadRequest(null, __('validation.common.details_not_found', ['module' => "Feature Products"]));
+        }
+
+        $products = array_values(array_flatten(collect($products['list'])->pluck('product_details')->all()));
+
+        $productsRes = $this->setProductRating($products);
+
+        return $this->sendSuccessResponse($productsRes, __('validation.common.details_found', ['module' => "Feature products"]));
+    }
+
+    public function setProductRating(&$products = null)
+    {
+        if (isset($products)) {
+            foreach ($products as $key => &$product) {
+                $product['ratting'] = 0;
+                $product['ratting_count'] = 0;
+                if (isset($product['customer_rating']) && count($product['customer_rating']) > 0) {
+                    $sumOfAllRate = collect($product['customer_rating'])->sum('rate');
+
+                    if (isset($sumOfAllRate)) {
+                        $product['ratting'] = round($sumOfAllRate / count($product['customer_rating']), 1);
+                        $product['ratting_count'] =  count($product['customer_rating']);
+                    }
+                }
+                unset($product['customer_rating']);
+            }
+            return $products;
+        }
     }
 
     function list(Request $request)

@@ -12,7 +12,7 @@ trait MessageClass
      * @param  mixed $returnMessage => response message
      * @param  mixed $statusCode => status message
      *
-     * @return void
+     * @return \Illuminate\Http\JsonResponse|void
      */
     public function sendBadRequest($returnArray = null, $returnMessage, $statusCode = RESPONSE_BAD_REQUEST)
     {

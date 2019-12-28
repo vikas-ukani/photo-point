@@ -29,6 +29,7 @@ class Shopper extends Model implements AuthenticatableContract, AuthorizableCont
         'password', // user password
         'mobile', // user mobile
         'photo', // user profile pic
+        'is_approved', // approved or not
         'is_active', // user is active or not.
     ];
 
@@ -40,6 +41,7 @@ class Shopper extends Model implements AuthenticatableContract, AuthorizableCont
     protected $casts = [
         'email_verified_at' => 'datetime',
         'is_active' => 'boolean',
+        'is_approved' => 'boolean',
         'is_seller_requested' => 'boolean',
     ];
 
@@ -57,58 +59,26 @@ class Shopper extends Model implements AuthenticatableContract, AuthorizableCont
      *
      * @param  mixed $id
      *
-     * @return void
+     * @return array
      */
     public static function rules($id)
     {
         $once = isset($id) ? 'sometimes|' : '';
-        $rules = [
+        return [
             'first_name' => $once . 'required|max:100',
             'last_name' => $once . 'required|max:100',
             'email' => $once . "required|email|unique:users,email,{$id}",
             'password' => $once . 'required',
             'mobile' => "required|mobile|unique:users,mobile,{$id}"
         ];
-        return $rules;
-    }
-
-
-    /**
-     * setNameAttribute => tittle case
-     *
-     * @param  mixed $value
-     *
-     * @return void
-     */
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = ucwords(strtolower($value));
-    }
-
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = Hash::make($value);
-    }
-
-    /**
-     * setEmailAttribute => convert email to lower always
-     *
-     * @param  mixed $value
-     *
-     * @return void
-     */
-    public function setEmailAttribute($value)
-    {
-        $this->attributes['email'] = strtolower($value);
-    }
-
+     }
 
     /**
      * getPhotoAttribute => append base url to image with unique
      *
      * @param  mixed $value
      *
-     * @return void
+     * @return string
      */
     public function getPhotoAttribute($value)
     {
@@ -123,14 +93,37 @@ class Shopper extends Model implements AuthenticatableContract, AuthorizableCont
 
         static::retrieved(function ($query) {
             $query->is_active = $query->is_active == 1 ? true : false;
+            $query->is_approved = $query->is_approved == 1 ? true : false;
         });
 
-        static::creating(function ($query) {
+        static::saving(function ($query) {
+            $query->password = Hash::make($query->password);
+
             $query->is_active = isset($query->is_active) ? $query->is_active : 1;
+            $query->is_approved = isset($query->is_approved) ? $query->is_approved : 0;
+            $query->email =  strtolower($query->email);
+            $query->first_name = ucwords(strtolower($query->first_name));
         });
+        static::creating(function ($query) {
+            $query->password = Hash::make($query->password);
+
+            $query->is_active = isset($query->is_active) ? $query->is_active : 1;
+            $query->is_approved = isset($query->is_approved) ? $query->is_approved : 0;
+            $query->email =  strtolower($query->email);
+            $query->first_name = ucwords(strtolower($query->first_name));
+
+        });
+
+        static::updating(function ($query) {
+            $query->password = Hash::make($query->password);
+
+            $query->is_active = isset($query->is_active) ? $query->is_active : 1;
+            $query->is_approved = isset($query->is_approved) ? $query->is_approved : 0;
+            $query->email =  strtolower($query->email);
+            $query->first_name = ucwords(strtolower($query->first_name));
+        });
+
     }
-
-
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.

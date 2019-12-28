@@ -59,7 +59,16 @@ class AuthShopperController extends Controller
         if (isset($responseError) && $responseError['flag'] == false) {
             return $this->sendBadRequest(null, $responseError['message']);
         }
-        if ($token = Auth::guard('shopper_api')->attempt($credentials)) {
+
+         if ($token = Auth::guard('shopper_api')->attempt($credentials)) {
+             /**
+              * check is approved or not
+              */
+             $user =Auth::guard('shopper_api')->user();
+             if($user->is_approved === false) {
+                  return $this->sendBadRequest(null, __('validation.common.improved_shopper'));
+             }
+
             $returnDetails = $this->respondWithToken($token);
             return $this->sendSuccessResponse($returnDetails, __('validation.common.login_success'));
         }

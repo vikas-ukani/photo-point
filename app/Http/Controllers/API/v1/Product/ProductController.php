@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 
 namespace App\Http\Controllers\API\v1\Product;
 
@@ -28,6 +28,9 @@ class ProductController extends Controller
         $this->userRepository = $userRepository;
     }
 
+    /**
+     * @param Request $request
+     */
     public function featureProductList(Request $request)
     {
         $input = $request->all();
@@ -36,7 +39,6 @@ class ProductController extends Controller
             return $this->sendBadRequest(null, __('validation.common.details_not_found', ['module' => "Feature Products"]));
         }
 
-
         $products = array_values(array_flatten(collect($products['list'])->pluck('product_details')->all()));
 
         $productsRes = $this->setProductRating($products);
@@ -44,6 +46,9 @@ class ProductController extends Controller
         return $this->sendSuccessResponse($productsRes, __('validation.common.details_found', ['module' => "Feature products"]));
     }
 
+    /**
+     * @param Request $request
+     */
     function list(Request $request)
     {
         $input = $request->all();

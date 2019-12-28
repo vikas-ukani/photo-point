@@ -29,4 +29,9 @@ class FeatureProducts extends Model
         return $this->hasMany(Products::class, 'id', 'product_id');
         // return $this->belongsToMany(OrderRateReview::class, Products::class, 'id', 'id');
     }
+
+    public function product_detail()
+    {
+        return $this->hasOne(Products::class, 'id', 'product_id');
+    }
 }

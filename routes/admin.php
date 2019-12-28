@@ -11,7 +11,7 @@ $router->group(['namespace' => 'Category'], function () use ($router) {
  * after login routes access
  */
 $router->group(['middleware' => ["auth:api"]], function () use ($router) {
-     /**
+    /**
      * Shoppers
      */
     $router->group(['namespace' => 'Shopper'], function () use ($router) {
@@ -28,8 +28,17 @@ $router->group(['middleware' => ["auth:api"]], function () use ($router) {
         $router->delete('/products-delete/{id}', "ProductController@destory");
         $router->post('/products-delete-multiple', "ProductController@multipleDelete");
 
-        /** feature */
-        $router->post('feature-product-list', "Product\ProductController@featureProductList");
+        /**
+         * Feature Products
+         */
+        // $router->post('feature-product-list', "FeatureProductController@featureProductList");
+        $router->post('feature-product-list', "FeatureProductController@list");
+        $router->post('/feature-product-create', "FeatureProductController@store");
+        $router->get('/feature-product-show/{id}', "FeatureProductController@show");
+        $router->post('/feature-product-update/{id}', "FeatureProductController@update");
+        $router->post('/feature-product-status-change', "FeatureProductController@statusChange");
+        $router->delete('/feature-product-delete/{id}', "FeatureProductController@destory");
+        $router->post('/feature-product-delete-multiple', "FeatureProductController@multipleDelete");
     });
 
     /**

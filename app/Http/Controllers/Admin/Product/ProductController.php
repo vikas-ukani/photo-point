@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Product;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ImageHelperController;
+use App\Libraries\Repositories\FeatureProductRepositoryEloquent;
 use App\Libraries\Repositories\ProductRepositoryEloquent;
 use App\Models\Products;
 use Illuminate\Http\Request;
@@ -11,13 +12,16 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     protected $productRepository;
+    protected $featureProductRepository;
     protected $imageController;
 
     public function __construct(
         ProductRepositoryEloquent $productRepository,
+        FeatureProductRepositoryEloquent $featureProductRepository,
         ImageHelperController $imageController
     ) {
         $this->productRepository = $productRepository;
+        $this->featureProductRepository = $featureProductRepository;
         $this->imageController = $imageController;
     }
 
@@ -51,7 +55,7 @@ class ProductController extends Controller
 
                     if (isset($sumOfAllRate)) {
                         $product['ratting'] = round($sumOfAllRate / count($product['customer_rating']), 1);
-                        $product['ratting_count'] =  count($product['customer_rating']);
+                        $product['ratting_count'] = count($product['customer_rating']);
                     }
                 }
                 unset($product['customer_rating']);
@@ -60,8 +64,7 @@ class ProductController extends Controller
         }
     }
 
-    function list(Request $request)
-    {
+    function list(Request $request) {
         $input = $request->all();
 
         $products = $this->productRepository->getDetails($input);
@@ -136,13 +139,12 @@ class ProductController extends Controller
     public function commonCreateUpdate($input, $id = null)
     {
 
-
         /**
          * Multiple Upload
          */
-        if (isset($input['images'])  && is_array($input['images']) && count($input['images']) > 0) {
+        if (isset($input['images']) && is_array($input['images']) && count($input['images']) > 0) {
             foreach ($input['images'] as $key => $image) {
-                $data =  $this->imageController->moveFile($image, 'products');
+                $data = $this->imageController->moveFile($image, 'products');
                 array_push($input['images'], $data['data']['image']);
                 $imagesArray[] = $data['data']['image'];
             }

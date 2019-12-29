@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 
 namespace App\Libraries\Repositories;
 
@@ -45,6 +45,17 @@ class MainCategoryRepositoryEloquent extends BaseRepository implements UsersRepo
         /** searching */
         if (isset($input['search'])) {
             $value = $this->customSearch($value, $input, ['name', 'code', 'description']);
+        }
+
+        /** check for parent category or not */
+        if (isset($input['is_parent']) && $input['is_parent'] === true) {
+            $value = $value->where(function($query) {
+                $query = $query->whereNull('parent_id')
+                    ->orWhere('parent_id', 0);
+            });
+        }
+        if (isset($input['parent_id'])){
+            $value =$value->where('parent_id', $input['parent_id']);
         }
 
         /** filter by id  */

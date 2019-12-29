@@ -19,6 +19,15 @@ $router->group(['middleware' => ["auth:api"]], function () use ($router) {
         $router->post('/shopper-status-change', "ShopperController@statusChange");
     });
 
+
+    /**
+     * Category
+     */
+    $router->group(['namespace' => 'Category'], function () use ($router) {
+        $router->post('category-list', "CategoryController@list");
+    });
+
+
     $router->group(['namespace' => 'Product'], function () use ($router) {
         $router->post('/products-list', "ProductController@list");
         $router->post('/products-create', "ProductController@store");

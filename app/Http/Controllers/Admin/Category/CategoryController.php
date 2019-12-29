@@ -15,8 +15,10 @@ class CategoryController extends Controller
         $this->categoryRepository = $categoryRepository;
     }
 
-    //
-
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|void
+     */
     function list(Request $request) {
         $input = $request->all();
 

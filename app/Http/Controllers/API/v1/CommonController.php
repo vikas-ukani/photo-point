@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 
 namespace App\Http\Controllers\API\v1;
 
@@ -41,6 +41,7 @@ class CommonController extends Controller
     public function getAllActiveMainCategories()
     {
         return $this->mainCategoryRepository->getDetailsByInput([
+            'is_parent' => true,
             'is_active' => true,
         ]);
     }

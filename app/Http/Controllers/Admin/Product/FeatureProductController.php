@@ -75,6 +75,11 @@ class FeatureProductController extends Controller
          */
         $featureProduct = $this->featureProductRepository->getDetailsByInput([
             'id' => $id,
+            'relation' => [
+                "product_detail",
+                "product_detail.category",
+                "product_detail.customer_rating"
+            ],
             'first' => true,
         ]);
 
@@ -131,10 +136,15 @@ class FeatureProductController extends Controller
 
     public function commonCreateUpdate($input, $id = null)
     {
-        $featureProduct = $this->featureProductRepository->updateOrCreate(['id' => $id], $input);
+         $featureProduct = $this->featureProductRepository->updateOrCreate(['id' => $id], $input);
 
         $featureProduct = $this->featureProductRepository->getDetailsByInput([
             'id' => $featureProduct->id,
+            'relation' => [
+                "product_detail",
+                "product_detail.category",
+                "product_detail.customer_rating"
+            ],
             'first' => true,
         ]);
 
@@ -162,7 +172,7 @@ class FeatureProductController extends Controller
 
     public function destory($id)
     {
-        $featureProduct = $this->productRepository->delete($id);
+        $featureProduct = $this->featureProductRepository->delete($id);
         return $this->sendSuccessResponse($featureProduct, __('validation.common.deleted', ['module' => $this->moduleName]));
     }
 

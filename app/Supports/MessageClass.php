@@ -5,14 +5,11 @@ namespace App\Supports;
 trait MessageClass
 {
 
-    /**
-     * sendBadRequest => called when api response sending
-     *
-     * @param  mixed $returnArray => response data , default null
-     * @param  mixed $returnMessage => response message
-     * @param  mixed $statusCode => status message
-     *
-     * @return \Illuminate\Http\JsonResponse|void
+    /** called when api response sending
+     * @param null $returnArray
+     * @param $returnMessage
+     * @param int $statusCode
+     * @return \Illuminate\Http\JsonResponse
      */
     public function sendBadRequest($returnArray = null, $returnMessage, $statusCode = RESPONSE_BAD_REQUEST)
     {
@@ -26,13 +23,10 @@ trait MessageClass
     }
 
     /**
-     * sendSuccessResponse
-     *
-     * @param  mixed $returnArray => Response data
-     * @param  mixed $returnMessage => return message
-     * @param  mixed $statusCode => return status default is 200
-     *
-     * @return void
+     * @param null $returnArray
+     * @param $returnMessage
+     * @param int $statusCode
+     * @return \Illuminate\Http\JsonResponse
      */
     public function sendSuccessResponse($returnArray = null, $returnMessage, $statusCode = RESPONSE_CODE_SUCCESS)
     {
@@ -51,16 +45,15 @@ trait MessageClass
      * @param  mixed $array
      * @param  mixed $returnMessage
      *
-     * @return void
+     * @return array
      */
     public function makeResponse($array = null, $returnMessage)
     {
-        $response = [
+        return [
             'data' => $array,
             'message' => $returnMessage ?? '',
             'flag' => true
         ];
-        return $response;
     }
 
     /**
@@ -69,7 +62,7 @@ trait MessageClass
      * @param  mixed $array
      * @param  mixed $returnMessage
      *
-     * @return void
+     * @return array
      */
     public function makeError($array = null, $returnMessage)
     {

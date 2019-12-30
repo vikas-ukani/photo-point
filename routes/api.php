@@ -52,6 +52,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('product-detail/{id}', "Product\ProductController@show");
         $router->post('product-detail-review-list', "Product\ProductController@getProductReviews");
 
+
+        /**
+         * Favorite APIs
+         */
+        $router->post('favorite-unfavorite-product', 'Product\FavoriteProductController@favoriteUnfavoriteProduct');
+        $router->post('favorite-unfavorite-product-list', 'Product\FavoriteProductController@list');
+
+
         /**
          * Offers
          */
@@ -66,7 +74,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('remove-cart-quantity/{id}', "Cart\CartController@substractCartQuantity");
 
         $router->get('cart-count', "Cart\CartController@getCartCount");
-
 
         /**
          * Order related apis

@@ -150,8 +150,8 @@ return [
         /** order module */
         'order_placed_success' => "Order successfully placed.",
 
-        'successfully_followed' => "Successfully followed.",
-        'successfully_unfollowed' => "Successfully unfollowed.",
+        'successfully_favorite' => "Successfully favorite.",
+        'successfully_unfavorite' => "Successfully unfavorite.",
 
 
         'improved_shopper' => 'Your account is in-review. We will inform you when it is done. Thanks.',

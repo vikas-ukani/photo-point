@@ -23,7 +23,7 @@ class Products extends Model
     /**
      * rules => set Validation Rules
      *
-     * @param  mixed $id
+     * @param mixed $id
      *
      * @return void
      */
@@ -60,8 +60,8 @@ class Products extends Model
      * validation => **
      *
      *
-     * @param  mixed $input
-     * @param  mixed $id
+     * @param mixed $input
+     * @param mixed $id
      *
      * @return void
      */
@@ -74,7 +74,7 @@ class Products extends Model
     /**
      * scopeOrdered => default sorting on created at as ascending
      *
-     * @param  mixed $query
+     * @param mixed $query
      *
      * @return void
      */
@@ -97,11 +97,11 @@ class Products extends Model
         });
 
         static::creating(function ($model) {
-            $model->is_active = $model->is_active == true ?  1 : 0;
+            $model->is_active = $model->is_active == true ? 1 : 0;
         });
 
         static::updating(function ($model) {
-            $model->is_active = $model->is_active == true ?  1 : 0;
+            $model->is_active = $model->is_active == true ? 1 : 0;
         });
     }
 
@@ -109,7 +109,7 @@ class Products extends Model
     /**
      * setSizesAttribute => convert array to string
      *
-     * @param  mixed $value
+     * @param mixed $value
      *
      * @return void
      */
@@ -127,7 +127,7 @@ class Products extends Model
     /**
      * getSizesAttribute  => convert string to array
      *
-     * @param  mixed $value
+     * @param mixed $value
      *
      * @return void
      */
@@ -145,7 +145,7 @@ class Products extends Model
     /**
      * getPhotoAttribute => append base url to image with unique
      *
-     * @param  mixed $value
+     * @param mixed $value
      *
      * @return void
      */
@@ -160,6 +160,8 @@ class Products extends Model
                 $val = implode(env('APP_URL', url('/')), $arr);
             }
             return $this->attributes['image'] = $value;
+        } else if (isset($value) && is_array($value)) {
+            return $this->attributes['image']= $value;
         } else {
             $this->attributes['image'] = env('APP_URL', url('/')) . $value;
             $arr = array_unique(explode(env('APP_URL', url('/')), $this->attributes['image']));
@@ -178,4 +180,11 @@ class Products extends Model
         return $this->hasMany(OrderRateReview::class, 'product_id', 'id');
         // return $this->belongsToMany(OrderRateReview::class, Products::class, 'id', 'id');
     }
+
+    public function is_favorite()
+    {
+        return $this->hasOne(FavoriteProducts::class, 'product_id', 'id');
+    }
+
+
 }

@@ -51,7 +51,7 @@ class FavoriteProductController extends Controller
                 'user_id' => $input['user_id'],
                 'product_id' => $input['product_id']
             ]);
-            return $this->sendSuccessResponse(null, __('validation.common.successfully_unfollowed'));
+            return $this->sendSuccessResponse(null, __('validation.common.successfully_unfavorite'));
         }
     }
 
@@ -111,20 +111,22 @@ class FavoriteProductController extends Controller
             $alreadyFavoriteProduct->save();
         }
 
-        if (isset($id)) return $this->makeResponse($alreadyFavoriteProduct, __('validation.common.successfully_followed'));
-        else return $this->makeResponse($alreadyFavoriteProduct, __('validation.common.successfully_followed'));
+        if (isset($id)) return $this->makeResponse($alreadyFavoriteProduct, __('validation.common.successfully_unfavorite'));
+        else return $this->makeResponse($alreadyFavoriteProduct, __('validation.common.successfully_favorite'));
 
     }
-
 
     public function list(Request $request)
     {
         $input = $request->all();
 
-
         $input['user_id'] = isset($input['user_id']) ? $input['user_id'] : \Auth::id();
 
          try {
+
+//             if (isset($input['is_favorite'])){
+//
+//             }
             $favoriteProduct = $this->favoriteProductRepository->getDetails($input);
         } catch (\Exception $exception) {
             $message = $exception->getCode() . ' - ' . $exception->getMessage();

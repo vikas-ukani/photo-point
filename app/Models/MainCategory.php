@@ -9,6 +9,7 @@ class MainCategory extends Model
 {
     //
     protected $fillable = [
+        "parent_id",
         "name",
         "code",
         'image',
@@ -21,26 +22,24 @@ class MainCategory extends Model
      *
      * @param  mixed $id
      *
-     * @return void
+     * @return array
      */
     public static function rules($id)
     {
         $once = isset($id) ? 'sometimes|' : '';
 
-        $rules = [
+        return [
             'name' => $once . 'required',
-            'code' => $once . "required|code|unique:main_categories,code,{$id}",
+            'code' => $once . "required|unique:main_categories,code,{$id}",
             'image' => $once . "required",
-            'is_active' => $once . 'required|boolean',
+            'is_active' => $once . 'required',
         ];
-
-        return $rules;
     }
 
     /**
      * messages => Set Error Message
      *
-     * @return void
+     * @return array
      */
     public static function messages()
     {
@@ -57,13 +56,37 @@ class MainCategory extends Model
      * @param  mixed $input
      * @param  mixed $id
      *
-     * @return void
+     * @return \Illuminate\Contracts\Validation\Validator
      */
     public static function validation($input, $id = null)
     {
         $className = __CLASS__;
         return Validator::make($input, $className::rules($id), $className::messages());
     }
+
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::retrieved(function ($model) {
+            $model->is_active = $model->is_active == 1 ? true : false;
+        });
+
+        static::creating(function ($model) {
+            $model->is_active = $model->is_active == true ? 1 : 0;
+        });
+
+        static::updating(function ($model) {
+            $model->is_active = $model->is_active == true ? 1 : 0;
+        });
+    }
+
 
     /**
      * scopeOrdered => default sorting on created at as ascending
@@ -90,4 +113,9 @@ class MainCategory extends Model
         $arr = array_unique(explode(env('APP_URL', url('/')), $this->attributes['image']));
         return $this->attributes['image'] = implode(env('APP_URL', url('/')), $arr);
     }
+
+
+
+
+
 }

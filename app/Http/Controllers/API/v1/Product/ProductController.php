@@ -64,17 +64,14 @@ class ProductController extends Controller
             ]);
 
             if (isset($allFavoriteProductIdByUser['count']) && $allFavoriteProductIdByUser['count'] !== 0) {
-                  $favoriteProductIds = collect($allFavoriteProductIdByUser['list'])->pluck('product_id')->all();
+                $favoriteProductIds = collect($allFavoriteProductIdByUser['list'])->pluck('product_id')->all();
             }
             foreach ($products as $key => &$product) {
 
                 $product['is_favorite'] = false;
-                    if (isset($product) && $favoriteProductIds && in_array($product['id'], $favoriteProductIds)){
+                if (isset($product) && isset($this->userId) && isset($favoriteProductIds) && in_array($product['id'], $favoriteProductIds)) {
                     $product['is_favorite'] = true;
-
                 }
-
-
 
                 $product['ratting'] = 0;
                 $product['ratting_count'] = 0;
@@ -100,10 +97,10 @@ class ProductController extends Controller
         $input = $request->all();
 
         /** if_favorite key for list all favorite product list by user */
-        if (isset($input['is_favorite_by_user']) && $input['is_favorite_by_user'] == true) {
+        if (isset($this->userId )  && isset($input['is_favorite_by_user']) && $input['is_favorite_by_user'] == true) {
             /** 1. first get all favorite product from favorite table */
             $requestFavorite = [
-                'user_id' => \Auth::id(),
+                'user_id' => $this->userId,
                 'list' => ["id", "product_id"]
             ];
 

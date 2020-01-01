@@ -24,7 +24,13 @@ $router->group(['middleware' => ["auth:api"]], function () use ($router) {
      * Category
      */
     $router->group(['namespace' => 'Category'], function () use ($router) {
-        $router->post('category-list', "CategoryController@list");
+        $router->post('/category-list', "CategoryController@list");
+        $router->post('/category-create', "CategoryController@store");
+        $router->get('/category-show/{id}', "CategoryController@show");
+        $router->post('/category-update/{id}', "CategoryController@update");
+        $router->post('/category-status-change', "CategoryController@statusChange");
+        $router->delete('/category-delete/{id}', "CategoryController@destory");
+        $router->post('/category-delete-multiple', "CategoryController@multipleDelete");
     });
 
 

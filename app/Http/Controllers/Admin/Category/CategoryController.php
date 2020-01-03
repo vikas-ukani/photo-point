@@ -130,7 +130,7 @@ class CategoryController extends Controller
             return $this->sendBadRequest(null, __("validation.common.details_not_found", ['module' => $this->moduleName]));
         }
 
-        return $this->sendSuccessResponse($product, __("validation.common_details_found", ["module" => $this->moduleName]));
+        return $this->sendSuccessResponse($product, __("validation.common.details_found", ["module" => $this->moduleName]));
 
      }
 

@@ -15,7 +15,12 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('get-all-data', "CommonController@getAllCommonData");
     $router->get('get-country-state-city', "CommonController@getCountryStateCity");
 
+    /**
+     * Product Module
+     */
     $router->post('product-list', "Product\ProductController@list");
+    $router->get('product-detail/{id}', "Product\ProductController@show");
+    $router->post('product-detail-review-list', "Product\ProductController@getProductReviews");
     $router->post('feature-product-list', "Product\ProductController@featureProductList");
 
     /** shopper Authentication */
@@ -45,13 +50,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
             $router->get('want-to-became-saler', 'User\UserController@wantToBecameSaler');
         });
-
-        /**
-         * Product Module
-         */
-        $router->get('product-detail/{id}', "Product\ProductController@show");
-        $router->post('product-detail-review-list', "Product\ProductController@getProductReviews");
-
 
         /**
          * Favorite APIs

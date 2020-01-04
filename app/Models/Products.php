@@ -14,8 +14,8 @@ class Products extends Model
         "name",
         'image',
         "price",
-        "size",
-        "color",
+//        "size",
+//        "color",
         "description",
         "is_active",
     ];
@@ -25,28 +25,26 @@ class Products extends Model
      *
      * @param mixed $id
      *
-     * @return void
+     * @return array
      */
     public static function rules($id)
     {
         $once = isset($id) ? 'sometimes|' : '';
 
-        $rules = [
+        return [
             'category_id' => $once . 'required',
             'name' => $once . 'required',
             'price' => $once . 'required',
             // 'image' => $once . "required",
-            'size' => $once . 'required',
-            'color' => $once . 'required',
+//            'size' => $once . 'required',
+//            'color' => $once . 'required',
         ];
-
-        return $rules;
     }
 
     /**
      * messages => Set Error Message
      *
-     * @return void
+     * @return array
      */
     public static function messages()
     {
@@ -58,29 +56,15 @@ class Products extends Model
 
     /**
      * validation => **
-     *
-     *
      * @param mixed $input
      * @param mixed $id
      *
-     * @return void
+     * @return \Illuminate\Contracts\Validation\Validator
      */
     public static function validation($input, $id = null)
     {
         $className = __CLASS__;
         return Validator::make($input, $className::rules($id), $className::messages());
-    }
-
-    /**
-     * scopeOrdered => default sorting on created at as ascending
-     *
-     * @param mixed $query
-     *
-     * @return void
-     */
-    public function scopeOrdered($query)
-    {
-        return $query->orderBy('created_at', 'desc');
     }
 
     /**
@@ -105,6 +89,17 @@ class Products extends Model
         });
     }
 
+    /**
+     * scopeOrdered => default sorting on created at as ascending
+     *
+     * @param mixed $query
+     *
+     * @return void
+     */
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('created_at', 'desc');
+    }
 
     /**
      * setSizesAttribute => convert array to string
@@ -129,7 +124,7 @@ class Products extends Model
      *
      * @param mixed $value
      *
-     * @return void
+     * @return array
      */
     public function getSizesAttribute($value)
     {
@@ -147,7 +142,7 @@ class Products extends Model
      *
      * @param mixed $value
      *
-     * @return void
+     * @return array|string
      */
     public function getImageAttribute($value)
     {
@@ -161,7 +156,7 @@ class Products extends Model
             }
             return $this->attributes['image'] = $value;
         } else if (isset($value) && is_array($value)) {
-            return $this->attributes['image']= $value;
+            return $this->attributes['image'] = $value;
         } else {
             $this->attributes['image'] = env('APP_URL', url('/')) . $value;
             $arr = array_unique(explode(env('APP_URL', url('/')), $this->attributes['image']));
@@ -185,6 +180,5 @@ class Products extends Model
     {
         return $this->hasOne(FavoriteProducts::class, 'product_id', 'id');
     }
-
 
 }

@@ -5,22 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
-class MainCategory extends Model
+class CommonProductAttributes extends Model
 {
-    //
+
     protected $fillable = [
+        'subcategory_id',
         "parent_id",
         "name",
-        "code",
-        'image',
-        "is_active",
-        "description"
+        'is_active',
+        "sequence",
     ];
 
     /**
      * rules => set Validation Rules
      *
-     * @param  mixed $id
+     * @param mixed $id
      *
      * @return array
      */
@@ -29,10 +28,11 @@ class MainCategory extends Model
         $once = isset($id) ? 'sometimes|' : '';
 
         return [
+            'subcategory_id' => $once . 'required',
+            'parent_id' => $once . 'required',
             'name' => $once . 'required',
-            'code' => $once . "required|unique:main_categories,code,{$id}",
-            'image' => $once . "required",
             'is_active' => $once . 'required',
+            'sequence' => $once . 'required',
         ];
     }
 
@@ -51,10 +51,8 @@ class MainCategory extends Model
 
     /**
      * validation => **
-     *
-     *
-     * @param  mixed $input
-     * @param  mixed $id
+     * @param mixed $input
+     * @param mixed $id
      *
      * @return \Illuminate\Contracts\Validation\Validator
      */
@@ -63,7 +61,6 @@ class MainCategory extends Model
         $className = __CLASS__;
         return Validator::make($input, $className::rules($id), $className::messages());
     }
-
 
     /**
      * The "booting" method of the model.
@@ -77,21 +74,18 @@ class MainCategory extends Model
         static::retrieved(function ($model) {
             $model->is_active = $model->is_active == 1 ? true : false;
         });
-
         static::creating(function ($model) {
             $model->is_active = $model->is_active == true ? 1 : 0;
         });
-
         static::updating(function ($model) {
             $model->is_active = $model->is_active == true ? 1 : 0;
         });
     }
 
-
     /**
      * scopeOrdered => default sorting on created at as ascending
      *
-     * @param  mixed $query
+     * @param mixed $query
      *
      * @return void
      */
@@ -100,23 +94,15 @@ class MainCategory extends Model
         return $query->orderBy('created_at', 'desc');
     }
 
-    /**
-     * getPhotoAttribute => append base url to image with unique
-     *
-     * @param  mixed $value
-     *
-     * @return void|string
-     */
-    public function getImageAttribute($value)
+    /** get parent details */
+    public function parent_detail()
     {
-        $this->attributes['image'] = env('APP_URL', url('/')) . $value;
-        $arr = array_unique(explode(env('APP_URL', url('/')), $this->attributes['image']));
-        return $this->attributes['image'] = implode(env('APP_URL', url('/')), $arr);
+        return $this->hasOne(CommonProductAttributes::class, 'id', 'parent_id');
     }
 
-    public function attributes_detail()
+    public function subcategory_details()
     {
-        return $this->hasOne(CommonProductAttributes::class, 'subcategory_id', 'id');
+        return $this->hasMany(CommonProductAttributes::class, 'id', 'parent_id');
     }
 
 }

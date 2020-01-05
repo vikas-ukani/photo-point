@@ -1,11 +1,15 @@
-<?php /** @noinspection ALL */
+<?php
+
+/** @noinspection ALL */
 
 namespace App\Http\Controllers\Admin\Product;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ImageHelperController;
 use App\Libraries\Repositories\FeatureProductRepositoryEloquent;
+use App\Libraries\Repositories\ProductAttributesDetailsRepositoryEloquent;
 use App\Libraries\Repositories\ProductRepositoryEloquent;
+use App\Models\ProductAttributesDetails;
 use App\Models\Products;
 use Illuminate\Http\Request;
 
@@ -14,18 +18,21 @@ class ProductController extends Controller
     protected $productRepository;
     protected $featureProductRepository;
     protected $imageController;
+    protected $productAttributesDetailsRepository;
 
     public function __construct(
+        ImageHelperController $imageController,
         ProductRepositoryEloquent $productRepository,
         FeatureProductRepositoryEloquent $featureProductRepository,
-        ImageHelperController $imageController
+        ProductAttributesDetailsRepositoryEloquent $productAttributesDetailsRepository
     ) {
         $this->productRepository = $productRepository;
         $this->featureProductRepository = $featureProductRepository;
         $this->imageController = $imageController;
+        $this->productAttributesDetailsRepository = $productAttributesDetailsRepository;
     }
 
-// featureProductList
+    // featureProductList
     /**
      * @param Request $request
      */
@@ -64,7 +71,8 @@ class ProductController extends Controller
         }
     }
 
-    function list(Request $request) {
+    function list(Request $request)
+    {
         $input = $request->all();
 
         $products = $this->productRepository->getDetails($input);
@@ -160,11 +168,42 @@ class ProductController extends Controller
             $input['image'] = $data['data']['image'];
         }
 
-        $product = $this->productRepository->updateOrCreate(['id' => $id], $input);
+        /** after create an product add their attributes */
+        try {
+            $attr = [];
+            /** check to create or update */
+            if (isset($id)) {
+                /** update */
+                $product = $this->productRepository->update($input, $id);
+            } else {
+                /** create */
+                $product = $this->productRepository->create($input);
+            }
+            foreach ($input['product_attributes'] as $key => &$value) {
+                $value['product_id'] = $product->id;
+                // $value['product_id'] = 900;
+                $attr[] = $this->productAttributesDetailsRepository->updateOrCreate(
+                    [
+                        'product_id' => $value['product_id'],
+                        'common_product_attribute_id' => $value['common_product_attribute_id']
+                    ],
+                    $value
+                );
+            }
+        } catch (\Exception $e) {
+            /** if any error found then delete created product */
+            if (!!!isset($id)) {
+                $this->productRepository->delete($product->id);
+            }
+
+            \Log::error($e->getMessage());
+            return $this->makeError(null, $e->getCode() . "-" . $e->getMessage());
+        }
 
         $product = $this->productRepository->getDetailsByInput([
             'id' => $product->id,
-            'relation' => ["category"],
+            'relation' => ["category", 'product_attributes'/* , 'product_attributes.common_product_attribute_detail' */],
+            'product_attributes_list' => ["product_id",  "common_product_attribute_id", "value", "values"],
             'first' => true,
         ]);
 

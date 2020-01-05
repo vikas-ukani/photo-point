@@ -14,8 +14,8 @@ class Products extends Model
         "name",
         'image',
         "price",
-//        "size",
-//        "color",
+        //        "size",
+        //        "color",
         "description",
         "is_active",
     ];
@@ -36,8 +36,11 @@ class Products extends Model
             'name' => $once . 'required',
             'price' => $once . 'required',
             // 'image' => $once . "required",
-//            'size' => $once . 'required',
-//            'color' => $once . 'required',
+            //            'size' => $once . 'required',
+            //            'color' => $once . 'required',
+            'product_attributes' => $once . "required|array",
+            'common_product_attribute_id.*.common_product_attribute_id' => $once . "required|integer",
+            // 'common_product_attribute_id.*.values' => $once . "required",
         ];
     }
 
@@ -169,6 +172,12 @@ class Products extends Model
         return $this->hasOne(MainCategory::class, 'id', 'category_id');
     }
 
+    public function product_attributes()
+    {
+        return $this->hasMany(ProductAttributesDetails::class, 'product_id', 'id');
+    }
+
+
     /** get product rate and review */
     public function customer_rating()
     {
@@ -180,5 +189,4 @@ class Products extends Model
     {
         return $this->hasOne(FavoriteProducts::class, 'product_id', 'id');
     }
-
 }

@@ -5,14 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
-class CommonProductAttributes extends Model
+class ProductAttributesDetails extends Model
 {
+
+    public $className = __CLASS__;
+
     protected $fillable = [
-        'subcategory_id',
-        "parent_id",
-        "name",
-        'is_active',
-        "sequence",
+        'product_id',
+        "common_product_attribute_id",
+        "value",
+        "values",
+        // 'is_active',
+        // "sequence",
     ];
 
     /**
@@ -71,14 +75,40 @@ class CommonProductAttributes extends Model
         parent::boot();
 
         static::retrieved(function ($model) {
-            $model->is_active = $model->is_active == 1 ? true : false;
+            // $model->is_active = $model->is_active == 1 ? true : false;
+            $model->values = static::convertStringToArray($model->values);
         });
         static::creating(function ($model) {
-            $model->is_active = $model->is_active == true ? 1 : 0;
+            $model->values = static::convertArrayToString($model->values);
+            // $model->is_active = $model->is_active == true ? 1 : 0;
         });
         static::updating(function ($model) {
-            $model->is_active = $model->is_active == true ? 1 : 0;
+            $model->values = static::convertArrayToString($model->values);
+
+            // $model->is_active = $model->is_active == true ? 1 : 0;
         });
+    }
+
+    public static function convertArrayToString($arrayData = [])
+    {
+        if (isset($arrayData) && is_array($arrayData) && count($arrayData) > 0) {
+            $arrayData = array_filter($arrayData);
+            $arrayData = implode(',', $arrayData);
+        } else {
+            $arrayData = null;
+        }
+        return $arrayData;
+    }
+    public static function convertStringToArray($string)
+    {
+        // # code...
+        if (isset($string) && is_string($string)) {
+            $string = explode(',', $string);
+            $string = array_filter($string);
+        } else {
+            $string = null;
+        }
+        return $string;
     }
 
     /**
@@ -93,15 +123,8 @@ class CommonProductAttributes extends Model
         return $query->orderBy('created_at', 'desc');
     }
 
-    /** get parent details */
-    public function parent_detail()
+    public function common_product_attribute_detail()
     {
-        return $this->hasOne(CommonProductAttributes::class, 'id', 'parent_id');
+        return $this->hasMany(CommonProductAttributes::class, 'id', 'common_product_attribute_id');
     }
-
-    public function subcategory_details()
-    {
-        return $this->hasMany(CommonProductAttributes::class, 'id', 'parent_id');
-    }
-
 }

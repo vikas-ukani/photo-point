@@ -19,12 +19,11 @@ $router->group(['middleware' => ["auth:api"]], function () use ($router) {
         $router->post('/shopper-status-change', "ShopperController@statusChange");
     });
 
-
     /**
      * Category
      */
     $router->group(['namespace' => 'Category'], function () use ($router) {
-        $router->post('/category-list', "CategoryController@list");
+        $router->post('̥/category-list', "CategoryController@list");
         $router->post('/category-create', "CategoryController@store");
         $router->get('/category-show/{id}', "CategoryController@show");
         $router->post('/category-update/{id}', "CategoryController@update");
@@ -33,8 +32,16 @@ $router->group(['middleware' => ["auth:api"]], function () use ($router) {
         $router->post('/category-delete-multiple', "CategoryController@multipleDelete");
     });
 
-
     $router->group(['namespace' => 'Product'], function () use ($router) {
+
+        $router->post('/common-products-attributes-list', "CommonProductAttributesController@list");
+        // $router->post('/products-create', "ProductController@store");
+        // $router->get('/products-show/{id}', "ProductController@show");
+        // $router->post('/products-update/{id}', "ProductController@update");
+        // $router->post('/products-status-change', "ProductController@statusChange");
+        // $router->delete('/products-delete/{id}', "ProductController@destory");
+        // $router->post('/products-delete-multiple', "ProductController@multipleDelete");
+
         $router->post('/products-list', "ProductController@list");
         $router->post('/products-create', "ProductController@store");
         $router->get('/products-show/{id}', "ProductController@show");

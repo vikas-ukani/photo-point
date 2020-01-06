@@ -181,7 +181,7 @@ class ProductController extends Controller
             }
             foreach ($input['product_attributes'] as $key => &$value) {
                 $value['product_id'] = $product->id;
-                // $value['product_id'] = 900;
+                // $value['product_id'] = 900; // static
                 $attr[] = $this->productAttributesDetailsRepository->updateOrCreate(
                     [
                         'product_id' => $value['product_id'],

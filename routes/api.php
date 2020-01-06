@@ -57,7 +57,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('favorite-unfavorite-product', 'Product\FavoriteProductController@favoriteUnfavoriteProduct');
         $router->post('favorite-product-list', 'Product\FavoriteProductController@list');
 
-
         /**
          * Offers
          */

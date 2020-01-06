@@ -14,6 +14,7 @@ class MainCategory extends Model
         "code",
         'image',
         "is_active",
+//        "is_child",
         "description"
     ];
 
@@ -64,7 +65,6 @@ class MainCategory extends Model
         return Validator::make($input, $className::rules($id), $className::messages());
     }
 
-
     /**
      * The "booting" method of the model.
      *
@@ -76,17 +76,19 @@ class MainCategory extends Model
 
         static::retrieved(function ($model) {
             $model->is_active = $model->is_active == 1 ? true : false;
+//            $model->is_child = $model->is_child == 1 ? true : false;
         });
 
         static::creating(function ($model) {
             $model->is_active = $model->is_active == true ? 1 : 0;
+//            $model->is_child = $model->is_child == true ? 1 : 0;
         });
 
         static::updating(function ($model) {
             $model->is_active = $model->is_active == true ? 1 : 0;
+//            $model->is_child = $model->is_child == true ? 1 : 0;
         });
     }
-
 
     /**
      * scopeOrdered => default sorting on created at as ascending

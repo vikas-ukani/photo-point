@@ -65,18 +65,29 @@ class CommonProductAttributesRepositoryEloquent extends BaseRepository implement
 
         $this->customRelation($value, $input, []); //'account_detail'
 
-        /** filter by id  */
+        /** filter by id and ids  */
         if (isset($input['id'])) {
             $value = $value->where('id', $input['id']);
         }
-
         if (isset($input['ids']) && is_array($input['ids']) && count($input['ids'])) {
             $value = $value->whereIn('id', $input['ids']);
+        }
+
+        /** filter by subcategory_id and subcategory_ids  */
+        if (isset($input['subcategory_id'])) {
+            $value = $value->where('subcategory_ids', $input['subcategory_id']);
+        }
+        if (isset($input['subcategory_ids']) && is_array($input['subcategory_ids']) && count($input['subcategory_ids'])) {
+             $value = $value->whereRaw("FIND_IN_SET(" . $input['subcategory_ids'] . ",Tags)");
         }
 
         if (isset($input['parent_id'])){
             $value = $value->where('parent_id', $input['parent_id']);
         }
+//        parent_id
+        if (isset($input['parent_ids']) && is_array($input['parent_ids']) && count($input['parent_ids'])) {
+            $value = $value->whereIN('parent_id', $input['parent_ids']);
+         }
         if (isset($input['is_parent']) && $input['is_parent'] == true){
             $value = $value->whereNull('parent_id');
         }

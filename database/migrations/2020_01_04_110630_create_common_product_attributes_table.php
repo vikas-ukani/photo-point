@@ -16,7 +16,7 @@ class CreateCommonProductAttributesTable extends Migration
         Schema::create('common_product_attributes', function (Blueprint $table) {
 
             $table->bigIncrements('id');
-            $table->bigInteger('subcategory_id')->nullable()->index()->comment('category id by this all subcategory,');
+            $table->text('subcategory_ids')->nullable()->index()->comment('multiple category id wise details');
             $table->bigInteger('parent_id')->nullable()->index()->comment('parent of this table id ');
             $table->string('name', 100)->comment('name of this attributes');
             $table->boolean('is_active')->default(true)->comment('check is active to show or not');

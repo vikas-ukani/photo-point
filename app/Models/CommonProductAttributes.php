@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
 class CommonProductAttributes extends Model
 {
     protected $fillable = [
-        'subcategory_id',
+        'subcategory_ids',
         "parent_id",
         "name",
         'is_active',
@@ -27,7 +27,7 @@ class CommonProductAttributes extends Model
         $once = isset($id) ? 'sometimes|' : '';
 
         return [
-            'subcategory_id' => $once . 'required',
+            'subcategory_ids' => $once . 'required',
             'parent_id' => $once . 'required',
             'name' => $once . 'required',
             'is_active' => $once . 'required',
@@ -101,7 +101,10 @@ class CommonProductAttributes extends Model
 
     public function subcategory_details()
     {
-        return $this->hasMany(CommonProductAttributes::class, 'id', 'parent_id');
+//        dd("Input", $this->hasMany(CommonProductAttributes::class, 'parent_id', 'id'));
+        return $this->hasMany(CommonProductAttributes::class, 'parent_id', 'id');
+//            ->where('subcategory_ids', '=', 1);
+//        ->whereRaw("FIND_IN_SET(" . $input['subcategory_ids'] . ",Tags)");
     }
 
 }

@@ -1,4 +1,6 @@
-<?php /** @noinspection ALL */
+<?php
+
+/** @noinspection ALL */
 
 namespace App\Libraries\Repositories;
 
@@ -60,7 +62,7 @@ class CommonProductAttributesRepositoryEloquent extends BaseRepository implement
     {
         /** searching */
         if (isset($input['search'])) {
-            $value = $this->customSearch($value, $input, ['name', 'price', 'description', 'size']);
+            $value = $this->customSearch($value, $input, ['name', 'code', 'price', 'description', 'size']);
         }
 
         $this->customRelation($value, $input, []); //'account_detail'
@@ -78,22 +80,25 @@ class CommonProductAttributesRepositoryEloquent extends BaseRepository implement
             $value = $value->where('subcategory_ids', $input['subcategory_id']);
         }
         if (isset($input['subcategory_ids']) && is_array($input['subcategory_ids']) && count($input['subcategory_ids'])) {
-             $value = $value->whereRaw("FIND_IN_SET(" . $input['subcategory_ids'] . ",Tags)");
+            $value = $value->whereRaw("FIND_IN_SET(" . $input['subcategory_ids'] . ",Tags)");
         }
 
-        if (isset($input['parent_id'])){
+        if (isset($input['parent_id'])) {
             $value = $value->where('parent_id', $input['parent_id']);
         }
-//        parent_id
+        //        parent_id
         if (isset($input['parent_ids']) && is_array($input['parent_ids']) && count($input['parent_ids'])) {
             $value = $value->whereIN('parent_id', $input['parent_ids']);
-         }
-        if (isset($input['is_parent']) && $input['is_parent'] == true){
+        }
+        if (isset($input['is_parent']) && $input['is_parent'] == true) {
             $value = $value->whereNull('parent_id');
         }
 
         if (isset($input['name'])) {
-            $value = $value->whereName($input['name']);
+            $value = $value->where('name', $input['name']);
+        }
+        if (isset($input['code'])) {
+            $value = $value->where('code', $input['code']);
         }
 
         if (isset($input['is_active'])) {

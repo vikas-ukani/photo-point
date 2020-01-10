@@ -11,6 +11,7 @@ class CommonProductAttributes extends Model
         'subcategory_ids',
         "parent_id",
         "name",
+        "code",
         'is_active',
         "sequence",
     ];
@@ -30,6 +31,7 @@ class CommonProductAttributes extends Model
             'subcategory_ids' => $once . 'required',
             'parent_id' => $once . 'required',
             'name' => $once . 'required',
+            'code' => $once . 'required|unique:common_product_attributes,code,{$id}',
             'is_active' => $once . 'required',
             'sequence' => $once . 'required',
         ];
@@ -101,10 +103,9 @@ class CommonProductAttributes extends Model
 
     public function subcategory_details()
     {
-//        dd("Input", $this->hasMany(CommonProductAttributes::class, 'parent_id', 'id'));
+        //        dd("Input", $this->hasMany(CommonProductAttributes::class, 'parent_id', 'id'));
         return $this->hasMany(CommonProductAttributes::class, 'parent_id', 'id');
-//            ->where('subcategory_ids', '=', 1);
-//        ->whereRaw("FIND_IN_SET(" . $input['subcategory_ids'] . ",Tags)");
+        //            ->where('subcategory_ids', '=', 1);
+        //        ->whereRaw("FIND_IN_SET(" . $input['subcategory_ids'] . ",Tags)");
     }
-
 }

@@ -14,7 +14,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     $router->get('get-all-data', "CommonController@getAllCommonData");
     $router->get('get-country-state-city', "CommonController@getCountryStateCity");
-
+ 
     /**
      * Product Module
      */

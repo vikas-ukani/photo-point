@@ -9,7 +9,7 @@ use App\Http\Controllers\ImageHelperController;
 use App\Libraries\Repositories\FeatureProductRepositoryEloquent;
 use App\Libraries\Repositories\ProductAttributesDetailsRepositoryEloquent;
 use App\Libraries\Repositories\ProductRepositoryEloquent;
-use App\Models\ProductAttributesDetails;
+use App\Libraries\Repositories\ProductStockInventoryRepositoryEloquent;
 use App\Models\Products;
 use Illuminate\Http\Request;
 
@@ -19,20 +19,25 @@ class ProductController extends Controller
     protected $featureProductRepository;
     protected $imageController;
     protected $productAttributesDetailsRepository;
+    protected $productStockInventoryRepositoryEloquent;
 
     public function __construct(
         ImageHelperController $imageController,
         ProductRepositoryEloquent $productRepository,
         FeatureProductRepositoryEloquent $featureProductRepository,
+        ProductStockInventoryRepositoryEloquent $productStockInventoryRepositoryEloquent,
         ProductAttributesDetailsRepositoryEloquent $productAttributesDetailsRepository
-    ) {
+    )
+    {
         $this->productRepository = $productRepository;
         $this->featureProductRepository = $featureProductRepository;
         $this->imageController = $imageController;
         $this->productAttributesDetailsRepository = $productAttributesDetailsRepository;
+        $this->productStockInventoryRepositoryEloquent = $productStockInventoryRepositoryEloquent;
     }
 
     // featureProductList
+
     /**
      * @param Request $request
      */
@@ -82,23 +87,57 @@ class ProductController extends Controller
         return $this->sendSuccessResponse($products, __('validation.common.details_found', ['module' => "products"]));
     }
 
-    public function show($id)
+    public function getProductDetails(Request $request)
     {
-        $product = $this->productRepository->getDetailsByInput([
+        $input = $request->all();
 
-            'id' => $id,
-            'relation', ["category"],
-            "category_list" => ["id", 'name'],
-            'first' => true,
-        ]);
+        $data = $this->getProductDetailsByInput($input);
+        if (isset($data) && $data['flag'] === false)
+            return $this->sendBadRequest(null, $data['message']);
 
-        if (!isset($product)) {
-            return $this->sendBadRequest(null, __("validation.common.details_not_found", ['module' => "Product"]));
+        return $this->sendSuccessResponse($data['data'], $data['message']);
+    }
+
+
+    public function getProductDetailsByInput($input = null)
+    {
+        if (!isset($input)) {
+            return $this->makeError(null, __('validation.common.invalid_key', ['key' => 'input']));
         }
 
-        return $this->sendSuccessResponse($product, __("validation.common_details_found", ["module" => "Product"]));
+        $product = $this->productRepository->getDetailsByInput($input);
+        if ((is_object($product) && !!!isset($product)) || (is_array($product) && count($product) === 0)) {
+            return $this->makeError(null, __('validation.common.details_not_found', ['module' => 'product']));
+        }
+        return $this->makeResponse($product, __('validation.common.details_found', ['module' => 'product']));
+    }
 
-        // $product = $this->;
+    public function show($id)
+    {
+//         $product = $this->productRepository->getDetailsByInput([
+//            'id' => $id,
+//            'relation', ["category"],
+//            "category_list" => ["id", 'name'],
+//            'first' => true,
+//        ]);
+
+        $request = [
+            'id' => $id,
+            'relation', ["category", "stock_inventories"],
+            "category_list" => ["id", 'name'],
+            'first' => true,
+        ];
+        $data = $this->getProductDetailsByInput($request);
+        if (isset($data) && $data['flag'] == false)
+            return $this->sendBadRequest(null, $data['message']);
+
+
+//        if (!isset($product)) {
+//            return $this->sendBadRequest(null, __("validation.common.details_not_found", ['module' => "Product"]));
+//        }
+
+        return $this->sendSuccessResponse($data['data'], $data['message']);
+
     }
 
     public function store(Request $request)
@@ -118,35 +157,8 @@ class ProductController extends Controller
         return $this->sendSuccessResponse($product['data'], $product['message']);
     }
 
-    public function update(Request $request, $id)
-    {
-        $product = $this->productRepository->getDetailsByInput([
-            'id' => $id,
-            'first' => true,
-        ]);
-
-        if (!isset($product)) {
-            return $this->sendBadRequest(null, __("validation.common.details_not_found", ["module" => "Product"]));
-        }
-
-        $input = $request->all();
-
-        $validator = Products::validation($input, $id);
-        if ($validator->fails()) {
-            return $this->sendBadRequest(null, $validator->errors()->first());
-        }
-
-        $product = $this->commonCreateUpdate($input, $id);
-        if ($product['flag'] == false) {
-            return $this->sendBadRequest(null, $product['message']);
-        }
-
-        return $this->sendSuccessResponse($product['data'], $product['message']);
-    }
-
     public function commonCreateUpdate($input, $id = null)
     {
-
         /**
          * Multiple Upload
          */
@@ -179,17 +191,45 @@ class ProductController extends Controller
                 /** create */
                 $product = $this->productRepository->create($input);
             }
-            foreach ($input['product_attributes'] as $key => &$value) {
+
+            foreach ($input['stock_details'] as $key => &$value) {
                 $value['product_id'] = $product->id;
                 // $value['product_id'] = 900; // static
-                $attr[] = $this->productAttributesDetailsRepository->updateOrCreate(
-                    [
-                        'product_id' => $value['product_id'],
-                        'common_product_attribute_id' => $value['common_product_attribute_id']
-                    ],
+
+//                $attr[] = $this->productStockInventoryRepositoryEloquent->updateOrCreate(
+//                    [
+//                        'product_id' => $value['product_id'],
+//                        'common_product_attribute_id' => $value['common_product_attribute_id']
+//                    ],
+//                    $value
+//                );
+
+                $request = [
+                    'product_id' => $value['product_id'],
+                ];
+
+                if (isset($value['common_product_attribute_id'])) $request['common_product_attribute_id'] = $value['common_product_attribute_id'];
+                if (isset($value['common_product_attribute_size_id'])) $request['common_product_attribute_size_id'] = $value['common_product_attribute_size_id'];
+                if (isset($value['common_product_attribute_color_id'])) $request['common_product_attribute_color_id'] = $value['common_product_attribute_color_id'];
+
+                $attr[] = $this->productStockInventoryRepositoryEloquent->updateOrCreate(
+                    $request,
                     $value
                 );
             }
+
+
+//            foreach ($input['product_attributes'] as $key => &$value) {
+//                $value['product_id'] = $product->id;
+//                // $value['product_id'] = 900; // static
+//                $attr[] = $this->productAttributesDetailsRepository->updateOrCreate(
+//                    [
+//                        'product_id' => $value['product_id'],
+//                        'common_product_attribute_id' => $value['common_product_attribute_id']
+//                    ],
+//                    $value
+//                );
+//            }
         } catch (\Exception $e) {
             /** if any error found then delete created product */
             if (!!!isset($id)) {
@@ -203,7 +243,7 @@ class ProductController extends Controller
         $product = $this->productRepository->getDetailsByInput([
             'id' => $product->id,
             'relation' => ["category", 'product_attributes'/* , 'product_attributes.common_product_attribute_detail' */],
-            'product_attributes_list' => ["product_id",  "common_product_attribute_id", "value", "values"],
+            'product_attributes_list' => ["product_id", "common_product_attribute_id", "value", "values"],
             'first' => true,
         ]);
 
@@ -212,6 +252,32 @@ class ProductController extends Controller
         } else {
             return $this->makeResponse($product, __("validation.common.created", ['module' => "Product"]));
         }
+    }
+
+    public function update(Request $request, $id)
+    {
+        $product = $this->productRepository->getDetailsByInput([
+            'id' => $id,
+            'first' => true,
+        ]);
+
+        if (!isset($product)) {
+            return $this->sendBadRequest(null, __("validation.common.details_not_found", ["module" => "Product"]));
+        }
+
+        $input = $request->all();
+
+        $validator = Products::validation($input, $id);
+        if ($validator->fails()) {
+            return $this->sendBadRequest(null, $validator->errors()->first());
+        }
+
+        $product = $this->commonCreateUpdate($input, $id);
+        if ($product['flag'] == false) {
+            return $this->sendBadRequest(null, $product['message']);
+        }
+
+        return $this->sendSuccessResponse($product['data'], $product['message']);
     }
 
     public function statusChange(Request $request)

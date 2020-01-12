@@ -34,14 +34,19 @@ class Products extends Model
         return [
             'category_id' => $once . 'required',
             'name' => $once . 'required',
-            'price' => $once . 'required',
+//            'price' => $once . 'required',
             // 'image' => $once . "required",
             //            'size' => $once . 'required',
             //            'color' => $once . 'required',
-            'product_attributes' => $once . "required|array",
-            'common_product_attribute_id.*.common_product_attribute_id' => $once . "required|integer",
-            // 'common_product_attribute_id.*.values' => $once . "required",
-        ];
+            'stock_details' => $once . "required|array",
+            'stock_details.*.common_product_attribute_size_id' => $once . "required",
+            'stock_details.*.common_product_attribute_color_id' => $once . "required",
+            'stock_details.*.sale_price' => $once . "required",
+            'stock_details.*.mrp_price' => $once . "required",
+            'stock_details.*.stock_available' => $once . "required",
+//            'product_attributes' => $once . "required|array",
+//            'common_product_attribute_id.*.common_product_attribute_id' => $once . "required|integer",
+         ];
     }
 
     /**
@@ -189,4 +194,12 @@ class Products extends Model
     {
         return $this->hasOne(FavoriteProducts::class, 'product_id', 'id');
     }
+
+    public function stock_inventories()
+    {
+        return $this->hasMany(ProductStockInventory::class, 'product_id', 'id');
+    }
+
+
+
 }

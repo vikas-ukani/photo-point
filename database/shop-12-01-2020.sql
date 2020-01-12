@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 06, 2020 at 05:01 PM
+-- Generation Time: Jan 12, 2020 at 03:02 PM
 -- Server version: 10.4.10-MariaDB
 -- PHP Version: 7.3.12
 
@@ -84,14 +84,28 @@ INSERT INTO `cities` (`id`, `state_id`, `name`, `is_active`, `created_at`, `upda
 DROP TABLE IF EXISTS `common_product_attributes`;
 CREATE TABLE `common_product_attributes` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `subcategory_id` bigint(20) DEFAULT NULL COMMENT 'category id by this all subcategory,',
+  `subcategory_ids` text COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'multiple category id wise details',
   `parent_id` bigint(20) DEFAULT NULL COMMENT 'parent of this table id ',
   `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'name of this attributes',
+  `code` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'code for check unique',
   `is_active` tinyint(1) NOT NULL DEFAULT 1 COMMENT 'check is active to show or not',
   `sequence` bigint(20) NOT NULL DEFAULT 0 COMMENT 'to set sequence wise',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `common_product_attributes`
+--
+
+INSERT INTO `common_product_attributes` (`id`, `subcategory_ids`, `parent_id`, `name`, `code`, `is_active`, `sequence`, `created_at`, `updated_at`) VALUES
+(1, '8', NULL, 'Size', 'SIZE', 1, 1, '2020-01-06 18:30:00', '2020-01-06 18:30:00'),
+(2, '8', 1, '100mm', NULL, 1, 1, '2020-01-06 18:30:00', '2020-01-06 18:30:00'),
+(3, '6', 1, '10', NULL, 1, 1, '2020-01-06 18:30:00', '2020-01-06 18:30:00'),
+(4, '8', 1, '200mm', NULL, 1, 1, '2020-01-06 18:30:00', '2020-01-06 18:30:00'),
+(5, '8', NULL, 'Color', 'COLOR', 1, 2, '2020-01-06 18:30:00', '2020-01-06 18:30:00'),
+(6, '8', 5, 'Red', NULL, 1, 3, '2020-01-06 18:30:00', '2020-01-06 18:30:00'),
+(7, '8', 5, 'Blue', NULL, 1, 3, '2020-01-06 18:30:00', '2020-01-06 18:30:00');
 
 -- --------------------------------------------------------
 
@@ -159,14 +173,7 @@ CREATE TABLE `countries` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `countries`
---
-
-INSERT INTO `countries` (`id`, `name`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 'India', 1, '2019-11-29 18:30:00', '2019-11-29 18:30:00'),
-(2, 'USA', 1, '2019-11-29 18:30:00', '2019-11-29 18:30:00');
+-- Error reading data for table shopikana.countries: #1064 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM `shopikana`.`countries`' at line 1
 
 -- --------------------------------------------------------
 
@@ -256,7 +263,7 @@ CREATE TABLE `main_categories` (
 INSERT INTO `main_categories` (`id`, `parent_id`, `name`, `code`, `image`, `description`, `is_active`, `created_at`, `updated_at`) VALUES
 (1, 0, 'Electronics', 'ELECTRONICS', '/uploaded/images/categories/ic_tshirt', 'ELECTRONICS Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 1, '2019-12-01 18:30:00', '2019-12-01 18:30:00'),
 (2, 0, 'Men\'s Clothing', 'MENS_CLOTHING', '/uploaded/images/categories/ic_cup', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 1, '2019-12-01 18:30:00', '2019-12-01 18:30:00'),
-(3, 0, 'WOMENS_CLOTHING', 'WOMENS_CLOTHING', '/uploaded/images/categories/ic_bottle', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 1, '2019-12-01 18:30:00', '2019-12-01 18:30:00'),
+(3, 0, 'Womens Clothing', 'WOMENS_CLOTHING', '/uploaded/images/categories/ic_bottle', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 1, '2019-12-01 18:30:00', '2019-12-01 18:30:00'),
 (4, 1, 'Mobile Phones', 'MOBILE_PHONES', '', 'Mobile category from electronics', 1, '2019-12-01 18:30:00', '2019-12-01 18:30:00'),
 (5, 0, 'Clothing Accessories & Jewelry', 'CLOTHING_ACCESSORIES_&_JEWELRY', '/uploaded/images/categories/', 'CLOTHING_ACCESSORIES_&_JEWELRY', 1, '2019-12-01 18:30:00', '2019-12-01 18:30:00'),
 (6, 5, 'Shoes Accessories', 'SHOES_ACCESSORIES', '/uploaded/images/categories/', 'SHOES_ACCESSORIES', 1, '2020-01-05 18:30:00', '2020-01-05 18:30:00'),
@@ -301,7 +308,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (16, '2019_12_04_151403_create_carts_table', 8),
 (17, '2019_12_30_140104_create_favorite_products_table', 9),
 (18, '2020_01_05_082154_create_product_attributes_details_table', 10),
-(19, '2020_01_04_110630_create_common_product_attributes_table', 11);
+(19, '2020_01_04_110630_create_common_product_attributes_table', 11),
+(20, '2020_01_12_071523_create_product_stock_inventories_table', 12);
 
 -- --------------------------------------------------------
 
@@ -321,6 +329,7 @@ CREATE TABLE `oauth_access_tokens` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `expires_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- Error reading data for table shopikana.oauth_access_tokens: #1064 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM `shopikana`.`oauth_access_tokens`' at line 1
 
 -- --------------------------------------------------------
 
@@ -482,7 +491,7 @@ CREATE TABLE `order_rate_reviews` (
 
 INSERT INTO `order_rate_reviews` (`id`, `order_id`, `product_id`, `user_id`, `review`, `rate`, `created_at`, `updated_at`) VALUES
 (1, 11, 11, 4, 'This Product was not much good!', 4, '2019-12-17 17:02:41', '2019-12-17 17:02:41'),
-(2, 11, 11, 4, 'This Product was too good!', 2, '2019-12-17 17:03:15', '2019-12-17 17:03:15'),
+(2, 11, 134, 4, 'This Product was too good!', 2, '2019-12-17 17:03:15', '2019-12-17 17:03:15'),
 (3, 11, 11, 4, NULL, 2, '2019-12-18 14:47:55', '2019-12-18 14:47:55'),
 (4, 11, 11, 4, 'This Product was not much good!', 4, '2019-12-17 17:02:41', '2019-12-17 17:02:41'),
 (5, 11, 11, 4, 'This Product was too good!', 2, '2019-12-17 17:03:15', '2019-12-17 17:03:15'),
@@ -654,7 +663,9 @@ INSERT INTO `products` (`id`, `category_id`, `name`, `image`, `price`, `size`, `
 (128, 1, '4 Image Product T-Shirt', NULL, 5000.00, NULL, NULL, NULL, 0, '2020-01-05 14:02:25', '2020-01-05 14:02:25'),
 (129, 1, '4 Image Product T-Shirt', NULL, 5000.00, NULL, NULL, NULL, 0, '2020-01-05 14:02:49', '2020-01-05 14:02:49'),
 (130, 1, '4 Image Product T-Shirt', NULL, 5000.00, NULL, NULL, NULL, 0, '2020-01-05 14:04:27', '2020-01-05 14:04:27'),
-(131, 1, '4 Image Product T-Shirt', NULL, 5000.00, NULL, NULL, NULL, 0, '2020-01-05 14:04:36', '2020-01-05 14:04:36');
+(131, 1, '4 Image Product T-Shirt', NULL, 5000.00, NULL, NULL, NULL, 0, '2020-01-05 14:04:36', '2020-01-05 14:04:36'),
+(132, 1, '4 Image Product T-Shirt', NULL, 5000.00, NULL, NULL, NULL, 0, '2020-01-12 12:28:41', '2020-01-12 12:28:41'),
+(134, 8, 'Stock Product', NULL, 5000.00, NULL, NULL, '<h5>Description</h5>', 1, '2020-01-12 13:05:52', '2020-01-12 13:05:52');
 
 -- --------------------------------------------------------
 
@@ -689,7 +700,38 @@ INSERT INTO `product_attributes_details` (`id`, `product_id`, `common_product_at
 (9, 130, 3, NULL, '8,9', '2020-01-05 14:04:28', '2020-01-05 14:04:28'),
 (10, 131, 1, NULL, '2,3,4', '2020-01-05 14:04:37', '2020-01-05 14:04:37'),
 (11, 131, 2, NULL, '5,6', '2020-01-05 14:04:37', '2020-01-05 14:04:37'),
-(12, 131, 3, NULL, '8,9', '2020-01-05 14:04:37', '2020-01-05 14:04:37');
+(12, 131, 3, NULL, '8,9', '2020-01-05 14:04:37', '2020-01-05 14:04:37'),
+(13, 132, 1, NULL, '2,3,4', '2020-01-12 12:28:41', '2020-01-12 12:28:41'),
+(14, 132, 2, NULL, '5,6', '2020-01-12 12:28:41', '2020-01-12 12:28:41'),
+(15, 132, 3, NULL, '8,9', '2020-01-12 12:28:41', '2020-01-12 12:28:41');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_stock_inventories`
+--
+
+DROP TABLE IF EXISTS `product_stock_inventories`;
+CREATE TABLE `product_stock_inventories` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL COMMENT 'Product Stock Manager',
+  `common_product_attribute_size_id` bigint(20) UNSIGNED NOT NULL COMMENT 'common product size attributes',
+  `common_product_attribute_color_id` bigint(20) UNSIGNED NOT NULL COMMENT 'common product color attributes',
+  `sale_price` int(11) NOT NULL COMMENT 'selling price',
+  `mrp_price` int(11) NOT NULL COMMENT 'MRP price',
+  `stock_available` int(11) NOT NULL COMMENT 'number of items available',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `product_stock_inventories`
+--
+
+INSERT INTO `product_stock_inventories` (`id`, `product_id`, `common_product_attribute_size_id`, `common_product_attribute_color_id`, `sale_price`, `mrp_price`, `stock_available`, `created_at`, `updated_at`) VALUES
+(1, 134, 2, 7, 1000, 1100, 55, '2020-01-12 13:05:52', '2020-01-12 13:05:52'),
+(2, 134, 3, 8, 2000, 2200, 5000, '2020-01-12 13:05:52', '2020-01-12 13:05:52'),
+(3, 134, 5, 18, 5000, 5500, 15000, '2020-01-12 13:05:52', '2020-01-12 13:05:52');
 
 -- --------------------------------------------------------
 
@@ -846,7 +888,7 @@ ALTER TABLE `cities`
 --
 ALTER TABLE `common_product_attributes`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `common_product_attributes_subcategory_id_index` (`subcategory_id`),
+  ADD KEY `common_product_attributes_subcategory_ids_index` (`subcategory_ids`(768)),
   ADD KEY `common_product_attributes_parent_id_index` (`parent_id`);
 
 --
@@ -971,6 +1013,13 @@ ALTER TABLE `product_attributes_details`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `product_stock_inventories`
+--
+ALTER TABLE `product_stock_inventories`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_stock_inventories_product_id_foreign` (`product_id`);
+
+--
 -- Indexes for table `shoppers`
 --
 ALTER TABLE `shoppers`
@@ -1014,7 +1063,7 @@ ALTER TABLE `cities`
 -- AUTO_INCREMENT for table `common_product_attributes`
 --
 ALTER TABLE `common_product_attributes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `complaints`
@@ -1062,7 +1111,7 @@ ALTER TABLE `main_categories`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `offers`
@@ -1086,13 +1135,19 @@ ALTER TABLE `order_rate_reviews`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=135;
 
 --
 -- AUTO_INCREMENT for table `product_attributes_details`
 --
 ALTER TABLE `product_attributes_details`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `product_stock_inventories`
+--
+ALTER TABLE `product_stock_inventories`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `shoppers`
@@ -1117,6 +1172,16 @@ ALTER TABLE `users`
 --
 ALTER TABLE `user_delevery_addresses`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `product_stock_inventories`
+--
+ALTER TABLE `product_stock_inventories`
+  ADD CONSTRAINT `product_stock_inventories_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -1,4 +1,6 @@
 <?php
+/** @noinspection ALL */
+
 $router->group(['namespace' => 'Auth'], function () use ($router) {
     $router->post('/login', "AuthController@login");
 });
@@ -45,6 +47,7 @@ $router->group(['middleware' => ["auth:api"]], function () use ($router) {
         $router->post('/products-list', "ProductController@list");
         $router->post('/products-create', "ProductController@store");
         $router->get('/products-show/{id}', "ProductController@show");
+        $router->post('/products-get-details', "ProductController@getProductDetails");
         $router->post('/products-update/{id}', "ProductController@update");
         $router->post('/products-status-change', "ProductController@statusChange");
         $router->delete('/products-delete/{id}', "ProductController@destory");

@@ -10,7 +10,7 @@ trait BaseMainRepository
      *
      * @param mixed $value =>  Main Query Object
      * @param mixed $input => from searching words  where search from
-     * @param mixed $searchArray => when search_from is not available then search from back side 
+     * @param mixed $searchArray => when search_from is not available then search from back side
      *
      * @return void
      */
@@ -36,11 +36,11 @@ trait BaseMainRepository
     }
 
     /**
-     * customRelation => dynamic for custom relation 
+     * customRelation => dynamic for custom relation
      *
-     * @param  mixed $value => Main Query Object 
-     * @param  mixed $input => from input get relation key list
-     * @param  mixed $relationDetailsArray => all relation keys are here in array
+     * @param mixed $value => Main Query Object
+     * @param mixed $input => from input get relation key list
+     * @param mixed $relationDetailsArray => all relation keys are here in array
      *
      * @return void
      */
@@ -92,9 +92,9 @@ trait BaseMainRepository
     /**
      * makeRelation => make relation common
      *
-     * @param  mixed $value
-     * @param  mixed $input
-     * @param  mixed $key
+     * @param mixed $value
+     * @param mixed $input
+     * @param mixed $key
      *
      * @return void
      */
@@ -105,7 +105,6 @@ trait BaseMainRepository
                 $q = (isset($input[$key . "_list"]))
                     ? $q->select($input[$key . "_list"])
                     : $q->select("*");
-
 
                 if (isset($input[$key . "_where"]) && count($input[$key . "_where"]) > 0) {
                     foreach ($input[$key . "_where"] as $whkey => $whValue) {
@@ -119,15 +118,15 @@ trait BaseMainRepository
     /**
      * customPaginate => Create Common custom pagination
      *
-     * @param  mixed $value => Main Query Object
-     * @param  mixed $input => for page and limit from input
+     * @param mixed $value => Main Query Object
+     * @param mixed $input => for page and limit from input
      *
      * @return void
      */
     public function customPaginate($value, $input)
     {
-        $limit = (((int) $input['limit']) * 1);
-        $start = (((int) $input['page']) * 1);
+        $limit = (((int)$input['limit']) * 1);
+        $start = (((int)$input['page']) * 1);
         return $value->skip(($start - 1) * $limit)->take($limit);
     }
 }

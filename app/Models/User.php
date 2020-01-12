@@ -32,6 +32,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'mobile', // user mobile
         'photo', // user profile pic
         'is_active', // user is active or not.
+        'is_seller_requested', // user is active or not.
     ];
 
     /**

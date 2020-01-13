@@ -22,7 +22,8 @@
         "ramsey/uuid": "^3.8",
         "sayeed/custom-migrate": "^1.0",
         "tymon/jwt-auth": "^1.0.0-rc.1",
-        "vlucas/phpdotenv": "^3.3"
+        "vlucas/phpdotenv": "^3.3",
+        "ext-json": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.4",

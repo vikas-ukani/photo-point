@@ -86,14 +86,17 @@ class Products extends Model
 
         static::retrieved(function ($model) {
             $model->is_active = $model->is_active == 1 ? true : false;
+            $model->description = json_decode($model->description, true);
         });
 
         static::creating(function ($model) {
             $model->is_active = $model->is_active == true ? 1 : 0;
+            $model->description = json_encode($model->description);
         });
 
         static::updating(function ($model) {
             $model->is_active = $model->is_active == true ? 1 : 0;
+            $model->description = json_encode($model->description);
         });
     }
 
@@ -199,7 +202,4 @@ class Products extends Model
     {
         return $this->hasMany(ProductStockInventory::class, 'product_id', 'id');
     }
-
-
-
 }

@@ -148,7 +148,6 @@ class ProductController extends Controller
         if ($validator->fails()) {
             return $this->sendBadRequest(null, $validator->errors()->first());
         }
-
         $product = $this->commonCreateUpdate($input);
         if (isset($product) && $product['flag'] == false) {
             return $this->sendBadRequest(null, $product['message']);
@@ -180,6 +179,9 @@ class ProductController extends Controller
             $input['image'] = $data['data']['image'];
         }
 
+//        $product = $this->productRepository->create($input);
+//        dd("Input", $input, $product);
+
         /** after create an product add their attributes */
         try {
             $attr = [];
@@ -189,12 +191,11 @@ class ProductController extends Controller
                 $product = $this->productRepository->update($input, $id);
             } else {
                 /** create */
-                $product = $this->productRepository->create($input);
+                 $product = $this->productRepository->create($input);
             }
-
-            foreach ($input['stock_details'] as $key => &$value) {
-                $value['product_id'] = $product->id;
-                // $value['product_id'] = 900; // static
+             foreach ($input['stock_details'] as $key => &$value) {
+                 $value['product_id'] = $product->id;
+                 // $value['product_id'] = 900; // static
 
 //                $attr[] = $this->productStockInventoryRepositoryEloquent->updateOrCreate(
 //                    [
@@ -204,20 +205,19 @@ class ProductController extends Controller
 //                    $value
 //                );
 
-                $request = [
-                    'product_id' => $value['product_id'],
-                ];
+                 $request = [
+                     'product_id' => $value['product_id'],
+                 ];
 
-                if (isset($value['common_product_attribute_id'])) $request['common_product_attribute_id'] = $value['common_product_attribute_id'];
-                if (isset($value['common_product_attribute_size_id'])) $request['common_product_attribute_size_id'] = $value['common_product_attribute_size_id'];
-                if (isset($value['common_product_attribute_color_id'])) $request['common_product_attribute_color_id'] = $value['common_product_attribute_color_id'];
+                 if (isset($value['common_product_attribute_id'])) $request['common_product_attribute_id'] = $value['common_product_attribute_id'];
+                 if (isset($value['common_product_attribute_size_id'])) $request['common_product_attribute_size_id'] = $value['common_product_attribute_size_id'];
+                 if (isset($value['common_product_attribute_color_id'])) $request['common_product_attribute_color_id'] = $value['common_product_attribute_color_id'];
 
-                $attr[] = $this->productStockInventoryRepositoryEloquent->updateOrCreate(
-                    $request,
-                    $value
-                );
-            }
-
+                 $attr[] = $this->productStockInventoryRepositoryEloquent->updateOrCreate(
+                     $request,
+                     $value
+                 );
+             }
 
 //            foreach ($input['product_attributes'] as $key => &$value) {
 //                $value['product_id'] = $product->id;
@@ -233,9 +233,8 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             /** if any error found then delete created product */
             if (!!!isset($id)) {
-                $this->productRepository->delete($product->id);
+                $this->productRepository->delete($id);
             }
-
             \Log::error($e->getMessage());
             return $this->makeError(null, $e->getCode() . "-" . $e->getMessage());
         }

@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -45,6 +45,12 @@ $router->get('/admin', function () {
 // $router->get('/admin/{route}/', function () {
 //     return view('admin');
 // });
+
+
+$router->post('multiple-image-upload', "ImageUploadController@uploadFiles" );
+$router->post('single-image-upload', "ImageUploadController@uploadSingleFile" );
+
+
 
 /** For Image Security display user to show image */
 $router->get(UPLOADED_FOLDER_NAME . '{folderName}/{moduleName}/{fileName}', function ($folderName, $moduleName, $fileName) {

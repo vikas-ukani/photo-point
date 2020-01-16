@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateProductStockInventoriesTable extends Migration
 {
@@ -23,6 +23,8 @@ class CreateProductStockInventoriesTable extends Migration
 
             $table->bigInteger('common_product_attribute_color_id')->unsigned()->index()->comment("common product color attributes");
             $table->foreign('common_product_attribute_color_id')->references('id')->on('common_product_attributes');
+
+            $table->string('images', 200)->nullable()->comment('stock wise images');
 
             $table->integer('sale_price')->comment("selling price");
             $table->integer('mrp_price')->comment("MRP price");

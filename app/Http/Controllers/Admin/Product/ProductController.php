@@ -230,6 +230,7 @@ class ProductController extends Controller
 //                    $value
 //                );
 //            }
+
         } catch (\Exception $e) {
             /** if any error found then delete created product */
             if (!!!isset($id)) {

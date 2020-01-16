@@ -13,6 +13,7 @@ class ProductStockInventory extends Model
         'product_id',
         "common_product_attribute_size_id",
         "common_product_attribute_color_id",
+        "images",
         "sale_price",
         "mrp_price",
         "stock_available",

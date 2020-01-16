@@ -27,18 +27,19 @@ class ImageUploadController extends Controller
     public function uploadSingleFile(Request $request)
     {
         $input = $request->all();
+//        dd("Input", $input, $request);
+
         /**
          * Validate Image Extensions
          */
         $validator = Validator::make($request->all(), [
             'folder_name' => 'required',
-            'image' => 'required|mimes:pdf,jpg,png',
-
+            'image' => 'required',
+//            |mimes:pdf,jpg,png
         ]);
         if ($validator->fails()) {
             return $this->sendBadRequest(null, $validator->errors()->all());
         }
-
         /**
          * Finale Image Upload
          */
@@ -47,6 +48,7 @@ class ImageUploadController extends Controller
             return $this->sendBadRequest(null, $data['message']);
         }
         $image = $data['data']['image'];
+//        $image = env('APP_URL', url('/')) . $image;
         return $this->sendSuccessResponse($image, __('validation.common.saved', ['module' => "image"]));
     }
 

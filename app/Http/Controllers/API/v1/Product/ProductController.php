@@ -7,12 +7,14 @@ use App\Libraries\Repositories\FavoriteProductRepositoryEloquent;
 use App\Libraries\Repositories\FeatureProductRepositoryEloquent;
 use App\Libraries\Repositories\OrderRateReviewRepositoryEloquent;
 use App\Libraries\Repositories\ProductRepositoryEloquent;
+use App\Libraries\Repositories\ProductStockInventoryRepositoryEloquent;
 use App\Libraries\Repositories\UsersRepositoryEloquent;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     protected $userId;
+    protected $productStockInventoryRepository;
     protected $orderRateReviewRepository;
     protected $productRepository;
     protected $featureProductRepository;
@@ -20,6 +22,7 @@ class ProductController extends Controller
     protected $favoriteProductRepository;
 
     public function __construct(
+        ProductStockInventoryRepositoryEloquent $productStockInventoryRepository,
         OrderRateReviewRepositoryEloquent $orderRateReviewRepository,
         ProductRepositoryEloquent $productRepository,
         FavoriteProductRepositoryEloquent $favoriteProductRepository,
@@ -28,6 +31,7 @@ class ProductController extends Controller
     )
     {
         $this->userId = \Auth::id();
+        $this->productStockInventoryRepository = $productStockInventoryRepository;
         $this->orderRateReviewRepository = $orderRateReviewRepository;
         $this->productRepository = $productRepository;
         $this->favoriteProductRepository = $favoriteProductRepository;
@@ -165,6 +169,12 @@ class ProductController extends Controller
             'page' => 1,
             'limit' => 5
         ]);
+
+        /** get stock details here, */
+        $product['product_stock_details'] = $this->productStockInventoryRepository->getDetailsByInput([
+
+        ]);
+
 
         // $product['customer_rating'] = $this->orderRateReviewRepository->getDetailsByInput([
         //     'product_id' => $id,

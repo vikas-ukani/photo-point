@@ -13,8 +13,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     });
 
     $router->get('get-all-data', "CommonController@getAllCommonData");
+
+    $router->get('get-main-category', "CommonController@getMainCategory");
+    $router->get('get-sub-category/{id}', "CommonController@getSubcategoryByMainID");
+    $router->get('get-child-category/{id}', "CommonController@getChildcategoryBySubID");
+
     $router->get('get-country-state-city', "CommonController@getCountryStateCity");
- 
+
     /**
      * Product Module
      */

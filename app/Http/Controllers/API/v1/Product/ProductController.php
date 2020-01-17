@@ -112,6 +112,7 @@ class ProductController extends Controller
 
             $input['ids'] = $favoriteProductIds;
         } else {
+//            TODO Test Commented
             $validation = $this->requiredAllKeysValidation(['category_id'], $input);
             if (isset($validation['flag']) && $validation['flag'] == false) {
                 return $this->sendBadRequest(null, $validation['message']);

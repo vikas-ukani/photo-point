@@ -1,6 +1,4 @@
-<?php
-
-/** @noinspection ALL */
+<?php /** @noinspection ALL */
 
 namespace App\Http\Controllers\Admin\Product;
 
@@ -158,32 +156,31 @@ class ProductController extends Controller
 
     public function commonCreateUpdate($input, $id = null)
     {
-        /**
-         * Multiple Upload
-         */
-        if (isset($input['images']) && is_array($input['images']) && count($input['images']) > 0) {
-            foreach ($input['images'] as $key => $image) {
-                $data = $this->imageController->moveFile($image, 'products');
-                array_push($input['images'], $data['data']['image']);
-                $imagesArray[] = $data['data']['image'];
-            }
-            $input['image'] = is_array($imagesArray) ? implode(',', $imagesArray) : $imagesArray;
-        } else if (isset($input['image'])) {
-            /**
-             * Single Upload
-             */
-            $data = $this->imageController->moveFile($input['image'], 'products');
-            if (isset($data) && $data['flag'] == false) {
-                return $this->makeError(null, $data['message']);
-            }
-            $input['image'] = $data['data']['image'];
-        }
 
-//        $product = $this->productRepository->create($input);
-//        dd("Input", $input, $product);
-
-        /** after create an product add their attributes */
         try {
+            /**
+             * Multiple Upload
+             */
+//            if (isset($input['images']) && is_array($input['images']) && count($input['images']) > 0) {
+//                foreach ($input['images'] as $key => $image) {
+//                    $data = $this->imageController->moveFile($image, 'products');
+//                    array_push($input['images'], $data['data']['image']);
+//                    $imagesArray[] = $data['data']['image'];
+//                }
+//                $input['image'] = is_array($imagesArray) ? implode(',', $imagesArray) : $imagesArray;
+//            } else if (isset($input['image'])) {
+//                /**
+//                 * Single Upload
+//                 */
+//                $data = $this->imageController->moveFile($input['image'], 'products');
+//                if (isset($data) && $data['flag'] == false) {
+//                    return $this->makeError(null, $data['message']);
+//                }
+//                $input['image'] = $data['data']['image'];
+//            }
+
+
+            /** after create an product add their attributes */
             $attr = [];
             /** check to create or update */
             if (isset($id)) {
@@ -191,46 +188,25 @@ class ProductController extends Controller
                 $product = $this->productRepository->update($input, $id);
             } else {
                 /** create */
-                 $product = $this->productRepository->create($input);
+                $product = $this->productRepository->create($input);
             }
-             foreach ($input['stock_details'] as $key => &$value) {
-                 $value['product_id'] = $product->id;
-                 // $value['product_id'] = 900; // static
+            foreach ($input['stock_details'] as $key => &$value) {
+                $value['product_id'] = $product->id;
 
-//                $attr[] = $this->productStockInventoryRepositoryEloquent->updateOrCreate(
-//                    [
-//                        'product_id' => $value['product_id'],
-//                        'common_product_attribute_id' => $value['common_product_attribute_id']
-//                    ],
-//                    $value
-//                );
 
-                 $request = [
-                     'product_id' => $value['product_id'],
-                 ];
+                $request = [
+                    'product_id' => $value['product_id'],
+                ];
 
-                 if (isset($value['common_product_attribute_id'])) $request['common_product_attribute_id'] = $value['common_product_attribute_id'];
-                 if (isset($value['common_product_attribute_size_id'])) $request['common_product_attribute_size_id'] = $value['common_product_attribute_size_id'];
-                 if (isset($value['common_product_attribute_color_id'])) $request['common_product_attribute_color_id'] = $value['common_product_attribute_color_id'];
+                if (isset($value['common_product_attribute_id'])) $request['common_product_attribute_id'] = $value['common_product_attribute_id'];
+                if (isset($value['common_product_attribute_size_id'])) $request['common_product_attribute_size_id'] = $value['common_product_attribute_size_id'];
+                if (isset($value['common_product_attribute_color_id'])) $request['common_product_attribute_color_id'] = $value['common_product_attribute_color_id'];
 
-                 $attr[] = $this->productStockInventoryRepositoryEloquent->updateOrCreate(
-                     $request,
-                     $value
-                 );
-             }
-
-//            foreach ($input['product_attributes'] as $key => &$value) {
-//                $value['product_id'] = $product->id;
-//                // $value['product_id'] = 900; // static
-//                $attr[] = $this->productAttributesDetailsRepository->updateOrCreate(
-//                    [
-//                        'product_id' => $value['product_id'],
-//                        'common_product_attribute_id' => $value['common_product_attribute_id']
-//                    ],
-//                    $value
-//                );
-//            }
-
+                $attr[] = $this->productStockInventoryRepositoryEloquent->updateOrCreate(
+                    $request,
+                    $value
+                );
+            }
         } catch (\Exception $e) {
             /** if any error found then delete created product */
             if (!!!isset($id)) {

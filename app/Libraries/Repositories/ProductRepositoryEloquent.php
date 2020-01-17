@@ -44,7 +44,7 @@ class ProductRepositoryEloquent extends BaseRepository implements UsersRepositor
     {
         /** searching */
         if (isset($input['search'])) {
-            $value = $this->customSearch($value, $input, ['name', 'price', 'description', 'size']);
+            $value = $this->customSearch($value, $input, ['name', 'description']);
         }
 
         $this->customRelation($value, $input, []); //'account_detail'

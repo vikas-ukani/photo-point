@@ -108,6 +108,38 @@ class ProductStockInventory extends Model
         });*/
     }
 
+
+    public function getImagesAttribute($value)
+    {
+        if (isset($value) && is_string($value)) {
+            $value = explode(',', $value);
+            $value = array_filter($value);
+            foreach ($value as $key => &$val) {
+                $val = env('APP_URL', url('/')) . $val;
+                $arr = array_unique(explode(env('APP_URL', url('/')), $val));
+                $val = implode(env('APP_URL', url('/')), $arr);
+            }
+            return $this->attributes['images'] = $value;
+        } else if (isset($value) && is_array($value)) {
+            return $this->attributes['images'] = $value;
+        } else {
+            $this->attributes['images'] = env('APP_URL', url('/')) . $value;
+            $arr = array_unique(explode(env('APP_URL', url('/')), $this->attributes['image']));
+            return $this->attributes['images'] = implode(env('APP_URL', url('/')), $arr);
+        }
+    }
+
+    public function setImagesAttribute($value)
+    {
+        if (isset($value) && is_array($value)) {
+            $value = array_filter($value);
+            $value = implode(',', $value);
+        } else {
+            $value = null;
+        }
+        $this->attributes['images'] = $value;
+    }
+
     /**
      * scopeOrdered => default sorting on created at as ascending
      *
@@ -137,7 +169,7 @@ class ProductStockInventory extends Model
 
     public function common_product_attribute_color_detail()
     {
-        return $this->hasOne(CommonProductAttributes::class,'id', 'common_product_attribute_size_id');
+        return $this->hasOne(CommonProductAttributes::class, 'id', 'common_product_attribute_size_id');
     }
 
 }

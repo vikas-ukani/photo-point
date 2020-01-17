@@ -12,8 +12,8 @@ class Products extends Model
     protected $fillable = [
         "category_id",
         "name",
-        'image',
-        "price",
+//        'image',
+//        "price",
         //        "size",
         //        "color",
         "description",
@@ -46,7 +46,7 @@ class Products extends Model
             'stock_details.*.stock_available' => $once . "required",
 //            'product_attributes' => $once . "required|array",
 //            'common_product_attribute_id.*.common_product_attribute_id' => $once . "required|integer",
-         ];
+        ];
     }
 
     /**
@@ -185,7 +185,6 @@ class Products extends Model
         return $this->hasMany(ProductAttributesDetails::class, 'product_id', 'id');
     }
 
-
     /** get product rate and review */
     public function customer_rating()
     {
@@ -196,6 +195,11 @@ class Products extends Model
     public function is_favorite()
     {
         return $this->hasOne(FavoriteProducts::class, 'product_id', 'id');
+    }
+
+    public function stock_inventory()
+    {
+        return $this->hasOne(ProductStockInventory::class, 'product_id', 'id');
     }
 
     public function stock_inventories()

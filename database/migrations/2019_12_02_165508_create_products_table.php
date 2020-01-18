@@ -17,12 +17,13 @@ class CreateProductsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('category_id')->unsigned();
             $table->foreign('category_id')->references('id')->on('main_categories');
+
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
+
             $table->string('name')->comment('Product Name');
             $table->text('image')->nullable();
-            $table->float('price');
-            $table->text('size', 50)->comment("Multiple Sizes.");
-            $table->text('color', 50)->comment("color.");
-            $table->text('description')->nullable();
+             $table->text('description')->nullable();
             $table->boolean('is_active')->default(true)->comment("product is active or not.");
             $table->timestamps();
         });

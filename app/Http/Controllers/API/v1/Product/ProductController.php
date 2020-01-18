@@ -101,7 +101,7 @@ class ProductController extends Controller
         $input = $request->all();
 
         /** if_favorite key for list all favorite product list by user */
-        if (isset($this->userId )  && isset($input['is_favorite_by_user']) && $input['is_favorite_by_user'] == true) {
+        if (isset($this->userId) && isset($input['is_favorite_by_user']) && $input['is_favorite_by_user'] == true) {
             /** 1. first get all favorite product from favorite table */
             $requestFavorite = [
                 'user_id' => $this->userId,
@@ -117,10 +117,10 @@ class ProductController extends Controller
             $input['ids'] = $favoriteProductIds;
         } else {
 //            TODO Test Commented
-            $validation = $this->requiredAllKeysValidation(['category_id'], $input);
-            if (isset($validation['flag']) && $validation['flag'] == false) {
-                return $this->sendBadRequest(null, $validation['message']);
-            }
+//            $validation = $this->requiredAllKeysValidation(['category_id'], $input);
+//            if (isset($validation['flag']) && $validation['flag'] == false) {
+//                return $this->sendBadRequest(null, $validation['message']);
+//            }
         }
 
         $products = $this->productRepository->getDetails($input);
@@ -172,7 +172,13 @@ class ProductController extends Controller
 
         /** get stock details here, */
         $product['product_stock_details'] = $this->productStockInventoryRepository->getDetailsByInput([
-
+            'product_id' => $id,
+            'relation' => [
+                "common_product_attribute_size_detail",
+                "common_product_attribute_color_detail"
+            ],
+            "common_product_attribute_size_detail_list" => [ "id", 'name', "is_active"],
+            "common_product_attribute_color_detail_list" => [ "id", 'name', "is_active"]
         ]);
 
 

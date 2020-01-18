@@ -57,6 +57,14 @@ class ProductRepositoryEloquent extends BaseRepository implements UsersRepositor
         }
 
         /** filter by id  */
+        if (isset($input['user_id'])) {
+            $value = $value->where('user_id', $input['user_id']);
+        }
+        if (isset($input['user_ids']) && is_array($input['user_ids']) && count($input['user_ids'])) {
+            $value = $value->whereIn('user_id', $input['user_ids']);
+        }
+
+        /** filter by id  */
         if (isset($input['category_id'])) {
             $value = $value->where('category_id', $input['category_id']);
         }

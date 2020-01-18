@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    protected $userId;
     protected $productRepository;
     protected $featureProductRepository;
     protected $imageController;
@@ -27,6 +28,7 @@ class ProductController extends Controller
         ProductAttributesDetailsRepositoryEloquent $productAttributesDetailsRepository
     )
     {
+        $this->userId = \Auth::id();
         $this->productRepository = $productRepository;
         $this->featureProductRepository = $featureProductRepository;
         $this->imageController = $imageController;
@@ -78,6 +80,10 @@ class ProductController extends Controller
     {
         $input = $request->all();
 
+        $input['user_id'] = $input['user_id'] ?? $this->userId;
+
+
+//        dd("input", $input);
         $products = $this->productRepository->getDetails($input);
         if (isset($products['count']) && $products['count'] == 0) {
             return $this->sendBadRequest(null, __('validation.common.details_not_found', ['module' => "Products"]));

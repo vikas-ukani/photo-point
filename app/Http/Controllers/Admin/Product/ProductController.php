@@ -10,6 +10,7 @@ use App\Libraries\Repositories\ProductRepositoryEloquent;
 use App\Libraries\Repositories\ProductStockInventoryRepositoryEloquent;
 use App\Models\Products;
 use Illuminate\Http\Request;
+use phpDocumentor\Reflection\DocBlock\Description;
 
 class ProductController extends Controller
 {
@@ -127,11 +128,25 @@ class ProductController extends Controller
 
         $request = [
             'id' => $id,
-            'relation', ["category", "stock_inventories"],
-            "category_list" => ["id", 'name'],
+            'relation' => ["main_category", "sub_category", "category", "stock_inventories", "stock_inventories.common_product_attribute_size_detail", "stock_inventories.common_product_attribute_color_detail"],   //
+            "main_category" => [ "id", 'parent_id', 'name'],
+            "sub_category" => [ "id", 'parent_id', 'name'],
+            "category_list" => [ "id", 'parent_id', 'name'],
+            "stock_inventories.common_product_attribute_size_detail_list"=> ["id", "name", "code"],
+            "stock_inventories.common_product_attribute_color_detail_list"=> ["id", "name", "code"],
             'first' => true,
         ];
-        $data = $this->getProductDetailsByInput($request);
+
+        /*id: (...)
+subcategory_ids: (...)
+parent_id: (...)
+name: "100mm"
+code: null
+is_active: (...)
+sequence: (...)
+created_at: (...)
+updated_at: (...)*/
+         $data = $this->getProductDetailsByInput($request);
         if (isset($data) && $data['flag'] == false)
             return $this->sendBadRequest(null, $data['message']);
 

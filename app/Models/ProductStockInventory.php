@@ -169,7 +169,7 @@ class ProductStockInventory extends Model
 
     public function common_product_attribute_color_detail()
     {
-        return $this->hasOne(CommonProductAttributes::class, 'id', 'common_product_attribute_size_id');
+        return $this->hasOne(CommonProductAttributes::class, 'id', 'common_product_attribute_color_id');
     }
 
 }

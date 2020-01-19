@@ -10,6 +10,8 @@ class Products extends Model
     //
 
     protected $fillable = [
+        "main_category_id",
+        "sub_category_id",
         "category_id",
         "name",
 //        'image',
@@ -175,6 +177,16 @@ class Products extends Model
         }
     }
 
+    public function main_category()
+    {
+        return $this->hasOne(MainCategory::class, 'id', 'main_category_id');
+    }
+
+    public function sub_category()
+    {
+        return $this->hasOne(MainCategory::class, 'id', 'sub_category_id');
+    }
+    
     public function category()
     {
         return $this->hasOne(MainCategory::class, 'id', 'category_id');

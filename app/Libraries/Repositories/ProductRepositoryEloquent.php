@@ -33,10 +33,30 @@ class ProductRepositoryEloquent extends BaseRepository implements UsersRepositor
     }
 
     /**
+     * getDetails => get details for listing
+     *
+     * @param mixed $input
+     *
+     * @return void
+     */
+    public function getDetails($input = null)
+    {
+        $value = $this->makeModel();
+        $this->commonFilterFn($value, $input);
+        $count = $value->count();
+        $this->getCommonPaginationFilterFn($value, $input);
+
+        return [
+            'count' => $count,
+            'list' => $value,
+        ];
+    }
+
+    /**
      * commonFilterFn => make common filter for list and getDetailsByInput
      *
-     * @param  mixed $value
-     * @param  mixed $input
+     * @param mixed $value
+     * @param mixed $input
      *
      * @return void
      */
@@ -66,10 +86,16 @@ class ProductRepositoryEloquent extends BaseRepository implements UsersRepositor
 
         /** filter by id  */
         if (isset($input['category_id'])) {
-            $value = $value->where('category_id', $input['category_id']);
+            $value = $value->where('main_category_id', $input['category_id'])
+                ->orWhere('sub_category_id', $input['category_id'])
+                ->orWhere('category_id', $input['category_id']);
+//            $value = $value->where('category_id', $input['category_id']);
         }
         if (isset($input['category_ids']) && is_array($input['category_ids']) && count($input['category_ids'])) {
-            $value = $value->whereIn('category_id', $input['category_ids']);
+//            $value = $value->whereIn('category_id', $input['category_ids']);
+            $value = $value->whereIn('main_category_id', $input['category_ids'])
+                ->orWhereIn('sub_category_id', $input['category_ids'])
+                ->orWhereIn('category_id', $input['category_ids']);
         }
 
         if (isset($input['name'])) {
@@ -162,8 +188,8 @@ class ProductRepositoryEloquent extends BaseRepository implements UsersRepositor
     /**
      * getCommonPaginationFilterFn => get pagination and get data
      *
-     * @param  mixed $value
-     * @param  mixed $input
+     * @param mixed $value
+     * @param mixed $input
      *
      * @return void
      */
@@ -193,30 +219,10 @@ class ProductRepositoryEloquent extends BaseRepository implements UsersRepositor
     }
 
     /**
-     * getDetails => get details for listing
-     *
-     * @param  mixed $input
-     *
-     * @return void
-     */
-    public function getDetails($input = null)
-    {
-        $value = $this->makeModel();
-        $this->commonFilterFn($value, $input);
-        $count = $value->count();
-        $this->getCommonPaginationFilterFn($value, $input);
-
-        return [
-            'count' => $count,
-            'list' => $value,
-        ];
-    }
-
-    /**
      * updateRich => update some keys
      *
-     * @param  mixed $input => updated input
-     * @param  mixed $id => update id record
+     * @param mixed $input => updated input
+     * @param mixed $id => update id record
      *
      * @return void
      */
@@ -235,7 +241,7 @@ class ProductRepositoryEloquent extends BaseRepository implements UsersRepositor
     /**
      * getDetailsByInput => get details by input
      *
-     * @param  mixed $input
+     * @param mixed $input
      *
      * @return void
      */
@@ -253,8 +259,8 @@ class ProductRepositoryEloquent extends BaseRepository implements UsersRepositor
     /**
      * checkKeysExist => Check key exists in db or not - RESPONSE BOOLEAN
      *
-     * @param  mixed $key
-     * @param  mixed $input
+     * @param mixed $key
+     * @param mixed $input
      *
      * @return void
      */
@@ -273,7 +279,7 @@ class ProductRepositoryEloquent extends BaseRepository implements UsersRepositor
     /**
      * getRecords => get records by input
      *
-     * @param  mixed $input
+     * @param mixed $input
      *
      * @return void
      */
@@ -296,7 +302,7 @@ class ProductRepositoryEloquent extends BaseRepository implements UsersRepositor
     /**
      * checkEmailExists => check for email is exists or not
      *
-     * @param  mixed $input
+     * @param mixed $input
      *
      * @return void
      */
@@ -311,7 +317,7 @@ class ProductRepositoryEloquent extends BaseRepository implements UsersRepositor
     /**
      * checkEmailRecordDeleted => check records for is deleted or not
      *
-     * @param  mixed $input
+     * @param mixed $input
      *
      * @return void
      */

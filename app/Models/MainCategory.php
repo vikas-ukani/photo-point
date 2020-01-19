@@ -121,4 +121,14 @@ class MainCategory extends Model
         return $this->hasOne(CommonProductAttributes::class, 'subcategory_id', 'id');
     }
 
+    public function subcategory()
+    {
+            return $this->hasOne(MainCategory::class,'id', 'parent_id');
+    }
+
+    public function childcategory()
+    {
+        return $this->hasOne(MainCategory::class,'id', 'parent_id');
+    }
+
 }

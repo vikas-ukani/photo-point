@@ -211,8 +211,8 @@ updated_at: (...)*/
                 /** create */
                 $product = $this->productRepository->create($input);
             }
-            foreach ($input['stock_details'] as $key => &$value) {
-                $value['product_id'] = $product->id;
+            foreach ($input['stock_inventories'] as $key => &$value) {
+                $value['product_id'] = $id ?? $product->id;
 
 
                 $request = [

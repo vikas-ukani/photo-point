@@ -99,7 +99,8 @@ class ProductRepositoryEloquent extends BaseRepository implements UsersRepositor
         }
 
         if (isset($input['name'])) {
-            $value = $value->whereName($input['name']);
+            $value = $value->where('name', $input['name']);
+//            $value = $value->whereName($input['name']);
         }
 
         if (isset($input['code'])) {

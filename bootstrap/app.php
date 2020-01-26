@@ -138,4 +138,14 @@ $app->router->group([
 ], function ($router) {
     require __DIR__ . '/../routes/admin.php';
 });
+
+/**
+ * Seller Route Register
+ */
+$app->router->group([
+    'namespace' => 'App\Http\Controllers\Admin',
+    'prefix' => 'admin',
+], function ($router) {
+    require __DIR__ . '/../routes/seller.php';
+});
 return $app;

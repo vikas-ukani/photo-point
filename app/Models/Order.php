@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class Order extends Model
@@ -10,12 +11,18 @@ class Order extends Model
     protected $fillable = [
         "customer_name",
         "user_id",
-        "address_detail", // store as json data
+        'product_id',
+        'delevery_address_id', // customer delevery address id
+        // "address_detail", // store as json data
         'product_details', // single or multiple product details store  at one time only,.
         "status", // default set to pending use constant here
         "total_amount", // order total amounts
         "order_date", // order date
-        "expected_date" // add days plus from product add time
+        "expected_date", // add days plus from product add time
+
+        'transaction_id', // transaction id from order
+        'transaction_type', // transaction TYPE from order
+
     ];
 
     /**
@@ -30,9 +37,11 @@ class Order extends Model
         $once = isset($id) ? 'sometimes|' : '';
 
         $rules = [
-            'customer_name' => $once . 'required',
-            'address_detail' => $once . 'required',
-            'product_details' => $once . 'required',
+            'transaction_id' => 'required',
+            'user_id' => 'required',
+            // 'customer_name' => $once . 'required',
+            // 'address_detail' => $once . 'required',
+            // 'product_details' => $once . 'required',
             'total_amount' => $once . 'required',
         ];
 
@@ -65,7 +74,7 @@ class Order extends Model
             $className = __CLASS__;
 
             /** get to array address */
-            $value->address_detail = $className::getAddressDetail($value->address_detail);
+            // $value->address_detail = $className::getAddressDetail($value->address_detail);
 
             /** get to product_details */
             $value->product_details = $className::getProductDetail($value->product_details);
@@ -77,10 +86,10 @@ class Order extends Model
 
             /** set to default order status here */
             $value->status = ORDER_STATUS_PENDING;
-            $value->user_id = \Auth::id();
+            $value->user_id = Auth::id();
 
             /** store json string address */
-            $value->address_detail = $className::setAddressDetail($value->address_detail);
+            // $value->address_detail = $className::setAddressDetail($value->address_detail);
 
             /** store json string product */
             $value->product_details = $className::setProductDetail($value->product_details);
@@ -90,7 +99,7 @@ class Order extends Model
         static::created(function ($value) {
             $className = __CLASS__;
             /** get to array address */
-            $value->address_detail = $className::getAddressDetail($value->address_detail);
+            // $value->address_detail = $className::getAddressDetail($value->address_detail);
             /** get to product_details */
             $value->product_details = $className::getProductDetail($value->product_details);
         });
@@ -99,7 +108,7 @@ class Order extends Model
         static::updating(function ($value) {
             $className = __CLASS__;
             /** store json string address */
-            $value->address_detail = $className::setAddressDetail($value->address_detail);
+            // $value->address_detail = $className::setAddressDetail($value->address_detail);
             /** update json string product */
             $value->product_details = $className::setProductDetail($value->product_details);
         });
@@ -169,7 +178,7 @@ class Order extends Model
     public static function validation($input, $id = null)
     {
         $className = __CLASS__;
-        return Validator::make($input, $className::rules($id), $className::messages());
+        return Validator::make($input, self::rules($id), self::messages());
     }
 
     /**
@@ -237,5 +246,15 @@ class Order extends Model
     public function user_detail()
     {
         return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function product()
+    {
+        return $this->hasOne(Products::class, 'id', 'product_id');
+    }
+
+    public function delevery_address()
+    {
+        return $this->hasOne(UserDeleveryAddress::class, 'id', 'delevery_address_id');
     }
 }

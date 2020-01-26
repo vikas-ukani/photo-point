@@ -31,16 +31,17 @@ class CartController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
-        $validation = $this->requiredAllKeysValidation(['product_id', 'quantity'], $input);
+        $validation = $this->requiredAllKeysValidation(['product_id', 'quantity', 'product_stock_id'], $input);
         if (isset($validation['flag']) && $validation['flag'] === false) {
             return $this->sendBadRequest(null, $validation['message']);
         }
+
+        $input['user_id'] = $input['user_id'] ?? $this->userId;
 
         $cartDetails = $this->createOrUpdateCartDetails($input);
         if (isset($cartDetails['flag']) && $cartDetails['flag'] == false) {
             return $this->sendBadRequest($cartDetails['data'], $cartDetails['message']);
         }
-
         return $this->sendSuccessResponse($cartDetails['data'], $cartDetails['message']);
     }
 
@@ -49,7 +50,10 @@ class CartController extends Controller
         /** check if product found or not */
         $cart = $this->cartRepository->getDetailsByInput([
             'user_id' => $this->userId,
+            "relation" => ["product", "product.customer_rating", "stock_inventory"],
+            // "stock_inventory_list" => ["product_id", "images", "sale_price", "mrp_price"],
             'product_id' => $input['product_id'],
+            'product_stock_id' => $input['product_stock_id'],
             'first' => true,
         ]);
         /** check if user product already exists or not */
@@ -59,19 +63,22 @@ class CartController extends Controller
             $cart->save();
         } else {
             /** if not found then create new cart entry */
-            $cart = $this->cartRepository->create([
-                'user_id' => $this->userId,
-                'product_id' => $input['product_id'],
-                'quantity' => $input['quantity'],
-            ]);
+            $cart = $this->cartRepository->create($input);
+            // $cart = $this->cartRepository->create([
+            //     'user_id' => $this->userId,
+            //     'product_id' => $input['product_id'],
+            //     'product_stock_id' => $input['product_stock_id'],
+            //     'quantity' => $input['quantity'],
+            // ]);
         }
 
         /** return cart details with relation wise commonly */
         $cart = $this->getCartDetails([
             'id' => $cart->id,
             'relation' => [
-                'user', 'product',
+                'user', 'product', 'product.customer_rating', 'stock_inventory'
             ],
+            // 'stock_inventory_list' => ['product_id', 'images', 'sale_price', 'mrp_price'],
             'first' => true,
         ]);
         return $this->makeResponse($cart, __('validation.common.saved', ['module' => "Cart"]));
@@ -97,14 +104,14 @@ class CartController extends Controller
 
         $cart->quantity = $cart->quantity - 1;
         $cart->save();
-        $cart = $this->getCartDetails(['id' => $cart->id, 'relation' => ['product', 'user'], 'first' => true]);
+        $cart = $this->getCartDetails(['id' => $cart->id, 'relation' => ['product', 'stock_inventory', 'user'], 'first' => true]);
         return $this->sendSuccessResponse($cart, __('validation.common.saved', ['module' => 'cart']));
     }
 
     public function getCartCount()
     {
         $input = [
-            'user_id' => \Auth::id()
+            'user_id' => $this->userId
         ];
         $count = $this->cartRepository->getCountByInput($input);
         return $this->sendSuccessResponse(['count' => $count], __("validation.common.details_found", ["module" => "Cart count"]));

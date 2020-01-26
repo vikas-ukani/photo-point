@@ -14,8 +14,9 @@ class Products extends Model
         "sub_category_id",
         "category_id",
         "name",
-//        'image',
-//        "price",
+        "user_id",
+        //        'image',
+        //        "price",
         //        "size",
         //        "color",
         "description",
@@ -36,7 +37,7 @@ class Products extends Model
         return [
             'category_id' => $once . 'required',
             'name' => $once . 'required',
-//            'price' => $once . 'required',
+            //            'price' => $once . 'required',
             // 'image' => $once . "required",
             //            'size' => $once . 'required',
             //            'color' => $once . 'required',
@@ -46,8 +47,8 @@ class Products extends Model
             'stock_inventories.*.sale_price' => $once . "required",
             'stock_inventories.*.mrp_price' => $once . "required",
             'stock_inventories.*.stock_available' => $once . "required",
-//            'product_attributes' => $once . "required|array",
-//            'common_product_attribute_id.*.common_product_attribute_id' => $once . "required|integer",
+            //            'product_attributes' => $once . "required|array",
+            //            'common_product_attribute_id.*.common_product_attribute_id' => $once . "required|integer",
         ];
     }
 
@@ -93,11 +94,13 @@ class Products extends Model
 
         static::creating(function ($model) {
             $model->is_active = $model->is_active == true ? 1 : 0;
+            $model->user_id = $model->user_id  ?? \Auth::id();
             $model->description = json_encode($model->description);
         });
 
         static::updating(function ($model) {
             $model->is_active = $model->is_active == true ? 1 : 0;
+            $model->user_id = $model->user_id ?? \Auth::id();
             $model->description = json_encode($model->description);
         });
     }

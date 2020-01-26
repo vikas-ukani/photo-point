@@ -4,7 +4,6 @@ namespace App\Libraries\Repositories;
 
 use App\Libraries\RepositoriesInterfaces\UsersRepository;
 use App\Models\Order;
-use App\Models\Products;
 use App\Supports\BaseMainRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
@@ -49,6 +48,7 @@ class OrderRepositoryEloquent extends BaseRepository implements UsersRepository
         }
 
         $this->customRelation($value, $input, []); //'account_detail'
+
         /** filter by id  */
         if (isset($input['id'])) {
             $value = $value->where('id', $input['id']);
@@ -63,6 +63,22 @@ class OrderRepositoryEloquent extends BaseRepository implements UsersRepository
         }
         if (isset($input['user_ids']) && is_array($input['user_ids']) && count($input['user_ids'])) {
             $value = $value->whereIn('user_id', $input['user_ids']);
+        }
+
+        /** product_id and product_ids wise filter */
+        if (isset($input['product_id'])) {
+            $value = $value->where('product_id', $input['product_id']);
+        }
+        if (isset($input['product_ids']) && count($input['product_ids']) > 0) {
+            $value = $value->whereIn('product_id', $input['product_ids']);
+        }
+
+        /** delevery_address_id and delevery_address_ids wise filter */
+        if (isset($input['delevery_address_id'])) {
+            $value = $value->where('delevery_address_id', $input['delevery_address_id']);
+        }
+        if (isset($input['delevery_address_ids']) && count($input['delevery_address_ids']) > 0) {
+            $value = $value->whereIn('delevery_address_id', $input['delevery_address_ids']);
         }
 
         if (isset($input['customer_name'])) {

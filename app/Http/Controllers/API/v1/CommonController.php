@@ -1,4 +1,6 @@
-<?php /** @noinspection ALL */
+<?php
+
+/** @noinspection ALL */
 
 namespace App\Http\Controllers\API\v1;
 
@@ -41,9 +43,9 @@ class CommonController extends Controller
         $mainCategory = $this->mainCategoryRepository->getDetailsByInput([
             'is_parent' => true,
             'is_active' => true,
-            'list' => [ 'id', "name", "image"]
+            'list' => ['id', "name", "image"]
         ]);
-        if (!!!isset($mainCategory)){
+        if (!!!isset($mainCategory)) {
             return $this->sendBadRequest(null, __('validation.common.details_not_found', ['module' => "Main Category"]));
         }
         return $this->sendSuccessResponse($mainCategory, __('validation.common.details_found', ['module' => "Main Category"]));
@@ -54,9 +56,9 @@ class CommonController extends Controller
         $subCategory = $this->mainCategoryRepository->getDetailsByInput([
             'parent_id' => $id,
             'is_active' => true,
-            'list' => [ 'id', "name", "image"]
+            'list' => ['id', "name", "image"]
         ]);
-        if (!!!isset($subCategory)){
+        if (!!!isset($subCategory)) {
             return $this->sendBadRequest(null, __('validation.common.details_not_found', ['module' => "Sub Category"]));
         }
         return $this->sendSuccessResponse($subCategory, __('validation.common.details_found', ['module' => "sub Category"]));
@@ -67,9 +69,9 @@ class CommonController extends Controller
         $subCategory = $this->mainCategoryRepository->getDetailsByInput([
             'parent_id' => $id,
             'is_active' => true,
-            'list' => [ 'id', "name", "image"]
+            'list' => ['id', "name", "image"]
         ]);
-        if (!!!isset($subCategory)){
+        if (!!!isset($subCategory)) {
             return $this->sendBadRequest(null, __('validation.common.details_not_found', ['module' => "child Category"]));
         }
         return $this->sendSuccessResponse($subCategory, __('validation.common.details_found', ['module' => "child Category"]));
@@ -103,8 +105,6 @@ class CommonController extends Controller
             'is_active' => true
         ]);
 
-
-
-        return $this->sendSuccessResponse($response, __('validaiton.common.details_found', ['module' => "country, state, city"]));
+        return $this->sendSuccessResponse($response, __('validation.common.details_found', ['module' => "country, state, city"]));
     }
 }

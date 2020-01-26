@@ -9,8 +9,9 @@ class Cart extends Model
 {
     //
     protected $fillable = [
-        "user_id",
-        "product_id",
+        "user_id", // user id 
+        "product_id", // producy  id 
+        "product_stock_id", // producy stock id 
         'quantity',
     ];
 
@@ -81,5 +82,10 @@ class Cart extends Model
     public function product()
     {
         return $this->hasOne(Products::class, 'id', 'product_id');
+    }
+
+    public function stock_inventory()
+    {
+        return $this->hasOne(ProductStockInventory::class, 'id', 'product_stock_id');
     }
 }

@@ -72,6 +72,14 @@ class CartRepositoryEloquent extends BaseRepository implements UsersRepository
             $value = $value->whereIn('product_id', $input['product_id']);
         }
 
+        /** product_stock_id and product_stock_ids wise filter */
+        if (isset($input['product_stock_id'])) {
+            $value = $value->where('product_stock_id', $input['product_stock_id']);
+        }
+        if (isset($input['product_stock_ids']) && count($input['product_stock_ids']) > 0) {
+            $value = $value->whereIn('product_stock_id', $input['product_stock_ids']);
+        }
+
         if (isset($input['quantity'])) {
             $value = $value->where('quantity', $input['quantity']);
         }

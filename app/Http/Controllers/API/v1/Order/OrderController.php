@@ -8,6 +8,7 @@ use App\Libraries\Repositories\CartRepositoryEloquent;
 use App\Libraries\Repositories\OrderRepositoryEloquent;
 use App\Libraries\Repositories\ProductRepositoryEloquent;
 use App\Models\Order;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -20,6 +21,7 @@ class OrderController extends Controller
         ProductRepositoryEloquent $productRepository,
         CartRepositoryEloquent $cartRepository
     ) {
+        $this->userId = Auth::id();
         $this->orderRepository = $orderRepository;
         $this->productRepository = $productRepository;
         $this->cartRepository = $cartRepository;
@@ -30,7 +32,7 @@ class OrderController extends Controller
         $input = $request->all();
 
         /** get user wise orders */
-        $input['user_id'] = $input['user_id'] ?? \Auth::id();
+        $input['user_id'] = $input['user_id'] ?? $this->userId;
 
         /** get order details */
         $orders = $this->orderRepository->getDetails($input);
@@ -43,6 +45,8 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
+
+        $input['user_id'] = $input['user id'] ?? $this->userId;
 
         /** check model validation */
         $validation = Order::validation($input);
@@ -57,30 +61,24 @@ class OrderController extends Controller
         $order = $this->orderRepository->create($input);
 
         /** clear all cart details after order has been planced */
-        $this->cartRepository->deleteWhere(['user_id' => \Auth::id()]);
+        $this->cartRepository->deleteWhere(['user_id' => $this->userId]);
         return $this->sendSuccessResponse($order, __('validation.common.order_placed_success'));
     }
 
     public function getOrderDetailsFromCart(Request $request)
     {
         $input = $request->all();
-        $userId = \Auth::id();
 
         $cartDetails = $this->cartRepository->getDetailsByInput([
-            'user_id' => $userId,
+            'user_id' => $this->userId,
+            'relation' => ['stock_inventory'],
+            'list' => ['id', 'product_id', 'quantity', 'product_stock_id'],
+            'stock_inventory_list' => ['id', 'product_id', 'sale_price']
         ]);
-
-        $productIds = collect($cartDetails)->pluck('id')->all();
-
-        $products = $this->productRepository->getDetailsByInput([
-            'ids' => $productIds
-        ]);
-
         $productTotalAmount = 0;
-
-        /** get product total amount */
-        $productTotalAmount = collect($products)->sum('price');
-
+        foreach ($cartDetails->toArray() as $key => $cart) {
+            $productTotalAmount += $cart['quantity'] * $cart['stock_inventory']['sale_price'];
+        }
         $productTotalDiscount = 0;
         $productDeliveryCharges = $productTotalAmount != 0 ? DEFAULT_DELIVERY_CHARGE : 0;
 
@@ -95,7 +93,7 @@ class OrderController extends Controller
     public function show($id)
     {
         $orderDetails = $this->orderRepository->getDetailsByInput([
-            'user_id' => \Auth::id(),
+            'user_id' => $this->userId,
             'id' => $id,
             'first' => true,
         ]);

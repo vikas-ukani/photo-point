@@ -15,11 +15,7 @@ class OrderController extends Controller
     public function __construct(OrderRepositoryEloquent $orderRepository)
     {
         $this->orderRepository = $orderRepository;
-    }
-
-    //
-
-
+    } 
 
     /**
      * list => get all orders

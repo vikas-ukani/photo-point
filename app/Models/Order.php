@@ -13,7 +13,7 @@ class Order extends Model
         "user_id",
         'product_id',
         'delevery_address_id', // customer delevery address id
-        // "address_detail", // store as json data
+        "address_detail", // store as json data
         'product_details', // single or multiple product details store  at one time only,.
         "status", // default set to pending use constant here
         "total_amount", // order total amounts
@@ -40,7 +40,7 @@ class Order extends Model
             'transaction_id' => 'required',
             'user_id' => 'required',
             // 'customer_name' => $once . 'required',
-            // 'address_detail' => $once . 'required',
+            'address_detail' => $once . 'required',
             // 'product_details' => $once . 'required',
             'total_amount' => $once . 'required',
         ];
@@ -74,7 +74,7 @@ class Order extends Model
             $className = __CLASS__;
 
             /** get to array address */
-            // $value->address_detail = $className::getAddressDetail($value->address_detail);
+            $value->address_detail = $className::getAddressDetail($value->address_detail);
 
             /** get to product_details */
             $value->product_details = $className::getProductDetail($value->product_details);
@@ -89,7 +89,7 @@ class Order extends Model
             $value->user_id = Auth::id();
 
             /** store json string address */
-            // $value->address_detail = $className::setAddressDetail($value->address_detail);
+            $value->address_detail = $className::setAddressDetail($value->address_detail);
 
             /** store json string product */
             $value->product_details = $className::setProductDetail($value->product_details);
@@ -99,18 +99,18 @@ class Order extends Model
         static::created(function ($value) {
             $className = __CLASS__;
             /** get to array address */
-            // $value->address_detail = $className::getAddressDetail($value->address_detail);
+            $value->address_detail = self::getAddressDetail($value->address_detail);
             /** get to product_details */
-            $value->product_details = $className::getProductDetail($value->product_details);
+            $value->product_details = self::getProductDetail($value->product_details);
         });
 
         /** before updating */
         static::updating(function ($value) {
             $className = __CLASS__;
             /** store json string address */
-            // $value->address_detail = $className::setAddressDetail($value->address_detail);
+            $value->address_detail = self::setAddressDetail($value->address_detail);
             /** update json string product */
-            $value->product_details = $className::setProductDetail($value->product_details);
+            $value->product_details = self::setProductDetail($value->product_details);
         });
     }
 

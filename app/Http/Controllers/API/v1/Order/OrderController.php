@@ -58,7 +58,15 @@ class OrderController extends Controller
         $input['order_date'] = $this->getCurrentDateUTC();
         $input['expected_date'] = $this->addNumberOfDayInCurrentDate(DEFAULT_EXCEPTED_DATE_DAY);
 
-        $order = $this->orderRepository->create($input);
+        if (isset($input['product_details'])) {
+            $dummyInput = $input;
+            foreach ($input['product_details'] as $key => $value) {
+                $dummyInput['product_details'] = $value;
+                $dummyInput['total_amount'] = $value['sale_price'];
+                // dd('casd', $dummyInput);
+                $order[] = $this->orderRepository->create($dummyInput);
+            }
+        }
 
         /** clear all cart details after order has been planced */
         $this->cartRepository->deleteWhere(['user_id' => $this->userId]);

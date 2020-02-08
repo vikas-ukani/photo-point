@@ -1,4 +1,5 @@
 <?php
+
 /** @noinspection ALL */
 
 $router->group(['namespace' => 'Auth'], function () use ($router) {
@@ -13,6 +14,15 @@ $router->group(['namespace' => 'Category'], function () use ($router) {
  * after login routes access
  */
 $router->group(['middleware' => ["auth:api"]], function () use ($router) {
+
+
+    /** shiporder APIs */
+    $router->group(['namespace' => 'Shiporder'], function () use ($router) {
+        $router->post('/shiporder-login', "ShiporderAPIController@loginShiporder");
+    });
+
+
+
     /**
      * Shoppers
      */

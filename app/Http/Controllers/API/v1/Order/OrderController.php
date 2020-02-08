@@ -63,14 +63,14 @@ class OrderController extends Controller
             foreach ($input['product_details'] as $key => $value) {
                 $dummyInput['product_details'] = $value;
                 $dummyInput['total_amount'] = $value['sale_price'];
-                // dd('casd', $dummyInput);
+                $dummyInput['quantity'] = $value['quantity'];
                 $order[] = $this->orderRepository->create($dummyInput);
             }
         }
 
         /** clear all cart details after order has been planced */
         $this->cartRepository->deleteWhere(['user_id' => $this->userId]);
-        return $this->sendSuccessResponse($order, __('validation.common.order_placed_success'));
+        return $this->sendSuccessResponse(/* $order */null, __('validation.common.order_placed_success'));
     }
 
     public function getOrderDetailsFromCart(Request $request)

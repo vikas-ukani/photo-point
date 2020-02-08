@@ -16,6 +16,7 @@ class Order extends Model
         "address_detail", // store as json data
         'product_details', // single or multiple product details store  at one time only,.
         "status", // default set to pending use constant here
+        "quantity", // order quantity
         "total_amount", // order total amounts
         "order_date", // order date
         "expected_date", // add days plus from product add time
@@ -37,6 +38,7 @@ class Order extends Model
         $once = isset($id) ? 'sometimes|' : '';
 
         $rules = [
+            // 'quantity' => 'required',
             'transaction_id' => 'required',
             'user_id' => 'required',
             // 'customer_name' => $once . 'required',
@@ -71,13 +73,11 @@ class Order extends Model
         parent::boot();
 
         static::retrieved(function ($value) {
-            $className = __CLASS__;
-
             /** get to array address */
-            $value->address_detail = $className::getAddressDetail($value->address_detail);
+            $value->address_detail = self::getAddressDetail($value->address_detail);
 
             /** get to product_details */
-            $value->product_details = $className::getProductDetail($value->product_details);
+            $value->product_details = self::getProductDetail($value->product_details);
         });
 
         /** before creating */
@@ -130,7 +130,10 @@ class Order extends Model
     /** get and set Product details */
     public static function getProductDetail($value)
     {
-        $value = json_decode($value);
+        $value = json_decode($value, true);
+        // if (isset($value['stock_inventory_id'])) {
+        //     $value['stock_inventory'] = ProductStockInventory::where('id', $value['stock_inventory_id'])->first();
+        // }
         return $value;
         // if (isset($value) && is_string($value)) {
         //     $value = explode(',', $value);

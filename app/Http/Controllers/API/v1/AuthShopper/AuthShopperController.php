@@ -1,4 +1,6 @@
-<?php /** @noinspection ALL */
+<?php
+
+/** @noinspection ALL */
 
 namespace App\Http\Controllers\API\v1\AuthShopper;
 
@@ -60,14 +62,14 @@ class AuthShopperController extends Controller
             return $this->sendBadRequest(null, $responseError['message']);
         }
 
-         if ($token = Auth::guard('shopper_api')->attempt($credentials)) {
-             /**
-              * check is approved or not
-              */
-             $user =Auth::guard('shopper_api')->user();
-             if($user->is_approved === false) {
-                  return $this->sendBadRequest(null, __('validation.common.improved_shopper'));
-             }
+        if ($token = Auth::guard('shopper_api')->attempt($credentials)) {
+            /**
+             * check is approved or not
+             */
+            $user = Auth::guard('shopper_api')->user();
+            if ($user->is_approved === false) {
+                return $this->sendBadRequest(null, __('validation.common.improved_shopper'));
+            }
 
             $returnDetails = $this->respondWithToken($token);
             return $this->sendSuccessResponse($returnDetails, __('validation.common.login_success'));

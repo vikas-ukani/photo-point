@@ -85,13 +85,14 @@ class OrderRepositoryEloquent extends BaseRepository implements UsersRepository
             $value = $value->where('customer_name', $input['customer_name']);
         }
 
+        if (isset($input['quantity'])) {
+            $value = $value->where('quantity', $input['quantity']);
+        }
+
         if (isset($input['status'])) {
             $value = $value->where('status', $input['status']);
         }
 
-        if (isset($input['is_active'])) {
-            $value = $value->where('is_active', $input['is_active']);
-        }
 
         if (isset($input['start_order_date'])) {
             $value = $value->where('order_date', ">=", $input['start_order_date']);
@@ -113,34 +114,6 @@ class OrderRepositoryEloquent extends BaseRepository implements UsersRepository
         /** check if false then don't show current user in listing */
         if (isset($input['is_current_user']) && $input['is_current_user'] == false) {
             $value = $value->where('id', '<>', \Auth::id());
-        }
-
-        if (isset($input['facebook'])) {
-            $value = $value->where('facebook', $input['facebook']);
-        }
-
-        /** country_id and country_ids wise filter */
-        if (isset($input['country_id'])) {
-            $value = $value->where('country_id', $input['country_id']);
-        }
-        if (isset($input['country_ids']) && is_array($input['country_ids']) && count($input['country_ids'])) {
-            $value = $value->whereIn('country_id', $input['country_ids']);
-        }
-
-        if (isset($input['latitude'])) {
-            $value = $value->where('latitude', $input['latitude']);
-        }
-        if (isset($input['longitude'])) {
-            $value = $value->where('longitude', $input['longitude']);
-        }
-
-        if (isset($input['is_snooze'])) {
-            $value = $value->where('is_snooze', $input['is_snooze']);
-        }
-
-        /** check for user complete their profile or not */
-        if (isset($input['is_profile_complete'])) {
-            $value = $value->where('is_profile_complete', $input['is_profile_complete']);
         }
     }
 

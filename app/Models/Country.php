@@ -28,8 +28,6 @@ class Country extends Model
         $rules = [
             'name' => $once . 'required',
         ];
-
-        return $rules;
     }
 
     /**
@@ -56,8 +54,7 @@ class Country extends Model
      */
     public static function validation($input, $id = null)
     {
-        $className = __CLASS__;
-        return Validator::make($input, $className::rules($id), $className::messages());
+        return Validator::make($input, self::rules($id), self::messages());
     }
 
     /**

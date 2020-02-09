@@ -135,6 +135,7 @@ return [
     ],
     'common' => [
         'saved' => ':module successfully saved.',
+        'changed' => ':module successfully changed.',
 
         'created' => ':module successfully created.',
         'updated' => ':module successfully updated.',

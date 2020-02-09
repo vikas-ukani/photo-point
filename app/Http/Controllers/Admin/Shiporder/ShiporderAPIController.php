@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Shiporder;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\ShiporderToken;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 
@@ -37,6 +38,21 @@ class ShiporderAPIController extends Controller
             ]
         );
         $bodyData =  json_decode($response->getBody()->getContents(), true);
-        return $this->sendSuccessResponse($bodyData, __('validation.common.login_success'));
+
+        /** store token to database */
+        if (isset($bodyData)) {
+
+            /** store token in databases */
+            $firstToken = ShiporderToken::first();
+            if ($firstToken) {
+                $firstToken->token = $bodyData['token'];
+                $firstToken->save();
+            } else {
+                $firstToken = ShiporderToken::create(['token' => $bodyData['token']]);
+            }
+            return $this->sendSuccessResponse($firstToken, __('validation.common.login_success'));
+        } else {
+            return $this->sendBadRequest(null, __('validation.common.failed_to_login'));
+        }
     }
 }

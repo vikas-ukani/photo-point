@@ -71,7 +71,7 @@ class Shopper extends Model implements AuthenticatableContract, AuthorizableCont
             'password' => $once . 'required',
             'mobile' => "required|mobile|unique:users,mobile,{$id}"
         ];
-     }
+    }
 
     /**
      * getPhotoAttribute => append base url to image with unique
@@ -111,7 +111,6 @@ class Shopper extends Model implements AuthenticatableContract, AuthorizableCont
             $query->is_approved = isset($query->is_approved) ? $query->is_approved : 0;
             $query->email =  strtolower($query->email);
             $query->first_name = ucwords(strtolower($query->first_name));
-
         });
 
         static::updating(function ($query) {
@@ -122,7 +121,6 @@ class Shopper extends Model implements AuthenticatableContract, AuthorizableCont
             $query->email =  strtolower($query->email);
             $query->first_name = ucwords(strtolower($query->first_name));
         });
-
     }
 
     /**

@@ -24,6 +24,10 @@ class Order extends Model
         'transaction_id', // transaction id from order
         'transaction_type', // transaction TYPE from order
 
+        'order_id', // order id  from shiprocket
+        'shipment_id', // shipment id 
+        'shiprocket_response', // store shiprocket  response red
+
     ];
 
     /**
@@ -78,6 +82,7 @@ class Order extends Model
 
             /** get to product_details */
             $value->product_details = self::getProductDetail($value->product_details);
+            $value->shiprocket_response = self::getJsonToArrayDetail($value->shiprocket_response);
         });
 
         /** before creating */
@@ -89,11 +94,12 @@ class Order extends Model
             $value->user_id = Auth::id();
 
             /** store json string address */
-            $value->address_detail = $className::setAddressDetail($value->address_detail);
+            $value->address_detail = self::setAddressDetail($value->address_detail);
 
             /** store json string product */
             $value->product_details = $className::setProductDetail($value->product_details);
             // $value->is_active = $value->is_active == true ? 1 : 0;
+
         });
 
         static::created(function ($value) {
@@ -111,17 +117,12 @@ class Order extends Model
             $value->address_detail = self::setAddressDetail($value->address_detail);
             /** update json string product */
             $value->product_details = self::setProductDetail($value->product_details);
+            $value->shiprocket_response = self::setArrayToJsonDetail($value->shiprocket_response);
         });
     }
 
     public static function setProductDetail($value)
     {
-        // if (isset($value) && is_array($value)) {
-        //     $value = array_filter($value);
-        //     $value = implode(',', $value);
-        // } else {
-        //     $value = null;
-        // }
         $value = json_encode($value);
         return $value;
     }
@@ -148,23 +149,21 @@ class Order extends Model
     /** get and set address details */
     public static function getAddressDetail($value)
     {
-        // if (isset($value) && is_string($value)) {
-        //     $value = explode(',', $value);
-        //     $value = array_filter($value);
-        // } else {
-        //     $value = null;
-        // }
         $value = json_decode($value);
         return $value;
     }
     public static function setAddressDetail($value)
     {
-        // if (isset($value) && is_array($value)) {
-        //     $value = array_filter($value);
-        //     $value = implode(',', $value);
-        // } else {
-        //     $value = null;
-        // }
+        $value = json_encode($value);
+        return $value;
+    }
+    public static function getJsonToArrayDetail($value)
+    {
+        $value = json_decode($value);
+        return $value;
+    }
+    public static function setArrayToJsonDetail($value)
+    {
         $value = json_encode($value);
         return $value;
     }

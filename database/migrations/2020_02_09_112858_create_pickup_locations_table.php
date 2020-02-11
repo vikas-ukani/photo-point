@@ -15,6 +15,18 @@ class CreatePickupLocationsTable extends Migration
     {
         Schema::create('pickup_locations', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('user_id')->comment('user address');
+            $table->string('pickup_location', 200);
+            $table->string('name', 200);
+            $table->string('email', 200);
+            $table->string('phone', 200);
+            $table->string('address', 200);
+            $table->string('address_2', 200)->nullable();
+            $table->string('city', 200);
+            $table->string('state', 200);
+            $table->string('country', 200);
+            $table->string('pin_code', 200);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

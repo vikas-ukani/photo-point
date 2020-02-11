@@ -21,6 +21,17 @@ class PickupLocation extends Model
         "state",
         "country",
         "pin_code",
+        "is_active",
+    ];
+    // protected $dateFormat = 'U';
+
+    protected $dates = [
+        'updated_at',
+    ];
+
+    protected $casts = [
+        'is_active'  =>  'boolean',
+        // 'qty'       =>  'integer'
     ];
 
     /**
@@ -35,13 +46,13 @@ class PickupLocation extends Model
         $once = isset($id) ? 'sometimes|' : '';
 
         return [
-            'user_id' => $once . 'required',
+            // 'user_id' => $once . 'required',
             'pickup_location' => $once . 'required|max:8',
             'name' => $once . 'required',
             'email' => $once . 'required',
             'phone' => $once . 'required',
             'address' => $once . 'required|max:80',
-            'address_2' => $once . 'required',
+            // 'address_2' => $once . 'required',
             'city' => $once . 'required',
             'state' => $once . 'required',
             'country' => $once . 'required',
@@ -98,16 +109,17 @@ class PickupLocation extends Model
         parent::boot();
 
         static::retrieved(function ($model) {
-            $model->is_active = $model->is_active == 1 ? true : false;
+            // $model->is_active = $model->is_active == 1 ? true : false;
         });
 
         static::creating(function ($model) {
-            $model->is_active = $model->is_active == true ? 1 : 0;
+            // $model->is_active = $model->is_active == true ? 1 : 0;
             $model->user_id = $model->user_id  ?? Auth::id();
         });
 
         static::updating(function ($model) {
-            $model->is_active = $model->is_active == true ? 1 : 0;
+            // $model->is_active = $model->is_active === true ? 1  :  0;
+            // $model->is_active = $model->is_active == true ? 1 : 0;
             $model->user_id = $model->user_id ?? Auth::id();
         });
     }

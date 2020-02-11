@@ -19,15 +19,18 @@ $router->group(['middleware' => ["auth:api"]], function () use ($router) {
         $router->post('/orders-list', "OrderController@list");
     });
 
+    $router->group(['namespace' => 'Shiporder'], function () use ($router) {
+        $router->post('/create-a-order', "ShiporderAPIController@createOrder");
+    });
 
 
 
     // pickup-location
-    $router->group(['namespace' => 'PickupLocation'], function () use ($router) {
+    $router->group(['namespace' => 'Shopper'], function () use ($router) {
         $router->post('/pickup-location-list', "PickupLocationController@list");
         $router->post('/pickup-location-create', "PickupLocationController@store");
         $router->get('/pickup-location-show/{id}', "PickupLocationController@show");
-        $router->post('/pickup-location-update/{id}', "PickupLocationController@update");
+        $router->put('/pickup-location-update/{id}', "PickupLocationController@update");
         $router->post('/pickup-location-status-change', "PickupLocationController@statusChange");
         $router->delete('/pickup-location-delete/{id}', "PickupLocationController@destory");
         $router->post('/pickup-location-delete-multiple', "PickupLocationController@multipleDelete");

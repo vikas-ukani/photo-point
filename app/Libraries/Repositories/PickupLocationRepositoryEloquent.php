@@ -68,6 +68,10 @@ class PickupLocationRepositoryEloquent extends BaseRepository implements UsersRe
             $value = $value->where('is_active', $input['is_active']);
         }
 
+        if (isset($input['is_added_to_shiprocket'])) {
+            $value = $value->where('is_added_to_shiprocket', $input['is_added_to_shiprocket']);
+        }
+
         $this->customRelation($value, $input, []); //'account_detail'
 
         /** gender and genders wise filter */

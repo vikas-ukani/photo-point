@@ -47,6 +47,7 @@ class Order extends Model
             'user_id' => 'required',
             // 'customer_name' => $once . 'required',
             'address_detail' => $once . 'required',
+            'address_detail.*.name' => $once . 'required',
             // 'product_details' => $once . 'required',
             'total_amount' => $once . 'required',
         ];

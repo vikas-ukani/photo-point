@@ -154,7 +154,6 @@ return [
         'successfully_favorite' => "Successfully favorite.",
         'successfully_unfavorite' => "Successfully unfavorite.",
 
-
         'improved_shopper' => 'Your account is in-review. We will inform you when it is done. Thanks.',
         'invalid_user' => 'You are not valid user.',
 

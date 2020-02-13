@@ -98,19 +98,20 @@ class ShiporderAPIController extends Controller
             'order_id'              => $input['id'], // come from request of order id 
             'order_date'            => $input['order_date'] /* date('d-m-Y', strtotime($user->from_date)) */,
             'pickup_location'       => $pickupLocation->pickup_location, // name of shopper pickup location naem
-            'billing_customer_name' => $input['address_detail']['name'] ?? null, // customer name
+            'billing_customer_name' => $input['user_detail']['first_name'] ?? null, // customer name
+            'billing_last_name'     => $input['user_detail']['last_name'] ?? null, // customer name
             'billing_address'       => $input['address_detail']['line1'] ?? null, // customer address
             'billing_city'          => $input['address_detail']['city_detail']['name'] ?? null, // customer billing_city
             'billing_pincode'       => $input['address_detail']['pincode'] ?? null, // customer billing_pincode
             'billing_state'         => $input['address_detail']['state_detail']['name'] ?? null, // customer billing_state
             'billing_country'       => $input['address_detail']['country_detail']['name'] ?? null, // customer billing_country
             'billing_email'         => $input['user_detail']['email'], // customer billing_email
-            'billing_phone'         =>  $input['user_detail']['mobile'], // customer billing_phone
+            'billing_phone'         => $input['user_detail']['mobile'], // customer billing_phone
             'shipping_is_billing'   => true, // same addaress
             'order_items' => [
                 [
                     "name"      => $input['product_details']['name'],
-                    "sku"       => $input['product_details']['stock_inventory_id'],
+                    "sku"       => "stock-" . $input['product_details']['stock_inventory_id'],
                     "units"     => $input['quantity'],
                     "selling_price" => $input['product_details']['sale_price'],
                     "discount"  => "",
@@ -126,31 +127,31 @@ class ShiporderAPIController extends Controller
             'weight' => $input['stock_inventory_detail']['weight'] ?? null, // 2.5
         ];
 
-        // dd('check data', $input);
+        // dd('check data', $apiinput);
 
-        // try {
-        $client = new \GuzzleHttp\Client();
+        try {
+            $client = new \GuzzleHttp\Client();
 
-        // $request = $client->createRequest('POST', 'http://www.browserstack.com/screenshots', [
-        $response = $client->request(
-            'POST',
-            "https://apiv2.shiprocket.in/v1/external/orders/create/adhoc", // API of create an order at shiporder site
-            [
-                'headers' => [
-                    'Accept'            => 'application/json',
-                    'Authorization'     => 'Bearer ' . $shiprocketToken->token,
-                ],
-                'json' =>  $apiinput
-            ]
-        );
-        // $response = $response->getBody();
-        // ->getContents()
-        // $bodyData = json_decode($response->getBody()->getContents(), true);
-        dd('check body data ');
-        // } catch (Exception $ex) {
-        //     dd('excq', $ex);
-        //     return $this->sendBadRequest(null, $ex->getCode() . " -- " . $ex->getMessage());
-        // }
+            // $request = $client->createRequest('POST', 'http://www.browserstack.com/screenshots', [
+            $response = $client->request(
+                'POST',
+                "https://apiv2.shiprocket.in/v1/external/orders/create/adhoc", // API of create an order at shiporder site
+                [
+                    'headers' => [
+                        'Accept'            => 'application/json',
+                        'Authorization'     => 'Bearer ' . $shiprocketToken->token,
+                    ],
+                    'json' =>  $apiinput
+                ]
+            );
+            // $response = $response->getBody()
+            //     ->getContents();
+            $response = json_decode($response->getBody()->getContents(), true);
+            dd('order padyo,. ', $response);
+        } catch (Exception $ex) {
+            dd('excq', $ex);
+            return $this->sendBadRequest(null, $ex->getCode() . " -- " . $ex->getMessage());
+        }
     }
 
     public function loginShiporder(Request $request)

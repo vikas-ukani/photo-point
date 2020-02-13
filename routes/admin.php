@@ -98,6 +98,11 @@ $router->group(['middleware' => ["auth:api"]], function () use ($router) {
         $router->delete('/complaint-category-delete/{id}', "ComplaintCategoryController@destory");
         $router->post('/complaint-category-delete-multiple', "ComplaintCategoryController@multipleDelete");
     });
+
+    $router->group(['namespace' => 'PickupAddress'], function () use ($router) {
+        $router->post('/pickup-address-list', "PickupAddressController@list");
+        $router->post('/pickup-address-approve', "PickupAddressController@approveAddress");
+    });
 });
 
 $router->group(['namespace' => 'Country'], function () use ($router) {

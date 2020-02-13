@@ -23,8 +23,7 @@ $router->group(['middleware' => ["auth:api"]], function () use ($router) {
         $router->post('/create-a-order', "ShiporderAPIController@createOrder");
     });
 
-
-
+ 
     // pickup-location
     $router->group(['namespace' => 'Shopper'], function () use ($router) {
         $router->post('/pickup-location-list', "PickupLocationController@list");

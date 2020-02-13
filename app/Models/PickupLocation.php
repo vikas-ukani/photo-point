@@ -22,6 +22,7 @@ class PickupLocation extends Model
         "country",
         "pin_code",
         "is_active",
+        "is_added_to_shiprocket",
     ];
     // protected $dateFormat = 'U';
 
@@ -31,6 +32,7 @@ class PickupLocation extends Model
 
     protected $casts = [
         'is_active'  =>  'boolean',
+        'is_added_to_shiprocket'  =>  'boolean',
         // 'qty'       =>  'integer'
     ];
 

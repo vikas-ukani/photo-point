@@ -1,6 +1,7 @@
 # Photo-Point REST-APIs using Laravel Framework With MySQL.
 
 ---
+![Project Image](https://github.com/vikas-ukani/photo-point/blob/master/public/images/photo-point-image.jpg)
 
 ---
 
